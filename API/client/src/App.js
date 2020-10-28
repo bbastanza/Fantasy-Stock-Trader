@@ -1,26 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import DreamTraderNavbar from "./FixedComponents/DreamTraderNavbar";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React Right Now Bitch
-        </a>
-      </header>
-    </div>
-  );
+    const [availableFunds, setAvailableFunds] = useState(10000);
+    const [allocatedFunds, setAllocatedFunds] = useState(9786);
+
+    return (
+        <div className="App">
+            <DreamTraderNavbar
+                availableFunds={availableFunds}
+                allocatedFunds={allocatedFunds}
+            />
+        </div>
+    );
 }
 
 export default App;

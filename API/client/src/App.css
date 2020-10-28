@@ -1,38 +1,42 @@
 .App {
-  text-align: center;
+    text-align: center;
+    background-color: #1e1e1e;
+    color: #ffc107;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.purchase-form {
+    justify-content: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.purchase-form-container {
+    max-width: 800px;
+    margin: auto;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.dt-button {
+    margin: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.available-funds-warning {
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #313131;
+    border-radius: 7px;
+    max-width: 400px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.available-funds {
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #313131;
+    border-radius: 7px;
+    max-width: 500px;
+}
+
+.title {
+    padding: 20px;
+}
+
+.purchase-form-label {
+    font-size: 20px;
 }
