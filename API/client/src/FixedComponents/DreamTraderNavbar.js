@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Portfolio from "./../Pages/Portfolio";
 import Purchase from "./../Pages/Purchase";
 import Login from "./../Pages/Login";
+import Register from "./../Pages/Register";
 
 export default function DreamTraderNavbar({ availableFunds, allocatedFunds }) {
     return (
@@ -31,6 +32,9 @@ export default function DreamTraderNavbar({ availableFunds, allocatedFunds }) {
                 </Route>
                 <Route path="/login">
                     <Login />
+                </Route>
+                <Route path="/register">
+                    <Register />
                 </Route>
             </Switch>
         </Router>
