@@ -34,7 +34,7 @@
 }
 
 .title {
-    padding: 20px;
+    padding: 40px;
 }
 
 .purchase-form-label {
@@ -47,7 +47,7 @@
 
 .user-holding-container {
     margin: auto;
-    background-color: #504f4f;
+    background-color: #292929;
     max-width: 1000px;
     color: #313131;
     border-radius: 7px;

@@ -77,7 +77,10 @@ export default function Purchase({ availableFunds }) {
                             </InputGroup.Append>
                         </InputGroup>
                     </Form.Group>
-                    <h6 className="text-secondary">
+                    <h6
+                        className="text-secondary"
+                        style={{ padding: "20px 0 5px" }}
+                    >
                         Buy with confidence (because it's not real money!)
                     </h6>
 
