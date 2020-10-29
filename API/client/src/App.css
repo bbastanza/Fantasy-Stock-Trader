@@ -40,3 +40,29 @@
 .purchase-form-label {
     font-size: 20px;
 }
+
+.portfolio-page {
+    justify-content: center;
+}
+
+.user-holding-container {
+    margin: auto;
+    background-color: #504f4f;
+    max-width: 1000px;
+    color: #313131;
+    border-radius: 7px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.user-holding {
+    margin: auto;
+    background-color: #ffdc91;
+    border-radius: 7px;
+    padding: 10px;
+}
+
+.holding-container {
+    margin: auto;
+    padding: 20px;
+}

@@ -27,7 +27,7 @@ export default function DreamTraderNavbar({ availableFunds, allocatedFunds }) {
                     <Purchase availableFunds={availableFunds} />
                 </Route>
                 <Route path="/portfolio">
-                    <Portfolio />
+                    <Portfolio allocatedFunds={allocatedFunds} />
                 </Route>
                 <Route path="/login">
                     <Login />

@@ -11,6 +11,7 @@ export default function Purchase({ availableFunds }) {
     const [stock, setStock] = useState("Brookfield Property REIT Inc. (BPYU)");
 
     const numberRegex = /^[0-9]*$/;
+
     function checkFunds(e) {
         const amount = e.target.value;
 
@@ -85,7 +86,7 @@ export default function Purchase({ availableFunds }) {
                         type="submit"
                         className="dt-button btn-lg"
                     >
-                        Buy!
+                        Buy Now!
                     </Button>
                 </Form>
             </div>
