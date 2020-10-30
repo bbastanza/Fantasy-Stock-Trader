@@ -1,34 +1,46 @@
 using API.Models;
 // using API.Services;
-
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    
+
     [ApiController]
     [Route("[controller]")]
     public class UserController : Controller
     {
 
         private string _errorData;
+        private List<UserData> Users = new List<UserData>();
 
         public UserController()
         {
-            _errorData = new string("new error");
+            var brian = new UserData();
+            brian.UserName = "brian";
+            brian.Password = "password";
+            Users.Add(brian);
+   
         }
 
-        [Route("{userName}+{password}")]
-        public IActionResult GetMockData(string username, string password)
+        [Route("/getusers")]
+        public IActionResult GetMockData()
         {
             try
             {
-                var mockData = new MockControllerData(username,password);
-                return Ok(mockData);
+                return Ok(Users);
             }
             catch
             {
                 return StatusCode(500, _errorData);
             }
+        }
+
+        [Route("/adduser")]
+        public void AddUser(UserData value)
+        {
+            Users.Add(value);
         }
     }
 }

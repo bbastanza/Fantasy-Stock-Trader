@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace API.Models
 {
-    public class MockControllerData
+    public class UserData
     {
 
         [JsonPropertyName("username")]
@@ -11,10 +11,9 @@ namespace API.Models
         [JsonPropertyName("password")]
         public string Password { get; set; }
 
-        public MockControllerData(string userName, string password)
+        public UserData()
         {
-            UserName = userName;
-            Password = password;
+  
         }
     }
 }
