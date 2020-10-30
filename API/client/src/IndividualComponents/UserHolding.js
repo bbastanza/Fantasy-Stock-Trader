@@ -1,14 +1,13 @@
 import React from "react";
 
-export default function UserHolding({ data, allocatedFunds }) {
-    console.log(data);
+export default function UserHolding({ holdingData, allocatedFunds }) {
     return (
         <div className="holding-container">
             <div
                 className="user-holding row"
                 style={{ justifyContent: "center" }}
             >
-                <h1 className="col-3">{data.asset}</h1>
+                <h1 className="col-3">{holdingData.asset}</h1>
                 <table className="table table-warning col-8">
                     <thead>
                         <tr>
@@ -20,17 +19,17 @@ export default function UserHolding({ data, allocatedFunds }) {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{data.abbr}</td>
-                            <td>{parseFloat(data.amount).toFixed(4)}</td>
+                            <td>{holdingData.abbr}</td>
+                            <td>{parseFloat(holdingData.amount).toFixed(4)}</td>
                             <td>
                                 {"$" +
                                     Math.round(
-                                        parseFloat(data.value).toFixed(2)
+                                        parseFloat(holdingData.value).toFixed(2)
                                     )}
                             </td>
                             <td>
                                 {parseFloat(
-                                    (data.value / allocatedFunds) * 100
+                                    (holdingData.value / allocatedFunds) * 100
                                 ).toFixed(1) + "%"}
                             </td>
                         </tr>

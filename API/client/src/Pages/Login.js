@@ -3,14 +3,18 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import NavLink from "react-bootstrap/NavLink";
 
-import Nav from "react-bootstrap/Nav";
+export default function Login({ setIsLoggedIn }) {
+    function handleSubmit(e) {
+        e.preventDefault();
+        setIsLoggedIn(true);
+    }
 
-export default function Login() {
     return (
         <div style={{ margin: "auto" }}>
-            <h1 className="title">Login</h1>
-            <Form className="login-container">
+            <h1 className="title">Log In</h1>
+            <Form onSubmit={e => handleSubmit(e)} className="login-container">
                 <Form.Group as={Row} controlId="formBasicEmail">
                     <Form.Label column sm="3">
                         Email address
@@ -28,14 +32,14 @@ export default function Login() {
                     </Col>
                 </Form.Group>{" "}
                 <Button variant="warning" type="submit" style={{ margin: 15 }}>
-                    Login
+                    Log In
                 </Button>
                 <h6 className="text-muted" style={{ padding: "20px 0 5px" }}>
-                    No Account? Register instead.
+                    No Account? Register Now!
                 </h6>
-                <Nav.Link to="/register">
+                <NavLink to="/register">
                     <Button variant="secondary">Register</Button>
-                </Nav.Link>
+                </NavLink>
             </Form>
         </div>
     );

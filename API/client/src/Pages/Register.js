@@ -3,12 +3,17 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import Nav from "react-bootstrap/Nav";
+import NavLink from "react-bootstrap/NavLink";
 
-export default function Register() {
+export default function Register({ setIsLoggedIn }) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [matchPassword, setMatchPassword] = useState(true);
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        setIsLoggedIn(true);
+    }
 
     useEffect(() => {
         if (
@@ -24,7 +29,7 @@ export default function Register() {
     return (
         <div style={{ margin: "auto" }}>
             <h1 className="title">Register</h1>
-            <Form className="login-container">
+            <Form onSubmit={e => handleSubmit(e)} className="login-container">
                 <Form.Group as={Row} controlId="formBasicEmail">
                     <Form.Label column sm="3">
                         Email address
@@ -75,9 +80,9 @@ export default function Register() {
                     Already have an account? Login instead.
                 </h6>
 
-                <Nav.Link to="/login">
-                    <Button variant="secondary">Login</Button>
-                </Nav.Link>
+                <NavLink to="/" exact>
+                    <Button variant="secondary">Log In</Button>
+                </NavLink>
             </Form>
             {!matchPassword ? (
                 <div>
