@@ -1,28 +1,26 @@
 using API.Models;
-// using API.Services;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : Controller
+    public class StockDataController : Controller
     {
 
         private string _errorData;
 
-        public UserController()
+        public StockDataController()
         {
             _errorData = new string("new error");
         }
 
-        [Route("{userName}+{password}")]
-        public IActionResult GetMockData(string username, string password)
+        [Route("{stock}+{amount}")]
+        public IActionResult GetStockData(string stock, float amount)
         {
             try
             {
-                var mockData = new MockControllerData(username,password);
+                var mockData = new MockStockData(stock,amount);
                 return Ok(mockData);
             }
             catch
