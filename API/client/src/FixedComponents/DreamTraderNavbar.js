@@ -48,11 +48,14 @@ export default function DreamTraderNavbar({
                 <Route path="/portfolio">
                     <Portfolio allocatedFunds={allocatedFunds} />
                 </Route>
-                <Route exact path="/">
+                <Route path="/login">
                     <Login setIsLoggedIn={setIsLoggedIn} />
                 </Route>
                 <Route path="/register">
                     <Register setIsLoggedIn={setIsLoggedIn} />
+                </Route>
+                <Route path="/">
+                    <Redirect to="/login" />
                 </Route>
             </Switch>
         </Router>
