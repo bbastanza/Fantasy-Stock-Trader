@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import NavLink from "react-bootstrap/NavLink";
+import Nav from "react-bootstrap/Nav";
 
 export default function Register({ setIsLoggedIn }) {
     const [password, setPassword] = useState("");
@@ -80,15 +80,13 @@ export default function Register({ setIsLoggedIn }) {
                     Already have an account? Login instead.
                 </h6>
 
-                <NavLink to="/" exact>
+                <Nav.Link href="/login">
                     <Button variant="secondary">Log In</Button>
-                </NavLink>
+                </Nav.Link>
             </Form>
             {!matchPassword ? (
-                <div>
-                    <h5 style={{ color: "#dd5b36" }}>
-                        Passwords do not match.
-                    </h5>
+                <div className="error-in-form">
+                    <h3>Passwords do not match.</h3>
                 </div>
             ) : null}
         </div>

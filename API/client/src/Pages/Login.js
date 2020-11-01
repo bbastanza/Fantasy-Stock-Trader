@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import NavLink from "react-bootstrap/NavLink";
+import Nav from "react-bootstrap/Nav";
 
 export default function Login({ setIsLoggedIn }) {
     function handleSubmit(e) {
@@ -37,9 +37,9 @@ export default function Login({ setIsLoggedIn }) {
                 <h6 className="text-muted" style={{ padding: "20px 0 5px" }}>
                     No Account? Register Now!
                 </h6>
-                <NavLink to="/register">
+                <Nav.Link href="/register">
                     <Button variant="secondary">Register</Button>
-                </NavLink>
+                </Nav.Link>
             </Form>
         </div>
     );

@@ -9,7 +9,7 @@ export default function Purchase({ availableFunds }) {
     const [purchaseAmount, setPurchaseAmount] = useState(0);
     const [validInput, setValidInput] = useState(true);
     const [stock, setStock] = useState("Brookfield Property REIT Inc. (BPYU)");
-
+    const unavailableStyle = { backgroundColor: "#ffb3b9" };
     const numberRegex = /^[0-9]*$/;
 
     function checkFunds(e) {
@@ -71,7 +71,14 @@ export default function Purchase({ availableFunds }) {
                             <InputGroup.Prepend>
                                 <InputGroup.Text>$</InputGroup.Text>
                             </InputGroup.Prepend>
-                            <FormControl aria-label="Amount (to the nearest dollar)" />
+                            <FormControl
+                                style={
+                                    unavailableFunds > 0 || !validInput
+                                        ? unavailableStyle
+                                        : null
+                                }
+                                aria-label="Amount (to the nearest dollar)"
+                            />
                             <InputGroup.Append>
                                 <InputGroup.Text>.00</InputGroup.Text>
                             </InputGroup.Append>
@@ -94,19 +101,15 @@ export default function Purchase({ availableFunds }) {
                 </Form>
             </div>
             {unavailableFunds > 0 || !validInput ? (
-                <div className="available-funds-warning">
+                <div className="error-in-form">
                     {unavailableFunds > 0 ? (
-                        <h1 style={{ color: "#dd5b36" }}>
+                        <h3>
                             You do not have enough funds for this transaction.
                             Please reduce your purchase amount by $
                             {unavailableFunds}.
-                        </h1>
+                        </h3>
                     ) : null}
-                    {!validInput ? (
-                        <h1 style={{ color: "#dd5b36" }}>
-                            The amount must be a number.
-                        </h1>
-                    ) : null}
+                    {!validInput ? <h3>The amount must be a number.</h3> : null}
                 </div>
             ) : null}
         </div>
