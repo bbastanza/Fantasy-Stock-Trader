@@ -11,35 +11,37 @@ import Portfolio from "./../Pages/Portfolio";
 import Purchase from "./../Pages/Purchase";
 import Login from "./../Pages/Login";
 import Register from "./../Pages/Register";
+import { LoginContext } from "./../contexts/LoginContext";
 
-export default function DreamTraderNavbar({
-    availableFunds,
-    allocatedFunds,
-    isLoggedIn,
-    setIsLoggedIn,
-}) {
+export default function DreamTraderNavbar({ availableFunds, allocatedFunds }) {
     return (
         <Router>
-            {isLoggedIn ? (
-                <Navbar
-                    collapseOnSelect
-                    expand="lg"
-                    bg="warning"
-                    variant="light"
-                >
-                    <Navbar.Brand href="/">Dream Trader</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="mr-auto" />
-                        <Nav>
-                            <Nav.Link href="/purchase">Purchase</Nav.Link>
-                            <Nav.Link eventKey={2} href="/portfolio">
-                                Portfolio
-                            </Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
-            ) : null}
+            <LoginContext.Consumer>
+                {context => {
+                    return context.isLoggedIn ? (
+                        <Navbar
+                            collapseOnSelect
+                            expand="lg"
+                            bg="warning"
+                            variant="light"
+                        >
+                            <Navbar.Brand href="/">Dream Trader</Navbar.Brand>
+                            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                            <Navbar.Collapse id="responsive-navbar-nav">
+                                <Nav className="mr-auto" />
+                                <Nav>
+                                    <Nav.Link href="/purchase">
+                                        Purchase
+                                    </Nav.Link>
+                                    <Nav.Link eventKey={2} href="/portfolio">
+                                        Portfolio
+                                    </Nav.Link>
+                                </Nav>
+                            </Navbar.Collapse>
+                        </Navbar>
+                    ) : null;
+                }}
+            </LoginContext.Consumer>
 
             <Switch>
                 <Route path="/purchase">
@@ -49,10 +51,10 @@ export default function DreamTraderNavbar({
                     <Portfolio allocatedFunds={allocatedFunds} />
                 </Route>
                 <Route path="/login">
-                    <Login setIsLoggedIn={setIsLoggedIn} />
+                    <Login />
                 </Route>
                 <Route path="/register">
-                    <Register setIsLoggedIn={setIsLoggedIn} />
+                    <Register />
                 </Route>
                 <Route path="/">
                     <Redirect to="/login" />

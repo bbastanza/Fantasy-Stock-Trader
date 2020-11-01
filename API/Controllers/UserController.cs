@@ -17,11 +17,8 @@ namespace API.Controllers
 
         public UserController()
         {
-            var brian = new UserData();
-            brian.UserName = "brian";
-            brian.Password = "password";
+            var brian = new UserData(){UserName = "Brian",Password = "password"};
             Users.Add(brian);
-   
         }
 
         [Route("/getusers")]

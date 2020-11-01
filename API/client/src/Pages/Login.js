@@ -1,17 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
+import { LoginContext } from "./../contexts/LoginContext";
 
-export default function Login({ setIsLoggedIn }) {
+export default function Login() {
+    const loginContext = useContext(LoginContext);
+
     function handleSubmit(e) {
         e.preventDefault();
-        setIsLoggedIn(true);
+        loginContext.setIsLoggedIn(true);
+        sessionStorage.setItem("isLoggedIn", JSON.stringify(true));
     }
 
-    return (
+    function logOut() {
+        loginContext.setIsLoggedIn(false);
+        sessionStorage.setItem("isLoggedIn", JSON.stringify(false));
+    }
+
+    return !loginContext.isLoggedIn ? (
         <div style={{ margin: "auto" }}>
             <h1 className="title">Log In</h1>
             <Form onSubmit={e => handleSubmit(e)} className="login-container">
@@ -42,5 +51,9 @@ export default function Login({ setIsLoggedIn }) {
                 </Nav.Link>
             </Form>
         </div>
+    ) : (
+        <Button variant="secondary" style={{ margin: 40 }} onClick={logOut}>
+            Log Out
+        </Button>
     );
 }
