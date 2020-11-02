@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import Nav from "react-bootstrap/Nav";
+import { Link } from "react-router-dom";
 import { LoginContext } from "./../contexts/LoginContext";
 
 export default function Login() {
@@ -69,9 +69,9 @@ export default function Login() {
                             >
                                 No Account? Register Now!
                             </h6>
-                            <Nav.Link href="/register">
+                            <Link to="/register">
                                 <Button variant="secondary">Register</Button>
-                            </Nav.Link>
+                            </Link>
                         </Form>
                     </div>
                 ) : (

@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import Nav from "react-bootstrap/Nav";
+import { Link } from "react-router-dom";
 import { LoginContext } from "./../contexts/LoginContext";
 
 export default function Register() {
@@ -115,9 +115,9 @@ export default function Register() {
                                 Already have an account? Login instead.
                             </h6>
 
-                            <Nav.Link href="/login">
+                            <Link href="/login">
                                 <Button variant="secondary">Log In</Button>
-                            </Nav.Link>
+                            </Link>
                         </Form>
                         {!matchPassword ? (
                             <div className="error-in-form">
