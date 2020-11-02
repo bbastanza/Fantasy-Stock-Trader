@@ -37,7 +37,6 @@ export default function Register() {
     return (
         <LoginContext.Consumer>
             {context => {
-                console.log(context);
                 return !context.isLoggedIn ? (
                     <div style={{ margin: "auto" }}>
                         <h1 className="title">Register</h1>
@@ -108,6 +107,7 @@ export default function Register() {
                             >
                                 Register
                             </Button>
+
                             <h6
                                 className="text-muted"
                                 style={{ padding: "20px 0 5px" }}
@@ -115,7 +115,7 @@ export default function Register() {
                                 Already have an account? Login instead.
                             </h6>
 
-                            <Link href="/login">
+                            <Link to="/login">
                                 <Button variant="secondary">Log In</Button>
                             </Link>
                         </Form>
@@ -129,8 +129,8 @@ export default function Register() {
                     <Button
                         variant="secondary"
                         style={{ margin: 40 }}
-                        href="/login"
                         onClick={logOut}
+                        href="/login"
                     >
                         Log Out
                     </Button>

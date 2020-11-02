@@ -17,7 +17,10 @@ export default function LoginContextProvider(props) {
     );
     return (
         <LoginContext.Provider
-            value={{ isLoggedIn: isLoggedIn, setIsLoggedIn: setIsLoggedIn }}
+            value={{
+                isLoggedIn: isLoggedIn,
+                setIsLoggedIn: setIsLoggedIn,
+            }}
         >
             {props.children}
         </LoginContext.Provider>

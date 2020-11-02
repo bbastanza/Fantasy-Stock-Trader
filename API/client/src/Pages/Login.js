@@ -19,7 +19,6 @@ export default function Login() {
         loginContext.setIsLoggedIn(false);
         sessionStorage.setItem("isLoggedIn", JSON.stringify(false));
     }
-
     return (
         <LoginContext.Consumer>
             {context => {

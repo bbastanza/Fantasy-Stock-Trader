@@ -8,7 +8,7 @@ import {
 import Portfolio from "./../Pages/Portfolio";
 import Purchase from "./../Pages/Purchase";
 import Login from "./../Pages/Login";
-// import Register from "./../Pages/Register";
+import Register from "./../Pages/Register";
 
 export default function PageRouter({ availableFunds, allocatedFunds }) {
     return (
@@ -23,9 +23,9 @@ export default function PageRouter({ availableFunds, allocatedFunds }) {
                 <Route path="/login">
                     <Login />
                 </Route>
-                {/* <Route path="/register">
+                <Route path="/register">
                     <Register />
-                </Route> */}
+                </Route>
                 <Route path="/">
                     <Redirect to="/login" />
                 </Route>
