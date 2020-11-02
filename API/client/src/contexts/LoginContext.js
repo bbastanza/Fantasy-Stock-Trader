@@ -4,17 +4,12 @@ export const LoginContext = createContext();
 
 export default function LoginContextProvider(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(
-        sessionStorage.getItem("isLoggedIn") === null
+        sessionStorage.getItem("isLoggedIn") === null ||
+            sessionStorage.getItem("isLoggedIn") === false
             ? false
-            : sessionStorage.getItem("isLoggedIn")
+            : true
     );
-    console.log(
-        "From LoginContext Session Storage: " +
-            sessionStorage.getItem("isLoggedIn")
-    );
-    console.log(
-        "From LoginContext State: " + sessionStorage.getItem("isLoggedIn")
-    );
+
     return (
         <LoginContext.Provider
             value={{
