@@ -18,6 +18,14 @@ export default function DreamTraderNavbar({ availableFunds, allocatedFunds }) {
         <Router>
             <LoginContext.Consumer>
                 {context => {
+                    console.log(
+                        "From DreamTraderNavbar.js Context: " +
+                            context.isLoggedIn
+                    );
+                    console.log(
+                        "From DreamTraderNavbar.js Session Storage: " +
+                            sessionStorage.getItem("isLoggedIn")
+                    );
                     return context.isLoggedIn ? (
                         <Navbar
                             collapseOnSelect
