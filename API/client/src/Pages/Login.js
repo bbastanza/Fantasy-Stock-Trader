@@ -7,16 +7,16 @@ import Nav from "react-bootstrap/Nav";
 import { LoginContext } from "./../contexts/LoginContext";
 
 export default function Login() {
-    // const loginContext = useContext(LoginContext);
+    const loginContext = useContext(LoginContext);
 
     function handleSubmit(e) {
         e.preventDefault();
-        // loginContext.setIsLoggedIn(true);
+        loginContext.setIsLoggedIn(true);
         sessionStorage.setItem("isLoggedIn", JSON.stringify(true));
     }
 
     function logOut() {
-        // loginContext.setIsLoggedIn(false);
+        loginContext.setIsLoggedIn(false);
         sessionStorage.setItem("isLoggedIn", JSON.stringify(false));
     }
 

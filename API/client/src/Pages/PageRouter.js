@@ -9,30 +9,27 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
-import { LoginContext } from "./../contexts/LoginContext";
 
 export default function PageRouter({ availableFunds, allocatedFunds }) {
     return (
-        <LoginContext.Consumer>
-            <Router>
-                <Switch>
-                    <Route path="/purchase">
-                        <Purchase availableFunds={availableFunds} />
-                    </Route>
-                    <Route path="/portfolio">
-                        <Portfolio allocatedFunds={allocatedFunds} />
-                    </Route>
-                    <Route path="/login">
-                        <Login />
-                    </Route>
-                    <Route path="/register">
-                        <Register />
-                    </Route>
-                    <Route path="/">
-                        <Redirect to="/login" />
-                    </Route>
-                </Switch>
-            </Router>
-        </LoginContext.Consumer>
+        <Router>
+            <Switch>
+                <Route exact path="/purchase">
+                    <Purchase availableFunds={availableFunds} />
+                </Route>
+                <Route exact path="/portfolio">
+                    <Portfolio allocatedFunds={allocatedFunds} />
+                </Route>
+                <Route exact path="/login">
+                    <Login />
+                </Route>
+                <Route exact path="/register">
+                    <Register />
+                </Route>
+                <Route exact path="/">
+                    <Redirect to="/login" />
+                </Route>
+            </Switch>
+        </Router>
     );
 }

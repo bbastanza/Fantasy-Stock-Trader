@@ -13,11 +13,11 @@ function App() {
         <div className="App">
             <LoginContextProvider>
                 <DreamTraderNavbar />
+                <PageRouter
+                    availableFunds={availableFunds}
+                    allocatedFunds={allocatedFunds}
+                />
             </LoginContextProvider>
-            <PageRouter
-                availableFunds={availableFunds}
-                allocatedFunds={allocatedFunds}
-            />
         </div>
     );
 }
