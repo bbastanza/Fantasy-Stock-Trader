@@ -14,12 +14,12 @@ export default function Register() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        loginContext.setIsLoggedIn(true);
+        // loginContext.setIsLoggedIn(true);
         sessionStorage.setItem("isLoggedIn", JSON.stringify(true));
     }
 
     function logOut() {
-        loginContext.setIsLoggedIn(false);
+        // loginContext.setIsLoggedIn(false);
         sessionStorage.setItem("isLoggedIn", JSON.stringify(false));
     }
 
@@ -34,7 +34,7 @@ export default function Register() {
 
     const nonMatchingStyle = { backgroundColor: "#ffb3b9" };
 
-    return !loginContext.isLoggedIn ? (
+    return isLoggedIn ? (
         <div style={{ margin: "auto" }}>
             <h1 className="title">Register</h1>
             <Form onSubmit={e => handleSubmit(e)} className="login-container">

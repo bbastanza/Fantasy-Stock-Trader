@@ -3,6 +3,7 @@ import DreamTraderNavbar from "./FixedComponents/DreamTraderNavbar";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import LoginContextProvider from "./contexts/LoginContext";
+import PageRouter from "./FixedComponents/PageRouter";
 
 function App() {
     const [availableFunds, setAvailableFunds] = useState(10000);
@@ -11,11 +12,12 @@ function App() {
     return (
         <div className="App">
             <LoginContextProvider>
-                <DreamTraderNavbar
-                    availableFunds={availableFunds}
-                    allocatedFunds={allocatedFunds}
-                />
+                <DreamTraderNavbar />
             </LoginContextProvider>
+            <PageRouter
+                availableFunds={availableFunds}
+                allocatedFunds={allocatedFunds}
+            />
         </div>
     );
 }
