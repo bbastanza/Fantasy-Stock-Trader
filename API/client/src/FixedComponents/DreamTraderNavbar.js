@@ -2,12 +2,6 @@ import React from "react";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { LoginContext } from "./../contexts/LoginContext";
-// import {
-//     BrowserRouter as Router,
-//     Switch,
-//     Route,
-//     Redirect,
-// } from "react-router-dom";
 
 export default function DreamTraderNavbar() {
     return (

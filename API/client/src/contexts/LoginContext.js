@@ -4,10 +4,7 @@ export const LoginContext = createContext();
 
 export default function LoginContextProvider(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(
-        JSON.parse(sessionStorage.getItem("isLoggedIn")) === null ||
-            JSON.parse(sessionStorage.getItem("isLoggedIn")) === false
-            ? false
-            : true
+        !JSON.parse(sessionStorage.getItem("isLoggedIn")) ? false : true
     );
 
     return (
