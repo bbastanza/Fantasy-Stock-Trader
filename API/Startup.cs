@@ -32,7 +32,7 @@ namespace API
             {
                 config.RootPath = "client/build";
             });
-            services.AddScoped<IIexApiHelper, IexApiHelper>();
+            services.AddScoped<IApiHelper, IApiHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
