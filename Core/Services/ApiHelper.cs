@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace API.Services
+namespace Core.Services
 {
     public interface IApiHelper
     {

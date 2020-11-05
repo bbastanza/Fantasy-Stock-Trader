@@ -1,4 +1,4 @@
-using API.Models;
+// using API.Models;
 // using API.Services;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
@@ -9,14 +9,10 @@ namespace API.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-
-        private string _errorData;
-        private List<UserData> Users = new List<UserData>();
-
+        
         public UserController()
         {
-            var brian = new UserData(){UserName = "Brian",Password = "password"};
-            Users.Add(brian);
+            
         }
 
         [Route("/getusers")]
@@ -24,18 +20,18 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(Users);
+                return Ok(new object());
             }
             catch
             {
-                return StatusCode(500, _errorData);
+                return StatusCode(500, new object());
             }
         }
 
         [Route("/adduser")]
-        public void AddUser(UserData value)
+        public void AddUser(string value)
         {
-            Users.Add(value);
+         
         }
     }
 }

@@ -1,6 +1,6 @@
 using System;
-using API.Models;
-using API.Services;
+using Core.Models;
+using Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -24,9 +24,7 @@ namespace API.Controllers
         {
             try
             {
-                var response = _jsonStockService.GetStockByName(stock);
-                // Console.WriteLine(response);
-                return Ok(response);
+                return Ok(_jsonStockService.GetStockByName(stock));
             }
             catch
             {

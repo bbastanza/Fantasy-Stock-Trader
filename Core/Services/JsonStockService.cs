@@ -3,10 +3,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Core.Models;
 using Microsoft.Extensions.Configuration;
+
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
-namespace API.Services
+namespace Core.Services
 {
     public interface IJsonStockService
     {
@@ -29,10 +30,7 @@ namespace API.Services
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
 
             var stockResponse = GetDataFromIex(url);
-            Console.WriteLine("not serialized => \n"+stockResponse.Result);
-            Console.WriteLine("");
             var serializedResponse = JsonSerializer.Deserialize<StockModel>(stockResponse.Result);
-            Console.WriteLine("serialized => \n" + serializedResponse);
             return serializedResponse;
         }
 
