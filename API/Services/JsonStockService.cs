@@ -1,12 +1,12 @@
-using Core.Models;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Core.Models;
+using Microsoft.Extensions.Configuration;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
-namespace Core.Services
+namespace API.Services
 {
     public interface IJsonStockService
     {
@@ -14,21 +14,26 @@ namespace Core.Services
     }
     public class JsonStockService : IJsonStockService
     {
+        private readonly string _apiKey;
         private readonly HttpClient _client;
 
-        public JsonStockService(IApiHelper apiHelper)
+        public JsonStockService(IApiHelper apiHelper, IConfiguration configuration)
         {
+            _apiKey = configuration["iexKeys:TestKey"];
             _client = apiHelper.ApiClient;
         }
 
         public StockModel GetStockByName(string stockName)
         {
-
             var url =
-                // need to insert token in token=<TOKEN>
-                $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token=";
+                $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
+
             var stockResponse = GetDataFromIex(url);
-            return new StockModel();
+            Console.WriteLine("not serialized => \n"+stockResponse.Result);
+            Console.WriteLine("");
+            var serializedResponse = JsonSerializer.Deserialize<StockModel>(stockResponse.Result);
+            Console.WriteLine("serialized => \n" + serializedResponse);
+            return serializedResponse;
         }
 
         private async Task<string> GetDataFromIex(string url)

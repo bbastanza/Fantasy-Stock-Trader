@@ -1,8 +1,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Microsoft.Extensions.Configuration;
 
-namespace Core.Services
+namespace API.Services
 {
     public interface IApiHelper
     {
@@ -15,13 +14,10 @@ namespace Core.Services
     {
         public HttpClient ApiClient { get; }
 
-        public ApiHelper(IConfiguration configuration)
+        public ApiHelper()
         {
-            // need to put keys in the appsetting.Development.json file
-            var iexToken = configuration["iex_Keys:SandBoxKey"];
             ApiClient = new HttpClient();
             ApiClient.DefaultRequestHeaders.Accept.Clear();
-            ApiClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", iexToken);
             ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
     }
