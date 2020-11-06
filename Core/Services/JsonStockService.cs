@@ -30,8 +30,8 @@ namespace Core.Services
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
 
             var stockResponse = GetDataFromIex(url);
-            var serializedResponse = JsonSerializer.Deserialize<StockModel>(stockResponse.Result);
-            return serializedResponse;
+           
+            return JsonSerializer.Deserialize<StockModel>(stockResponse.Result);
         }
 
         private async Task<string> GetDataFromIex(string url)
@@ -43,7 +43,5 @@ namespace Core.Services
             
            throw new Exception("error in JsonStockService");
         }
-        
-        
     }
 }

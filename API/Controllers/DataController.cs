@@ -11,12 +11,12 @@ namespace API.Controllers
     {
         private readonly IJsonStockService _jsonStockService;
 
-        private string _errorData;
+        private string _errorData = "new error";
 
         public StockDataController(IJsonStockService jsonStockService)
         {
             _jsonStockService = jsonStockService;
-            _errorData = new string("new error");
+           
         }
 
         [Route("{stock}")]
