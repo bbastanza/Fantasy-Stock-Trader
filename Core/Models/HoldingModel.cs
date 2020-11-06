@@ -1,10 +1,34 @@
+using System.Text.Json.Serialization;
+
 namespace Core.Models
 {
-    public class HoldingModel
+    public class HoldingModel : StockModel
     {
-        public string Symbol { get; set; } = "TSLA";
-        public string CompanyName { get; set; } = "Tesla";
-        public double ShareAmount { get; set; } = 1.23;
-        public double Value { get; set; } = 555.32;
+        private double _totalShares;
+
+        public HoldingModel()
+        {
+            _totalShares += PurchaseShares;
+        }
+        
+        [JsonPropertyName("purchaseAmount")] 
+        public double PurchaseAmount { get; set; }
+
+        [JsonPropertyName("purchaseShareAmount")]
+        public double PurchaseShares => PurchaseAmount / IexRealtimePrice;
+
+        [JsonPropertyName("value")] 
+        public double Value => _totalShares * IexRealtimePrice;
+
+        public double TotalShares
+        {
+            get => _totalShares;
+            set => _totalShares = value;
+        }
+
+        // public void AddPurchaseToTotal()
+        // {
+        //     _totalShares += PurchaseShares;
+        // }
     }
 }

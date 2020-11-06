@@ -15,7 +15,7 @@ function App() {
         try {
             const response = await axios.get(`/users/${userName}`);
             console.log(response);
-            allocateResposeData(response.data);
+            allocateResponseData(response.data);
         } catch {
             // error handling
         }
@@ -26,7 +26,7 @@ function App() {
         setUserHoldings(responseData.holdings);
 
         let allocatedFunds = 0;
-        for (const holding of response.data.holdings) {
+        for (const holding of responseData.holdings) {
             allocatedFunds += holding.value;
         }
         setAllocatedFunds(allocatedFunds);

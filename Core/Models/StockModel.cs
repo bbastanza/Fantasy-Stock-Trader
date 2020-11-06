@@ -5,15 +5,17 @@ namespace Core.Models
 {
 
     public class StockModel    {
+        
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; }
         
         [JsonPropertyName("companyName")]
         public string CompanyName { get; set; }
-        
-        [JsonPropertyName("iexRealtimePrice")]
-        public float IexRealtimePrice { get; set; }
-        
+
+        [JsonPropertyName("iexRealtimePrice")] 
+        public double IexRealtimePrice { get; set; } = 36.78;
+
+
         // [JsonPropertyName("primaryExchange")]
         // public string PrimaryExchange { get; set; }
         // [JsonPropertyName("calculationPrice")]

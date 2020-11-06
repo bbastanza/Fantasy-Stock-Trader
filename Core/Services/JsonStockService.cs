@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Core.Models;
 using Microsoft.Extensions.Configuration;
-
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
