@@ -16,7 +16,6 @@ namespace API.Controllers
         public StockDataController(IJsonStockService jsonStockService)
         {
             _jsonStockService = jsonStockService;
-           
         }
 
         [Route("{stock}")]

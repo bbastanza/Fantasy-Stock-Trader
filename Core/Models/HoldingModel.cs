@@ -1,34 +1,39 @@
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using Core.Services;
+
 
 namespace Core.Models
 {
-    public class HoldingModel : StockModel
-    {
-        private double _totalShares;
+    public class HoldingModel{
+        
+        private StockModel _stockModel;
+        private double _totalShares = 200;
+
 
         public HoldingModel()
         {
-            _totalShares += PurchaseShares;
+            _stockModel = new StockModel();
         }
         
-        [JsonPropertyName("purchaseAmount")] 
-        public double PurchaseAmount { get; set; }
+        [JsonPropertyName("value")]
+        public double Value { get; set; }
+        [JsonPropertyName("totalShares")]
+        public double TotalShares{ get; set; }
 
-        [JsonPropertyName("purchaseShareAmount")]
-        public double PurchaseShares => PurchaseAmount / IexRealtimePrice;
-
-        [JsonPropertyName("value")] 
-        public double Value => _totalShares * IexRealtimePrice;
-
-        public double TotalShares
+        public void PurchaseShares(double purchaseAmount,double currentPrice)
         {
-            get => _totalShares;
-            set => _totalShares = value;
+            var shareAmount = purchaseAmount / currentPrice;
+            _totalShares += shareAmount;
+            Value = _totalShares * currentPrice;
         }
 
-        // public void AddPurchaseToTotal()
-        // {
-        //     _totalShares += PurchaseShares;
-        // }
+        public void SellShares(double saleAmount, double currentPrice)
+        {
+            var shareAmount = saleAmount / currentPrice;
+            _totalShares -= shareAmount;
+            Value = _totalShares * currentPrice;
+        }
     }
 }
