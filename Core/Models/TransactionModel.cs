@@ -7,8 +7,10 @@ namespace Core.Models
     {
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; }
+        [JsonPropertyName("sellAll")]
+        public bool SellAll { get; set; }
         [JsonPropertyName("amount")]
-        public double Amount { get; set; }
+        public float Amount { get; set; }
         [JsonPropertyName("userName")]
         public String UserName { get; set; }            
     }
