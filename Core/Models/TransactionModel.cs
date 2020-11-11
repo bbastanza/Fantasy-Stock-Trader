@@ -10,7 +10,7 @@ namespace Core.Models
         [JsonPropertyName("sellAll")]
         public bool SellAll { get; set; }
         [JsonPropertyName("amount")]
-        public float Amount { get; set; }
+        public double Amount { get; set; }
         [JsonPropertyName("userName")]
         public String UserName { get; set; }            
     }

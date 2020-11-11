@@ -1,6 +1,3 @@
-// using API.Models;
-// using API.Services;
-using System.Collections.Generic;
 using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -17,11 +14,10 @@ namespace API.Controllers
             _errorData =  "new error";
         }
         
-        
         /// <summary>
         /// Get user information from the database minus the password
         /// </summary>
-        /// <param name="user">User to get data back for</param>
+        /// <param name="userName">string userName to get data back for</param>
         /// <returns>IActionResult with UserModel if successful, 500 response if unsuccessful</returns>
         [Route("getUser/{userName}")]
         public IActionResult GetUser(string userName)
@@ -34,6 +30,7 @@ namespace API.Controllers
             }
             catch
             {
+                _errorData = "error while fetching user data";
                 return StatusCode(500, _errorData);
             }
         }
@@ -42,8 +39,7 @@ namespace API.Controllers
         /// Post Request endpoint to add a new user to the database.
         /// </summary>
         /// <param name="newUser">Json object with a userName and password property</param>
-        /// <returns></returns>
-
+        /// <returns>IActionResult with status message</returns>
         [Route("addUser")]
         public IActionResult AddUser(UserModel newUser)
         {
@@ -58,15 +54,13 @@ namespace API.Controllers
                 _errorData = "There was an error while adding a new user";
                 return StatusCode(500, _errorData);
             }
-
         }
         
         /// <summary>
         /// Post request to delete a user from the database
         /// </summary>
         /// <param name="user">Json object including the userName and password to be deleted</param>
-        /// <returns></returns>
-        
+        /// <returns>IActionResult with status message</returns>
         [Route("deleteUser")]
         public IActionResult DeleteUser(UserModel user)
         {
@@ -79,10 +73,49 @@ namespace API.Controllers
             }
             catch
             {
-                _errorData = "There was an error while adding deleting user";
+                _errorData = "There was an error while deleting user";
                 return StatusCode(500, _errorData);
             }
-
+        }
+        
+        /// <summary>
+        /// Endpoint to log in a user
+        /// </summary>
+        /// <param name="user">Json object with user model to log in</param>
+        /// <returns>IActionResult with status message</returns>
+        [Route("login")]
+        public IActionResult LogInUser(UserModel user)
+        {
+            try
+            {
+                // check to see if user is in the database ()=> if true check to see if user.password == databaseuser.password
+                return Ok(JsonSerializer.Serialize(user.UserName) + " is now logged in");
+            }
+            catch
+            {
+                _errorData = "Login Error";
+                return StatusCode(500, _errorData);
+            }
+        }
+        
+        /// <summary>
+        /// Endpoint to logout a user
+        /// </summary>
+        /// <param name="userName">string userName to log out</param>
+        /// <returns>IActionResult with status message</returns>
+        [Route("logout/{userName}")]
+        public IActionResult LogOutUser(string userName)
+        {
+            try
+            {
+                // check to see if user is in the database ()=> logout user
+                return Ok(userName + " has logged out");
+            }
+            catch
+            {
+                _errorData = "Log Out Error";
+                return StatusCode(500, _errorData);
+            }
         }
     }
 }

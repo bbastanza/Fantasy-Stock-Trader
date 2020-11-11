@@ -13,48 +13,47 @@ namespace Core.Models
     public class HoldingModel{
         
         [JsonPropertyName("stockModel")]
-        private StockModel _stockModel;
+        public StockModel StockModel;
   
-        public HoldingModel()
+        public HoldingModel(string symbol)
         {
-            _stockModel = new StockModel();
+            StockModel = new StockModel(){Symbol = symbol};
         }
         
         [JsonPropertyName("value")] 
-        private double Value { get; set; }
+        public double Value { get; set; }
 
         [JsonPropertyName("totalShares")] 
-        private double TotalShares { get; set; } = 200;
+        public double TotalShares { get; set; } = 200;
 
-        public void PurchaseShares(float purchaseAmount,double currentPrice)
+
+        public string GetSymbol()
         {
-            var purchaseShareAmount = purchaseAmount / currentPrice;
-            // saves price that it was last purchase at
-            _stockModel.IexRealtimePrice = currentPrice;
-            TotalShares += purchaseShareAmount;
-            Value = TotalShares * currentPrice;
+            return StockModel.Symbol;
+        }
+        
+        public double SellAll(double currentPrice)
+        {
+            var totalShares = TotalShares;
+            TotalShares = 0;
+            return totalShares * currentPrice;
         }
 
-        public void SellShares(float saleAmount, double currentPrice, bool sellAll = false)
+        public void Sell(double sellShareAmount)
         {
-            if (sellAll)
-            {
-                
-            }
-      
-            var sellShareAmount = saleAmount / currentPrice;
-            _stockModel.IexRealtimePrice = currentPrice;
             TotalShares -= sellShareAmount;
-            Value = TotalShares * currentPrice;
         }
 
-        public string ReadHolding()
+        public void Purchase(double shareAmount)
         {
-            return JsonSerializer.Serialize($"Value: {Value}," +
-                                            $" TotalShares: {TotalShares}," +
-                                            $" Symbol: {_stockModel.Symbol}," +
-                                            $" CompanyName: {_stockModel.CompanyName}," +
-                                            $" Price: {_stockModel.IexRealtimePrice}");
+            TotalShares += shareAmount;
         }
+
+        public double GetValue(double currentValue)
+        {
+            Value = TotalShares * currentValue;
+            return Value;
+        }
+
     }
 }

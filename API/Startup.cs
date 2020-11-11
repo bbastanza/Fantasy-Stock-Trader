@@ -33,7 +33,7 @@ namespace API
                 config.RootPath = "client/build";
             });
             services.AddScoped<IApiHelper, ApiHelper>();
-            services.AddScoped<IJsonStockService, JsonStockService>();
+            services.AddScoped<IIexFetchService, IexFetchService>();
 
         }
 

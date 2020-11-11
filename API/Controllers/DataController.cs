@@ -9,13 +9,12 @@ namespace API.Controllers
     [Route("[controller]")]
     public class StockDataController : Controller
     {
-        private readonly IJsonStockService _jsonStockService;
+        private readonly IIexFetchService _iexFetchService;
+        private string _errorData = "There was an error fetching data from iex";
 
-        private string _errorData = "new error";
-
-        public StockDataController(IJsonStockService jsonStockService)
+        public StockDataController(IIexFetchService iexFetchService)
         {
-            _jsonStockService = jsonStockService;
+            _iexFetchService = iexFetchService;
         }
 
         [Route("{stock}")]
@@ -23,7 +22,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(_jsonStockService.GetStockByName(stock));
+                return Ok(_iexFetchService.GetStockByName(stock));
             }
             catch
             {

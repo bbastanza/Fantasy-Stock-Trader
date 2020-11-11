@@ -8,16 +8,16 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Services
 {
-    public interface IJsonStockService
+    public interface IIexFetchService
     {
         StockModel GetStockByName(string stockName);
     }
-    public class JsonStockService : IJsonStockService
+    public class IexFetchService : IIexFetchService
     {
         private readonly string _apiKey;
         private readonly HttpClient _client;
 
-        public JsonStockService(IApiHelper apiHelper, IConfiguration configuration)
+        public IexFetchService(IApiHelper apiHelper, IConfiguration configuration)
         {
             _apiKey = configuration["iexKeys:TestKey"];
             _client = apiHelper.ApiClient;
