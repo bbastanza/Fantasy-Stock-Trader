@@ -22,7 +22,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(_iexFetchService.GetStockByName(stock));
+                return Ok(_iexFetchService.GetStockBySymbol(stock));
             }
             catch
             {

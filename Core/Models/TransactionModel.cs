@@ -7,6 +7,8 @@ namespace Core.Models
     {
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; }
+        [JsonPropertyName("companyName")]
+        public string CompanyName { get; set; }
         [JsonPropertyName("sellAll")]
         public bool SellAll { get; set; }
         [JsonPropertyName("amount")]

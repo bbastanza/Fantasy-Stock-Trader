@@ -3,40 +3,36 @@ using System.ComponentModel.Design;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using JsonSerializer = System.Text.Json.JsonSerializer;
-using Core.Services;
-using Newtonsoft.Json;
+
 
 
 namespace Core.Models
 {
     public class HoldingModel{
         
-        [JsonPropertyName("stockModel")]
-        public StockModel StockModel;
-  
-        public HoldingModel(string symbol)
+        public HoldingModel(TransactionModel transactionModel)
         {
-            StockModel = new StockModel(){Symbol = symbol};
+            Symbol = transactionModel.Symbol;
+            CompanyName = transactionModel.CompanyName;
         }
+        
+        [JsonPropertyName("symbol")] 
+        public string Symbol { get; set; }
+        
+        [JsonPropertyName("companyName")] 
+        public string CompanyName { get; set; }
         
         [JsonPropertyName("value")] 
         public double Value { get; set; }
 
         [JsonPropertyName("totalShares")] 
-        public double TotalShares { get; set; } = 200;
+        public double TotalShares { get; set; }
 
-
-        public string GetSymbol()
-        {
-            return StockModel.Symbol;
-        }
-        
         public double SellAll(double currentPrice)
         {
-            var totalShares = TotalShares;
+            var sharedToSell = TotalShares;
             TotalShares = 0;
-            return totalShares * currentPrice;
+            return sharedToSell * currentPrice;
         }
 
         public void Sell(double sellShareAmount)
@@ -49,10 +45,9 @@ namespace Core.Models
             TotalShares += shareAmount;
         }
 
-        public double GetValue(double currentValue)
+        public void SetValue(double currentValue)
         {
             Value = TotalShares * currentValue;
-            return Value;
         }
 
     }

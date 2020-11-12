@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Core.Models;
 using Core.Services;
+using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -27,10 +29,15 @@ namespace API.Controllers
             {
                 try
                 {
-                    var iexData = _iexFetchService.GetStockByName(transactionModel.Symbol);
+                    var iexData = _iexFetchService.GetStockBySymbol(transactionModel.Symbol);
                     // instead of new UserModel() should look up transactionModel.userName from the DB
-                    var user = new UserModel();
+                    
+                    // i think this might work, but it doesn't work yet because really I wont be creating a new user from here
+                    // var user = new UserModel(new UserModel(){UserName = "Brian", Password = "password"});
+                    var user = new UserModel("brian", "password");
+                    var userInfrastructure = new TransactionInfrastructure(user);
                     user.SellShares(transactionModel,iexData.IexRealtimePrice);
+                    user.SetAllocatedDollars(userInfrastructure.GetUserSymbols());
                     return Ok("Sale Valid " + transactionModel.UserName + " UserState " + JsonSerializer.Serialize(user));
                 }
                 catch
@@ -49,12 +56,14 @@ namespace API.Controllers
             {
                 try
                 {
-                    var iexData = _iexFetchService.GetStockByName(transactionModel.Symbol);
+       
+                    var iexData = _iexFetchService.GetStockBySymbol(transactionModel.Symbol);
                     // instead of new UserModel() should look up transactionModel.userName from the DB
-                    var user = new UserModel();
-                    // instead of Holdings[0] should for transactionModle.symbol in the user.Holdings //if symbol doesnt exist create a new holding
+                    var user = new UserModel("Sammy","passk");
+                    var userInfrastructure = new TransactionInfrastructure(user);
                     user.PurchaseShares(transactionModel, iexData.IexRealtimePrice);
-                    return Ok("Purchase Valid "  + JsonSerializer.Serialize(transactionModel.UserName) + " HoldingState: " + user.ReadHolding(transactionModel.Symbol));
+                    user.SetAllocatedDollars(userInfrastructure.GetUserSymbols());
+                    return Ok("Purchase Valid " + transactionModel.UserName + " UserState " + JsonSerializer.Serialize(user));
                 }
                 catch
                 {
@@ -62,5 +71,10 @@ namespace API.Controllers
                     return StatusCode(500, _errorData);
                 }
             }
-    }
+
+
+
+
+
+        }
 }

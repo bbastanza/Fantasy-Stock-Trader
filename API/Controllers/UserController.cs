@@ -1,4 +1,5 @@
 using Core.Models;
+using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -26,7 +27,10 @@ namespace API.Controllers
             {
                 // check to see ()=> if userName exists in the database as a UserModel.userName ()=> if not return StatusCode(500, "error user does not exist")
                 // else return UserModel minus the password
-                return Ok(JsonSerializer.Serialize(new UserModel(){UserName = userName}));
+                var currentUser = new UserModel(userName, "Password");
+                var userInfrastructure = new TransactionInfrastructure(currentUser);
+                currentUser.SetAllocatedDollars(userInfrastructure.GetUserSymbols());
+                return Ok(JsonSerializer.Serialize(currentUser));
             }
             catch
             {
@@ -47,7 +51,7 @@ namespace API.Controllers
             {
                 // check to see ()=> if newUser.userName exists in the database => if true return "error user already in database"
                 // else ()=> add newUser(userModel to database) ()=> return valid response
-                return Ok("New User Added " + JsonSerializer.Serialize(newUser));
+                return Ok("New User Added " + JsonSerializer.Serialize(new UserModel(newUser.UserName,newUser.Password)));
             }
             catch
             {
@@ -57,7 +61,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// Post request to delete a user from the database
+        /// Delete request to delete a user from the database
         /// </summary>
         /// <param name="user">Json object including the userName and password to be deleted</param>
         /// <returns>IActionResult with status message</returns>
@@ -69,7 +73,7 @@ namespace API.Controllers
                 // check to see ()=> user.userName != in the database => if true return StatusCode(500, "error user does not exist")
                 // else ()=> if password == UserModel.password
                 //     delete user from the database ()=> return valid response
-                return Ok("deleted user " + JsonSerializer.Serialize(user));
+                return Ok("deleted user " + JsonSerializer.Serialize(new UserModel(user.UserName,user.Password)));
             }
             catch
             {

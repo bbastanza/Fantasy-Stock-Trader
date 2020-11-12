@@ -10,7 +10,7 @@ namespace Core.Services
 {
     public interface IIexFetchService
     {
-        StockModel GetStockByName(string stockName);
+        IexStockModel GetStockBySymbol(string stockName);
     }
     public class IexFetchService : IIexFetchService
     {
@@ -23,14 +23,14 @@ namespace Core.Services
             _client = apiHelper.ApiClient;
         }
 
-        public StockModel GetStockByName(string stockName)
+        public IexStockModel GetStockBySymbol(string stockName)
         {
             var url =
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
 
             var stockResponse = GetDataFromIex(url);
            
-            return JsonSerializer.Deserialize<StockModel>(stockResponse.Result);
+            return JsonSerializer.Deserialize<IexStockModel>(stockResponse.Result);
         }
 
         private async Task<string> GetDataFromIex(string url)

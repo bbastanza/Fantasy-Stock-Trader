@@ -4,17 +4,19 @@ using Newtonsoft.Json;
 namespace Core.Models
 {
 
-    public class StockModel
+    public class IexStockModel
     {
 
         [JsonPropertyName("symbol")] 
-        public string Symbol { get; set; } = "TSLA";
-
+        public string Symbol { get; set; }
+        
         [JsonPropertyName("companyName")] 
-        public string CompanyName { get; set; } = "Tesla";
-
+        public string CompanyName { get; set; }
+        
         [JsonPropertyName("iexRealtimePrice")] 
-        public double IexRealtimePrice { get; set; } = 36.78;
+        public double IexRealtimePrice { get; set; }
+
+
 
 
         // [JsonPropertyName("primaryExchange")]

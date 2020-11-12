@@ -6,6 +6,17 @@ namespace Core.Models
 {
     public class UserModel
     {
+
+        // public UserModel(UserModel userModel)
+        // ^ this may work, but not yet
+        public UserModel(string userName, string password)
+        {
+            // UserName = userModel.UserName;
+            // Password = userModel.Password;
+            UserName = userName;
+            Password = password;
+        }
+        
         [JsonPropertyName("userName")]
         public string UserName { get; set; } 
         [JsonPropertyName("password")]
@@ -15,20 +26,20 @@ namespace Core.Models
         [JsonPropertyName("allocatedDollars")]
         public double AllocatedDollars { get; set; }
         [JsonPropertyName("holdings")]
-        public List<HoldingModel> Holdings { get; set; } = new List<HoldingModel>(){new HoldingModel("TSAL")};
+        public List<HoldingModel> Holdings { get; set; } = new List<HoldingModel>();
         
         public void PurchaseShares(TransactionModel transactionModel,double currentPrice)
         {
             UnallocatedDollars -= transactionModel.Amount;
-            var currentHolding = CheckExistingHolding(transactionModel.Symbol);
+            var currentHolding = CheckExistingHolding(transactionModel);
             var purchaseShareAmount = transactionModel.Amount / currentPrice;
             currentHolding.Purchase(purchaseShareAmount);
-
+            currentHolding.SetValue(currentPrice);
         }
 
         public void SellShares(TransactionModel transactionModel, double currentPrice)
         {
-            var currentHolding = CheckExistingHolding(transactionModel.Symbol);
+            var currentHolding = CheckExistingHolding(transactionModel);
             if (transactionModel.SellAll)
             {
                 var saleValue = currentHolding.SellAll(currentPrice);
@@ -41,28 +52,28 @@ namespace Core.Models
                 currentHolding.Sell(sellShareAmount);
                 UnallocatedDollars += transactionModel.Amount;
             }
-
+            currentHolding.SetValue(currentPrice);
         }
         public string ReadHolding(string symbol)
         {
             foreach (var holding in Holdings)
             {
-                if (holding.GetSymbol() == symbol)
+                if (holding.Symbol == symbol)
                 {
                     return JsonSerializer.Serialize(holding);
                 }
             }
-            return JsonSerializer.Serialize(new HoldingModel("null holding"));
+            return "Holding does not exist for this user";
         }
 
-        private HoldingModel CheckExistingHolding(string symbol)
+        private HoldingModel CheckExistingHolding(TransactionModel transactionModel)
         {
-            HoldingModel currentHolding = new HoldingModel(symbol);
+            HoldingModel currentHolding = new HoldingModel(transactionModel);
             while (true)
             {
                 foreach (var holding in Holdings)
                 {
-                    if (symbol == holding.GetSymbol())
+                    if (transactionModel.Symbol == holding.Symbol)
                         currentHolding = holding;
                     break;
                 }
@@ -72,9 +83,23 @@ namespace Core.Models
             return currentHolding;
         }
 
-        public void SetAllocatedDollars()
+        public void SetAllocatedDollars(List<string> symbols)
         {
-            
+            double totalHoldingsValue = 0;
+            foreach (var symbol in symbols)
+            {
+                foreach (var holding in Holdings)
+                {
+                    if (symbol == holding.Symbol)
+                    {
+                        totalHoldingsValue += holding.Value;
+                    }
+                }
+            }
+
+            AllocatedDollars = totalHoldingsValue;
         }
+        
+ 
     }
 }
