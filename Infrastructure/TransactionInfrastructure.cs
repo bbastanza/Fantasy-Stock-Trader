@@ -10,15 +10,15 @@ namespace Infrastructure
         public TransactionInfrastructure(UserModel userModel)
         {
             _userModel = userModel;
-        }
-        public List<string> GetUserSymbols()
-        {
             var symbolList = new List<string>();
             foreach (var holding in _userModel.Holdings)
             {
                 symbolList.Add(holding.Symbol);
             }
-            return symbolList;
+
+            SymbolList = symbolList;
         }
+
+        public List<string> SymbolList { get; set; }
     }
 }

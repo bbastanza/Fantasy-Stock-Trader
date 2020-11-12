@@ -35,9 +35,9 @@ namespace API.Controllers
                     // i think this might work, but it doesn't work yet because really I wont be creating a new user from here
                     // var user = new UserModel(new UserModel(){UserName = "Brian", Password = "password"});
                     var user = new UserModel("brian", "password");
-                    var userInfrastructure = new TransactionInfrastructure(user);
                     user.SellShares(transactionModel,iexData.IexRealtimePrice);
-                    user.SetAllocatedDollars(userInfrastructure.GetUserSymbols());
+                    var userInfrastructure = new TransactionInfrastructure(user);
+                    user.SetAllocatedDollars(userInfrastructure.SymbolList);
                     return Ok("Sale Valid " + transactionModel.UserName + " UserState " + JsonSerializer.Serialize(user));
                 }
                 catch
@@ -60,9 +60,9 @@ namespace API.Controllers
                     var iexData = _iexFetchService.GetStockBySymbol(transactionModel.Symbol);
                     // instead of new UserModel() should look up transactionModel.userName from the DB
                     var user = new UserModel("Sammy","passk");
-                    var userInfrastructure = new TransactionInfrastructure(user);
                     user.PurchaseShares(transactionModel, iexData.IexRealtimePrice);
-                    user.SetAllocatedDollars(userInfrastructure.GetUserSymbols());
+                    var userInfrastructure = new TransactionInfrastructure(user);
+                    user.SetAllocatedDollars(userInfrastructure.SymbolList);
                     return Ok("Purchase Valid " + transactionModel.UserName + " UserState " + JsonSerializer.Serialize(user));
                 }
                 catch

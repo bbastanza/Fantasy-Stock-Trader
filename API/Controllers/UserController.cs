@@ -29,7 +29,7 @@ namespace API.Controllers
                 // else return UserModel minus the password
                 var currentUser = new UserModel(userName, "Password");
                 var userInfrastructure = new TransactionInfrastructure(currentUser);
-                currentUser.SetAllocatedDollars(userInfrastructure.GetUserSymbols());
+                currentUser.SetAllocatedDollars(userInfrastructure.SymbolList);
                 return Ok(JsonSerializer.Serialize(currentUser));
             }
             catch
