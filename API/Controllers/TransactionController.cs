@@ -20,7 +20,7 @@ namespace API.Controllers
             }
             
             /// <summary>
-            /// Post endpoint to SELL stock using iex information and user information
+            /// POST endpoint to SELL stock using iex information and user information
             /// </summary>
             /// <param name="transactionModel">Json TransactionModel including userName, amount & stock abbreviation</param>
             /// <returns>IActionResult with Holding Information or 500 response</returns>
@@ -47,7 +47,7 @@ namespace API.Controllers
             }
             
             /// <summary>
-            /// Post endpoint to PURCHASE stock using iex information and user information
+            /// POST endpoint to PURCHASE stock using iex information and user information
             /// </summary>
             /// <param name="transactionModel">Json TransactionModel including userName, amount & stock abbreviation</param>
             /// <returns>IActionResult with Holding Information or 500 response</returns>

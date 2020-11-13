@@ -16,7 +16,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// Get user information from the database minus the password
+        /// GET request user information from the database minus the password
         /// </summary>
         /// <param name="userName">string userName to get data back for</param>
         /// <returns>IActionResult with UserModel if successful, 500 response if unsuccessful</returns>
@@ -40,7 +40,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// Post Request endpoint to add a new user to the database.
+        /// POST Request endpoint to add a new user to the database.
         /// </summary>
         /// <param name="newUser">Json object with a userName and password property</param>
         /// <returns>IActionResult with status message</returns>
@@ -61,7 +61,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// Delete request to delete a user from the database
+        /// DELETE request to delete a user from the database
         /// </summary>
         /// <param name="user">Json object including the userName and password to be deleted</param>
         /// <returns>IActionResult with status message</returns>
@@ -83,7 +83,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// Endpoint to log in a user
+        /// POST request endpoint to log in a user
         /// </summary>
         /// <param name="user">Json object with user model to log in</param>
         /// <returns>IActionResult with status message</returns>
@@ -103,7 +103,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// Endpoint to logout a user
+        /// POST request endpoint to logout a user
         /// </summary>
         /// <param name="userName">string userName to log out</param>
         /// <returns>IActionResult with status message</returns>
