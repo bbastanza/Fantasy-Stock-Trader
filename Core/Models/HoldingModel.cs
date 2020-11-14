@@ -1,15 +1,9 @@
-using System;
-using System.ComponentModel.Design;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-
-
 
 namespace Core.Models
 {
     public class HoldingModel{
-        
+         
         public HoldingModel(TransactionModel transactionModel)
         {
             Symbol = transactionModel.Symbol;
@@ -18,13 +12,10 @@ namespace Core.Models
         
         [JsonPropertyName("symbol")] 
         public string Symbol { get; set; }
-        
         [JsonPropertyName("companyName")] 
         public string CompanyName { get; set; }
-        
         [JsonPropertyName("value")] 
         public double Value { get; set; }
-
         [JsonPropertyName("totalShares")] 
         public double TotalShares { get; set; }
 
@@ -49,6 +40,5 @@ namespace Core.Models
         {
             Value = TotalShares * currentValue;
         }
-
     }
 }

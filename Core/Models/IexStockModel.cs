@@ -13,8 +13,8 @@ namespace Core.Models
         [JsonPropertyName("companyName")] 
         public string CompanyName { get; set; }
         
-        [JsonPropertyName("iexRealtimePrice")] 
-        public double IexRealtimePrice { get; set; }
+        [JsonPropertyName("latestPrice")] 
+        public double LatestPrice { get; set; }
 
 
 

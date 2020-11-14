@@ -6,15 +6,16 @@ namespace Core.Models
 {
     public class UserModel
     {
-
-        // public UserModel(UserModel userModel)
-        // ^ this may work, but not yet
         public UserModel(string userName, string password)
         {
-            // UserName = userModel.UserName;
-            // Password = userModel.Password;
             UserName = userName;
             Password = password;
+        }
+
+        public UserModel(UserModel userModel)
+        {
+            UserName = userModel.UserName;
+            Password = userModel.Password;
         }
         
         [JsonPropertyName("userName")]
@@ -26,7 +27,7 @@ namespace Core.Models
         [JsonPropertyName("allocatedDollars")]
         public double AllocatedDollars { get; set; }
         [JsonPropertyName("holdings")]
-        public List<HoldingModel> Holdings { get; set; } = new List<HoldingModel>();
+        public List<HoldingModel> Holdings { get; set; } = new List<HoldingModel>(){new HoldingModel(new TransactionModel(){CompanyName = "Caterpillar",Symbol = "CAT"}){TotalShares = 30}};
         
         public void PurchaseShares(TransactionModel transactionModel,double currentPrice)
         {
@@ -83,23 +84,21 @@ namespace Core.Models
             return currentHolding;
         }
 
-        public void SetAllocatedDollars(List<string> symbols)
+        public void SetAllocatedDollars(List<IexStockModel> iexStockModels)
         {
             double totalHoldingsValue = 0;
-            foreach (var symbol in symbols)
+            foreach (var stockModel in iexStockModels)
             {
                 foreach (var holding in Holdings)
                 {
-                    if (symbol == holding.Symbol)
+                    if (stockModel.Symbol == holding.Symbol)
                     {
+                        holding.SetValue(stockModel.LatestPrice);
                         totalHoldingsValue += holding.Value;
                     }
                 }
             }
-
             AllocatedDollars = totalHoldingsValue;
         }
-        
- 
     }
 }

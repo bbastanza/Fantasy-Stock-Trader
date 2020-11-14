@@ -7,20 +7,8 @@ export default function DreamTraderNavbar() {
     return (
         <LoginContext.Consumer>
             {context => {
-                console.log(
-                    "From DreamTraderNavbar.js Context: " + context.isLoggedIn
-                );
-                console.log(
-                    "From DreamTraderNavbar.js Session Storage: " +
-                        sessionStorage.getItem("isLoggedIn")
-                );
                 return context.isLoggedIn ? (
-                    <Navbar
-                        collapseOnSelect
-                        expand="lg"
-                        bg="warning"
-                        variant="light"
-                    >
+                    <Navbar collapseOnSelect expand="lg" bg="warning" variant="light">
                         <Navbar.Brand href="/">Dream Trader</Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">

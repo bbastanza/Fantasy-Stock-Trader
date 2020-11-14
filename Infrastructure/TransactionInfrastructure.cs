@@ -1,24 +1,26 @@
 using System.Collections.Generic;
 using Core.Models;
+using Core.Services;
 
 namespace Infrastructure
 {
     public class TransactionInfrastructure
     {
         private readonly UserModel _userModel;
+        private readonly IIexFetchService _iexFetchService;
 
-        public TransactionInfrastructure(UserModel userModel)
+        public TransactionInfrastructure(UserModel userModel,IIexFetchService iexFetchService)
         {
             _userModel = userModel;
-            var symbolList = new List<string>();
+            _iexFetchService = iexFetchService;
+            var stockModelList = new List<IexStockModel>();
             foreach (var holding in _userModel.Holdings)
             {
-                symbolList.Add(holding.Symbol);
+                stockModelList.Add(_iexFetchService.GetStockBySymbol(holding.Symbol));
             }
-
-            SymbolList = symbolList;
+            StockModelList = stockModelList;
         }
 
-        public List<string> SymbolList { get; set; }
+        public List<IexStockModel> StockModelList { get; }
     }
 }

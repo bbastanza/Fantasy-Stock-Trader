@@ -17,6 +17,7 @@ namespace API.Controllers
             _iexFetchService = iexFetchService;
         }
 
+        [HttpGet]
         [Route("{stock}")]
         public IActionResult GetStockData(string stock)
         {

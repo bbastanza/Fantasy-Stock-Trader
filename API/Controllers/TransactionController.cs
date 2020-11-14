@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Core.Models;
 using Core.Services;
@@ -19,11 +18,7 @@ namespace API.Controllers
                 _errorData =  "new error";
             }
             
-            /// <summary>
-            /// POST endpoint to SELL stock using iex information and user information
-            /// </summary>
-            /// <param name="transactionModel">Json TransactionModel including userName, amount & stock abbreviation</param>
-            /// <returns>IActionResult with Holding Information or 500 response</returns>
+            [HttpPost]
             [Route("sell")]
             public IActionResult Sell(TransactionModel transactionModel)
             {
@@ -31,13 +26,10 @@ namespace API.Controllers
                 {
                     var iexData = _iexFetchService.GetStockBySymbol(transactionModel.Symbol);
                     // instead of new UserModel() should look up transactionModel.userName from the DB
-                    
-                    // i think this might work, but it doesn't work yet because really I wont be creating a new user from here
-                    // var user = new UserModel(new UserModel(){UserName = "Brian", Password = "password"});
                     var user = new UserModel("brian", "password");
-                    user.SellShares(transactionModel,iexData.IexRealtimePrice);
-                    var userInfrastructure = new TransactionInfrastructure(user);
-                    user.SetAllocatedDollars(userInfrastructure.SymbolList);
+                    user.SellShares(transactionModel,iexData.LatestPrice);
+                    var userInfrastructure = new TransactionInfrastructure(user,_iexFetchService);
+                    user.SetAllocatedDollars(userInfrastructure.StockModelList);
                     return Ok("Sale Valid " + transactionModel.UserName + " UserState " + JsonSerializer.Serialize(user));
                 }
                 catch
@@ -46,11 +38,7 @@ namespace API.Controllers
                 }
             }
             
-            /// <summary>
-            /// POST endpoint to PURCHASE stock using iex information and user information
-            /// </summary>
-            /// <param name="transactionModel">Json TransactionModel including userName, amount & stock abbreviation</param>
-            /// <returns>IActionResult with Holding Information or 500 response</returns>
+            [HttpPost]
             [Route("purchase")]
             public IActionResult Purchase(TransactionModel transactionModel)
             {
@@ -60,9 +48,9 @@ namespace API.Controllers
                     var iexData = _iexFetchService.GetStockBySymbol(transactionModel.Symbol);
                     // instead of new UserModel() should look up transactionModel.userName from the DB
                     var user = new UserModel("Sammy","passk");
-                    user.PurchaseShares(transactionModel, iexData.IexRealtimePrice);
-                    var userInfrastructure = new TransactionInfrastructure(user);
-                    user.SetAllocatedDollars(userInfrastructure.SymbolList);
+                    user.PurchaseShares(transactionModel, iexData.LatestPrice);
+                    var userInfrastructure = new TransactionInfrastructure(user,_iexFetchService);
+                    user.SetAllocatedDollars(userInfrastructure.StockModelList);
                     return Ok("Purchase Valid " + transactionModel.UserName + " UserState " + JsonSerializer.Serialize(user));
                 }
                 catch
@@ -71,10 +59,5 @@ namespace API.Controllers
                     return StatusCode(500, _errorData);
                 }
             }
-
-
-
-
-
         }
 }

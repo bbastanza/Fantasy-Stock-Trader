@@ -29,7 +29,6 @@ namespace Core.Services
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
 
             var stockResponse = GetDataFromIex(url);
-           
             return JsonSerializer.Deserialize<IexStockModel>(stockResponse.Result);
         }
 
