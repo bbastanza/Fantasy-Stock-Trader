@@ -30,5 +30,19 @@ namespace API.Controllers
                 return StatusCode(500, _errorData);
             }
         }
+
+        [HttpGet]
+        [Route("getAvailable")]
+        public IActionResult GetAvailableStocks()
+        {
+            try
+            {
+                return Ok("got available stocks");
+            }
+            catch
+            {
+                return StatusCode(500, "Could not return available stocks from IEX");
+            }
+        }
     }
 }
