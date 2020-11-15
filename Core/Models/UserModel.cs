@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -40,6 +41,17 @@ namespace Core.Models
 
         public void SellShares(TransactionModel transactionModel, double currentPrice)
         {
+            var existingHolding = false;
+            
+            foreach (var holding in Holdings)
+            {
+                if (transactionModel.Symbol == holding.Symbol)
+                    existingHolding = true;
+            }
+            
+            if (!existingHolding)
+                throw new ApplicationException("The Holding You Are Trying to Sell Does Not Exist");
+            
             var currentHolding = CheckExistingHolding(transactionModel);
             if (transactionModel.SellAll)
             {
@@ -53,6 +65,7 @@ namespace Core.Models
                 currentHolding.Sell(sellShareAmount);
                 UnallocatedDollars += transactionModel.Amount;
             }
+            
             currentHolding.SetValue(currentPrice);
         }
         public string ReadHolding(string symbol)
@@ -64,6 +77,7 @@ namespace Core.Models
                     return JsonSerializer.Serialize(holding);
                 }
             }
+            
             return "Holding does not exist for this user";
         }
 
@@ -80,6 +94,7 @@ namespace Core.Models
                     break;
                 }
             }
+            
             if (newHolding)
                 Holdings.Add(currentHolding);
             
@@ -102,6 +117,5 @@ namespace Core.Models
             }
             AllocatedDollars = totalHoldingsValue;
         }
-        
     }
 }
