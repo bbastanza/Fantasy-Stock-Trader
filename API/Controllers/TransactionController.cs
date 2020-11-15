@@ -1,3 +1,4 @@
+using System;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Core.Models;
 using Core.Services;
@@ -11,10 +12,12 @@ namespace API.Controllers
         public class TransactionController : Controller
         {
             private readonly IIexFetchService _iexFetchService;
+            private readonly ITransactionInfrastructure _transactionInfrastructure;
             private string _errorData;
-            public TransactionController(IIexFetchService iexFetchService)
+            public TransactionController(IIexFetchService iexFetchService, ITransactionInfrastructure transactionInfrastructure)
             {
                 _iexFetchService = iexFetchService;
+                _transactionInfrastructure = transactionInfrastructure;
                 _errorData =  "new error";
             }
             
@@ -28,12 +31,12 @@ namespace API.Controllers
                     // instead of new UserModel() should look up transactionModel.userName from the DB
                     var user = new UserModel("brian", "password");
                     user.SellShares(transactionModel,iexData.LatestPrice);
-                    var userInfrastructure = new TransactionInfrastructure(user,_iexFetchService);
-                    user.SetAllocatedDollars(userInfrastructure.StockModelList);
+                    user.SetAllocatedDollars(_transactionInfrastructure.GetStockModelList(user));
                     return Ok("Sale Valid " + transactionModel.UserName + " UserState " + JsonSerializer.Serialize(user));
                 }
                 catch
                 {
+                    _errorData = "There was an error selling stock";
                     return StatusCode(500, _errorData);
                 }
             }
@@ -49,8 +52,7 @@ namespace API.Controllers
                     // instead of new UserModel() should look up transactionModel.userName from the DB
                     var user = new UserModel("Sammy","passk");
                     user.PurchaseShares(transactionModel, iexData.LatestPrice);
-                    var userInfrastructure = new TransactionInfrastructure(user,_iexFetchService);
-                    user.SetAllocatedDollars(userInfrastructure.StockModelList);
+                    user.SetAllocatedDollars(_transactionInfrastructure.GetStockModelList(user));
                     return Ok("Purchase Valid " + transactionModel.UserName + " UserState " + JsonSerializer.Serialize(user));
                 }
                 catch

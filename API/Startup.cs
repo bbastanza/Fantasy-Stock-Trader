@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Services;
+using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,6 +35,7 @@ namespace API
             });
             services.AddScoped<IApiHelper, ApiHelper>();
             services.AddScoped<IIexFetchService, IexFetchService>();
+            services.AddScoped<ITransactionInfrastructure, TransactionInfrastructure>();
 
         }
 

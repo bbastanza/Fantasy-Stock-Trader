@@ -70,17 +70,19 @@ namespace Core.Models
         private HoldingModel CheckExistingHolding(TransactionModel transactionModel)
         {
             HoldingModel currentHolding = new HoldingModel(transactionModel);
-            while (true)
+            var newHolding = true;
+            foreach (var holding in Holdings)
             {
-                foreach (var holding in Holdings)
+                if (transactionModel.Symbol == holding.Symbol)
                 {
-                    if (transactionModel.Symbol == holding.Symbol)
-                        currentHolding = holding;
+                    currentHolding = holding;
+                    newHolding = false;
                     break;
                 }
-                Holdings.Add(currentHolding);
-                break;
             }
+            if (newHolding)
+                Holdings.Add(currentHolding);
+            
             return currentHolding;
         }
 
@@ -100,5 +102,6 @@ namespace Core.Models
             }
             AllocatedDollars = totalHoldingsValue;
         }
+        
     }
 }

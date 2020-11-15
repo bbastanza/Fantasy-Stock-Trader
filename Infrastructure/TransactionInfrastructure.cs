@@ -4,23 +4,30 @@ using Core.Services;
 
 namespace Infrastructure
 {
-    public class TransactionInfrastructure
-    {
-        private readonly UserModel _userModel;
-        private readonly IIexFetchService _iexFetchService;
 
-        public TransactionInfrastructure(UserModel userModel,IIexFetchService iexFetchService)
+    public interface ITransactionInfrastructure
+    {
+        List<IexStockModel> GetStockModelList(UserModel userModel);
+    }
+    
+    public class TransactionInfrastructure : ITransactionInfrastructure
+    {
+        private readonly IIexFetchService _iexFetchService;
+        
+        public TransactionInfrastructure(IIexFetchService iexFetchService)
         {
-            _userModel = userModel;
             _iexFetchService = iexFetchService;
+
+        }
+
+        public List<IexStockModel> GetStockModelList(UserModel userModel)
+        {
             var stockModelList = new List<IexStockModel>();
-            foreach (var holding in _userModel.Holdings)
+            foreach (var holding in userModel.Holdings)
             {
                 stockModelList.Add(_iexFetchService.GetStockBySymbol(holding.Symbol));
             }
-            StockModelList = stockModelList;
+            return stockModelList;
         }
-
-        public List<IexStockModel> StockModelList { get; }
     }
 }

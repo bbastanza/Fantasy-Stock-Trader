@@ -11,10 +11,12 @@ namespace API.Controllers
     public class UserController : Controller
     {
         private readonly IIexFetchService _iexFetchService;
+        private readonly ITransactionInfrastructure _transactionInfrastructure;
         private string _errorData;
-        public UserController(IIexFetchService iexFetchService)
+        public UserController(IIexFetchService iexFetchService, ITransactionInfrastructure transactionInfrastructure)
         {
             _iexFetchService = iexFetchService;
+            _transactionInfrastructure = transactionInfrastructure;
             _errorData =  "new error";
         }
         
@@ -27,8 +29,7 @@ namespace API.Controllers
                 // check to see ()=> if userName exists in the database as a UserModel.userName ()=> if not return StatusCode(500, "error user does not exist")
                 // else return UserModel minus the password
                 var currentUser = new UserModel(userName, "Password");
-                var userInfrastructure = new TransactionInfrastructure(currentUser, _iexFetchService);
-                currentUser.SetAllocatedDollars(userInfrastructure.StockModelList);
+                currentUser.SetAllocatedDollars(_transactionInfrastructure.GetStockModelList(currentUser));
                 return Ok(JsonSerializer.Serialize(currentUser));
             }
             catch
