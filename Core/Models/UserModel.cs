@@ -44,43 +44,50 @@ namespace Core.Models
             var existingHolding = false;
             
             foreach (var holding in Holdings)
-            {
                 if (transactionModel.Symbol == holding.Symbol)
                     existingHolding = true;
-            }
             
             if (!existingHolding)
                 throw new ApplicationException("The Holding You Are Trying to Sell Does Not Exist");
             
             var currentHolding = CheckExistingHolding(transactionModel);
-            if (transactionModel.SellAll)
-            {
-                var saleValue = currentHolding.SellAll(currentPrice);
-                UnallocatedDollars += saleValue;
-                Holdings.Remove(currentHolding);
-            }
-            else
-            {
-                var sellShareAmount = transactionModel.Amount / currentPrice;
-                currentHolding.Sell(sellShareAmount);
-                UnallocatedDollars += transactionModel.Amount;
-            }
             
+            if (transactionModel.SellAll)
+               SellAll(currentHolding, currentPrice);
+            else
+                SellPartial(currentHolding, transactionModel, currentPrice);
+
             currentHolding.SetValue(currentPrice);
         }
+
         public string ReadHolding(string symbol)
         {
             foreach (var holding in Holdings)
             {
                 if (holding.Symbol == symbol)
-                {
                     return JsonSerializer.Serialize(holding);
-                }
             }
             
             return "Holding does not exist for this user";
         }
 
+        public void SetAllocatedDollars(List<IexStockModel> iexStockModels)
+        {
+            double totalHoldingsValue = 0;
+            foreach (var stockModel in iexStockModels)
+            {
+                foreach (var holding in Holdings)
+                {
+                    if (stockModel.Symbol == holding.Symbol)
+                    {
+                        holding.SetValue(stockModel.LatestPrice);
+                        totalHoldingsValue += holding.Value;
+                    }
+                }
+            }
+            AllocatedDollars = totalHoldingsValue;
+        }
+        
         private HoldingModel CheckExistingHolding(TransactionModel transactionModel)
         {
             HoldingModel currentHolding = new HoldingModel(transactionModel);
@@ -101,21 +108,18 @@ namespace Core.Models
             return currentHolding;
         }
 
-        public void SetAllocatedDollars(List<IexStockModel> iexStockModels)
+        private void SellPartial(HoldingModel currentHolding,TransactionModel transactionModel ,double currentPrice)
         {
-            double totalHoldingsValue = 0;
-            foreach (var stockModel in iexStockModels)
-            {
-                foreach (var holding in Holdings)
-                {
-                    if (stockModel.Symbol == holding.Symbol)
-                    {
-                        holding.SetValue(stockModel.LatestPrice);
-                        totalHoldingsValue += holding.Value;
-                    }
-                }
-            }
-            AllocatedDollars = totalHoldingsValue;
+                var sellShareAmount = transactionModel.Amount / currentPrice;
+                currentHolding.Sell(sellShareAmount);
+                UnallocatedDollars += transactionModel.Amount;
+        }
+
+        private void SellAll(HoldingModel currentHolding, double currentPrice)
+        {
+                var saleValue = currentHolding.SellAll(currentPrice);
+                UnallocatedDollars += saleValue;
+                Holdings.Remove(currentHolding);
         }
     }
 }
