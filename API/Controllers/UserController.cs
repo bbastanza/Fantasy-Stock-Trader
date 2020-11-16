@@ -13,13 +13,14 @@ namespace API.Controllers
         private readonly IIexFetchService _iexFetchService;
         private readonly ITransactionInfrastructure _transactionInfrastructure;
         private string _errorData;
+
         public UserController(IIexFetchService iexFetchService, ITransactionInfrastructure transactionInfrastructure)
         {
             _iexFetchService = iexFetchService;
             _transactionInfrastructure = transactionInfrastructure;
-            _errorData =  "new error";
+            _errorData = "new error";
         }
-        
+
         [HttpGet]
         [Route("getUser/{userName}")]
         public IActionResult GetUser(string userName)
@@ -38,7 +39,7 @@ namespace API.Controllers
                 return StatusCode(500, _errorData);
             }
         }
-        
+
         [HttpPost]
         [Route("addUser")]
         public IActionResult AddUser(UserModel newUser)
@@ -47,7 +48,8 @@ namespace API.Controllers
             {
                 // check to see ()=> if newUser.userName exists in the database => if true return "error user already in database"
                 // else ()=> add newUser(userModel to database) ()=> return valid response
-                return Ok("New User Added " + JsonSerializer.Serialize(new UserModel(newUser.UserName,newUser.Password)));
+                return Ok("New User Added " +
+                          JsonSerializer.Serialize(new UserModel(newUser.UserName, newUser.Password)));
             }
             catch
             {
@@ -55,7 +57,7 @@ namespace API.Controllers
                 return StatusCode(500, _errorData);
             }
         }
-        
+
         [HttpDelete]
         [Route("deleteUser")]
         public IActionResult DeleteUser(UserModel user)
@@ -65,7 +67,7 @@ namespace API.Controllers
                 // check to see ()=> user.userName != in the database => if true return StatusCode(500, "error user does not exist")
                 // else ()=> if password == UserModel.password
                 //     delete user from the database ()=> return valid response
-                return Ok("deleted user " + JsonSerializer.Serialize(new UserModel(user.UserName,user.Password)));
+                return Ok("deleted user " + JsonSerializer.Serialize(new UserModel(user.UserName, user.Password)));
             }
             catch
             {
@@ -73,7 +75,7 @@ namespace API.Controllers
                 return StatusCode(500, _errorData);
             }
         }
-        
+
         [HttpPost]
         [Route("login")]
         public IActionResult LogInUser(UserModel user)
@@ -89,7 +91,7 @@ namespace API.Controllers
                 return StatusCode(500, _errorData);
             }
         }
-        
+
         [HttpPost]
         [Route("logout")]
         public IActionResult LogOutUser(UserModel user)

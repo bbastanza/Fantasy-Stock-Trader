@@ -13,22 +13,10 @@ export default function Portfolio({ allocatedFunds }) {
         <div className="portfolio-page">
             <h1 className="title">Portfolio</h1>
             <div className="user-holding-container">
-                <UserHolding
-                    holdingData={mockData}
-                    allocatedFunds={allocatedFunds}
-                />
-                <UserHolding
-                    holdingData={mockData}
-                    allocatedFunds={allocatedFunds}
-                />
-                <UserHolding
-                    holdingData={mockData}
-                    allocatedFunds={allocatedFunds}
-                />
-                <UserHolding
-                    holdingData={mockData}
-                    allocatedFunds={allocatedFunds}
-                />
+                <UserHolding holdingData={mockData} allocatedFunds={allocatedFunds} />
+                <UserHolding holdingData={mockData} allocatedFunds={allocatedFunds} />
+                <UserHolding holdingData={mockData} allocatedFunds={allocatedFunds} />
+                <UserHolding holdingData={mockData} allocatedFunds={allocatedFunds} />
             </div>
         </div>
     );

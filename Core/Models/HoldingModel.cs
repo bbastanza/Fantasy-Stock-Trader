@@ -2,21 +2,24 @@ using System.Text.Json.Serialization;
 
 namespace Core.Models
 {
-    public class HoldingModel{
-         
+    public class HoldingModel
+    {
         public HoldingModel(TransactionModel transactionModel)
         {
             Symbol = transactionModel.Symbol;
             CompanyName = transactionModel.CompanyName;
         }
-        
-        [JsonPropertyName("symbol")] 
+
+        [JsonPropertyName("symbol")]
         public string Symbol { get; set; }
-        [JsonPropertyName("companyName")] 
+        
+        [JsonPropertyName("companyName")]
         public string CompanyName { get; set; }
-        [JsonPropertyName("value")] 
+        
+        [JsonPropertyName("value")]
         public double Value { get; set; }
-        [JsonPropertyName("totalShares")] 
+        
+        [JsonPropertyName("totalShares")]
         public double TotalShares { get; set; }
 
         public double SellAll(double currentPrice)

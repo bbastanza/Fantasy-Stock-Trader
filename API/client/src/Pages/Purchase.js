@@ -18,8 +18,7 @@ export default function Purchase({ availableFunds }) {
         if (!numberRegex.test(amount)) setValidInput(false);
         else setValidInput(true);
 
-        if (amount > availableFunds)
-            setUnavailableFunds(amount - availableFunds);
+        if (amount > availableFunds) setUnavailableFunds(amount - availableFunds);
         else {
             setPurchaseAmount(amount);
             setUnavailableFunds(0);
@@ -39,24 +38,12 @@ export default function Purchase({ availableFunds }) {
         <div className="purchase-form-container">
             <div className="purchase-form">
                 <h1 className="title">Purchase</h1>
-                <h2 className="available-funds">
-                    Available Funds: {availableFunds}
-                </h2>
-                <Form
-                    onSubmit={handleSubmit}
-                    style={{ justifyContent: "center", textAlign: "center" }}
-                >
-                    <Form.Group
-                        controlId="exampleForm.ControlSelect1"
-                        onChange={e => setStock(e.target.value)}
-                    >
-                        <Form.Label className="purchase-form-label">
-                            Stock
-                        </Form.Label>
+                <h2 className="available-funds">Available Funds: {availableFunds}</h2>
+                <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
+                    <Form.Group controlId="exampleForm.ControlSelect1" onChange={e => setStock(e.target.value)}>
+                        <Form.Label className="purchase-form-label">Stock</Form.Label>
                         <Form.Control as="select">
-                            <option>
-                                Brookfield Property REIT Inc. (BPYU)
-                            </option>
+                            <option>Brookfield Property REIT Inc. (BPYU)</option>
                             <option>Brighthouse Financial Inc. (BHF)</option>
                             <option>NRG Energy Inc. (NRG)</option>
                             <option>Ardagh Group SA (ARD)</option>
@@ -64,19 +51,13 @@ export default function Purchase({ availableFunds }) {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className="purchase-form-label">
-                            Amount
-                        </Form.Label>
+                        <Form.Label className="purchase-form-label">Amount</Form.Label>
                         <InputGroup onChange={e => checkFunds(e)}>
                             <InputGroup.Prepend>
                                 <InputGroup.Text>$</InputGroup.Text>
                             </InputGroup.Prepend>
                             <FormControl
-                                style={
-                                    unavailableFunds > 0 || !validInput
-                                        ? unavailableStyle
-                                        : null
-                                }
+                                style={unavailableFunds > 0 || !validInput ? unavailableStyle : null}
                                 aria-label="Amount (to the nearest dollar)"
                             />
                             <InputGroup.Append>
@@ -84,18 +65,11 @@ export default function Purchase({ availableFunds }) {
                             </InputGroup.Append>
                         </InputGroup>
                     </Form.Group>
-                    <h6
-                        className="text-secondary"
-                        style={{ padding: "20px 0 5px" }}
-                    >
+                    <h6 className="text-secondary" style={{ padding: "20px 0 5px" }}>
                         Buy with confidence (because it's not real money!)
                     </h6>
 
-                    <Button
-                        variant="warning"
-                        type="submit"
-                        className="dt-button btn-lg"
-                    >
+                    <Button variant="warning" type="submit" className="dt-button btn-lg">
                         Buy Now!
                     </Button>
                 </Form>
@@ -104,8 +78,7 @@ export default function Purchase({ availableFunds }) {
                 <div className="error-in-form">
                     {unavailableFunds > 0 ? (
                         <h3>
-                            You do not have enough funds for this transaction.
-                            Please reduce your purchase amount by $
+                            You do not have enough funds for this transaction. Please reduce your purchase amount by $
                             {unavailableFunds}.
                         </h3>
                     ) : null}
