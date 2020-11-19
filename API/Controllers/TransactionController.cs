@@ -31,7 +31,7 @@ namespace API.Controllers
                     // instead of new UserModel() should look up transactionModel.userName from the DB
                     var user = new UserModel("brian", "password");
                     user.SellShares(transactionModel,iexData.LatestPrice);
-                    user.SetAllocatedDollars(_transactionInfrastructure.GetStockModelList(user));
+                    user.SetAllocatedFunds(_transactionInfrastructure.GetStockModelList(user));
                     return Ok("Sale Valid... UserState: " + JsonSerializer.Serialize(user));
                 }
                 catch
@@ -51,7 +51,7 @@ namespace API.Controllers
                     // instead of new UserModel() should look up transactionModel.userName from the DB
                     var user = new UserModel("Sammy","passk");
                     user.PurchaseShares(transactionModel, iexData.LatestPrice);
-                    user.SetAllocatedDollars(_transactionInfrastructure.GetStockModelList(user));
+                    user.SetAllocatedFunds(_transactionInfrastructure.GetStockModelList(user));
                     return Ok("Purchase Valid... UserState: " + JsonSerializer.Serialize(user));
                 }
                 catch

@@ -30,7 +30,7 @@ namespace API.Controllers
                 // check to see ()=> if userName exists in the database as a UserModel.userName ()=> if not return StatusCode(500, "error user does not exist")
                 // else return UserModel minus the password
                 var currentUser = new UserModel(userName, "Password");
-                currentUser.SetAllocatedDollars(_transactionInfrastructure.GetStockModelList(currentUser));
+                currentUser.SetAllocatedFunds(_transactionInfrastructure.GetStockModelList(currentUser));
                 return Ok(JsonSerializer.Serialize(currentUser));
             }
             catch

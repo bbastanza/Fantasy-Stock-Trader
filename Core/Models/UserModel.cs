@@ -26,10 +26,10 @@ namespace Core.Models
         public string Password { get; set; }
 
         [JsonPropertyName("unallocatedDollars")]
-        public double UnallocatedDollars { get; set; } = 100000;
+        public double UnallocatedFunds { get; set; } = 100000;
 
         [JsonPropertyName("allocatedDollars")]
-        public double AllocatedDollars { get; set; }
+        public double AllocatedFunds { get; set; }
 
         [JsonPropertyName("holdings")]
         public List<HoldingModel> Holdings { get; set; } = new List<HoldingModel>()
@@ -37,7 +37,7 @@ namespace Core.Models
 
         public void PurchaseShares(TransactionModel transactionModel, double currentPrice)
         {
-            UnallocatedDollars -= transactionModel.Amount;
+            UnallocatedFunds -= transactionModel.Amount;
             var currentHolding = CheckExistingHolding(transactionModel);
             var purchaseShareAmount = transactionModel.Amount / currentPrice;
             currentHolding.Purchase(purchaseShareAmount);
@@ -74,7 +74,7 @@ namespace Core.Models
             return "Holding does not exist for this user";
         }
 
-        public void SetAllocatedDollars(List<IexStockModel> iexStockModels)
+        public void SetAllocatedFunds(List<IexStockModel> iexStockModels)
         {
             double totalHoldingsValue = 0;
             foreach (var stockModel in iexStockModels)
@@ -87,7 +87,7 @@ namespace Core.Models
                     }
             }
 
-            AllocatedDollars = totalHoldingsValue;
+            AllocatedFunds = totalHoldingsValue;
         }
 
         private HoldingModel CheckExistingHolding(TransactionModel transactionModel)
@@ -117,13 +117,13 @@ namespace Core.Models
                     "Cannot sell that many shares, use (sellAll: true) to sell all shares");
 
             currentHolding.Sell(sellShareAmount);
-            UnallocatedDollars += transactionModel.Amount;
+            UnallocatedFunds += transactionModel.Amount;
         }
 
         private void SellAll(HoldingModel currentHolding, double currentPrice)
         {
             var saleValue = currentHolding.SellAll(currentPrice);
-            UnallocatedDollars += saleValue;
+            UnallocatedFunds += saleValue;
             Holdings.Remove(currentHolding);
         }
     }

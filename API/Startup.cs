@@ -36,7 +36,6 @@ namespace API
             services.AddScoped<IApiHelper, ApiHelper>();
             services.AddScoped<IIexFetchService, IexFetchService>();
             services.AddScoped<ITransactionInfrastructure, TransactionInfrastructure>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
