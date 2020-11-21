@@ -1,3 +1,4 @@
+using API.Mappings;
 using API.Models;
 using Core.Entities.Transactions;
 using Core.Entities.Transactions.TransactionServices;
@@ -17,13 +18,15 @@ namespace API.Controllers
             private readonly IIexFetchService _iexFetchService;
             private readonly IStockListService _stockListService;
             private readonly ISellShareService _sellShareService;
+            private readonly ITransactionMapper _transactionMapper;
             private string _errorData;
             
-            public TransactionController(IIexFetchService iexFetchService, IStockListService stockListService, ISellShareService sellShareService)
+            public TransactionController(IIexFetchService iexFetchService, IStockListService stockListService, ISellShareService sellShareService, ITransactionMapper transactionMapper)
             {
                 _iexFetchService = iexFetchService;
                 _stockListService = stockListService;
                 _sellShareService = sellShareService;
+                _transactionMapper = transactionMapper;
                 _errorData =  "new error";
             }
             
@@ -35,11 +38,7 @@ namespace API.Controllers
                 {
                     var iexData = _iexFetchService.GetStockBySymbol(transactionInput.Symbol);
                     // instead of new UserModel() should look up transactionModel.userName from the DB
-                    var transaction = new Transaction()
-                    {
-                        Amount = transactionInput.PurchaseAmount, CompanyName = iexData.CompanyName,
-                        CurrentPrice = iexData.LatestPrice, SellAll = transactionInput.SellAll, User = new User("Brian", "Password")
-                    }; 
+                    var transaction = _transactionMapper.MapTransaction(transactionInput, iexData);
                      var user = _sellShareService.SellShares(transaction);
                         // should be another new service pass in user get back user with updated allocation    
                     transaction.User.SetAllocatedFunds(_stockListService.GetStockModelList(transaction.User));

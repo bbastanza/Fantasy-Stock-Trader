@@ -1,3 +1,4 @@
+using API.Mappings;
 using Core.Entities.Transactions.TransactionServices;
 using Core.Entities.Users.Services;
 using Core.Services;
@@ -33,6 +34,7 @@ namespace API
             services.AddScoped<IStockListService, StockListService>();
             services.AddScoped<ICheckExistingHoldingsService, CheckExistingHoldingService>();
             services.AddScoped<IPurchaseSharesService, PurchaseSharesService>();
+            services.AddScoped<ITransactionMapper, TransactionMapper>();
 
         }
 
