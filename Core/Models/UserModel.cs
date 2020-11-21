@@ -18,21 +18,21 @@ namespace Core.Models
             UserName = userModel.UserName;
             Password = userModel.Password;
         }
-
+        
         [JsonPropertyName("userName")]
-        public string UserName { get; set; }
+        public virtual string UserName { get; set; }
         
         [JsonPropertyName("password")]
-        public string Password { get; set; }
+        public virtual string Password { get; set; }
 
         [JsonPropertyName("unallocatedDollars")]
-        public double UnallocatedFunds { get; set; } = 100000;
+        public virtual double UnallocatedFunds { get; set; } = 100000;
 
         [JsonPropertyName("allocatedDollars")]
-        public double AllocatedFunds { get; set; }
+        public virtual double AllocatedFunds { get; set; }
 
         [JsonPropertyName("holdings")]
-        public List<HoldingModel> Holdings { get; set; } = new List<HoldingModel>()
+        public virtual List<HoldingModel> Holdings { get; set; } = new List<HoldingModel>()
             {new HoldingModel(new TransactionModel() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};
 
         public void PurchaseShares(TransactionModel transactionModel, double currentPrice)

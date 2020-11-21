@@ -1,7 +1,7 @@
+using Core.Helpers;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Core.Models;
 using Core.Services;
-using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -11,13 +11,13 @@ namespace API.Controllers
         public class TransactionController : Controller
         {
             private readonly IIexFetchService _iexFetchService;
-            private readonly ITransactionInfrastructure _transactionInfrastructure;
+            private readonly ITransactionHelper _transactionHelper;
             private string _errorData;
             
-            public TransactionController(IIexFetchService iexFetchService, ITransactionInfrastructure transactionInfrastructure)
+            public TransactionController(IIexFetchService iexFetchService, ITransactionHelper transactionHelper)
             {
                 _iexFetchService = iexFetchService;
-                _transactionInfrastructure = transactionInfrastructure;
+                _transactionHelper = transactionHelper;
                 _errorData =  "new error";
             }
             
@@ -31,7 +31,7 @@ namespace API.Controllers
                     // instead of new UserModel() should look up transactionModel.userName from the DB
                     var user = new UserModel("brian", "password");
                     user.SellShares(transactionModel,iexData.LatestPrice);
-                    user.SetAllocatedFunds(_transactionInfrastructure.GetStockModelList(user));
+                    user.SetAllocatedFunds(_transactionHelper.GetStockModelList(user));
                     return Ok("Sale Valid... UserState: " + JsonSerializer.Serialize(user));
                 }
                 catch
@@ -51,7 +51,7 @@ namespace API.Controllers
                     // instead of new UserModel() should look up transactionModel.userName from the DB
                     var user = new UserModel("Sammy","passk");
                     user.PurchaseShares(transactionModel, iexData.LatestPrice);
-                    user.SetAllocatedFunds(_transactionInfrastructure.GetStockModelList(user));
+                    user.SetAllocatedFunds(_transactionHelper.GetStockModelList(user));
                     return Ok("Purchase Valid... UserState: " + JsonSerializer.Serialize(user));
                 }
                 catch

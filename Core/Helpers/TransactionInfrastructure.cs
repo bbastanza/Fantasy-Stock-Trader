@@ -2,19 +2,19 @@ using System.Collections.Generic;
 using Core.Models;
 using Core.Services;
 
-namespace Infrastructure
+namespace Core.Helpers
 {
 
-    public interface ITransactionInfrastructure
+    public interface ITransactionHelper
     {
         List<IexStockModel> GetStockModelList(UserModel userModel);
     }
     
-    public class TransactionInfrastructure : ITransactionInfrastructure
+    public class TransactionHelper : ITransactionHelper
     {
         private readonly IIexFetchService _iexFetchService;
         
-        public TransactionInfrastructure(IIexFetchService iexFetchService)
+        public TransactionHelper(IIexFetchService iexFetchService)
         {
             _iexFetchService = iexFetchService;
 
@@ -30,4 +30,6 @@ namespace Infrastructure
             return stockModelList;
         }
     }
-}
+}   
+    // User ID=postgres;Password=password;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;}
+

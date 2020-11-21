@@ -1,6 +1,6 @@
+using Core.Helpers;
 using Core.Models;
 using Core.Services;
-using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -11,13 +11,13 @@ namespace API.Controllers
     public class UserController : Controller
     {
         private readonly IIexFetchService _iexFetchService;
-        private readonly ITransactionInfrastructure _transactionInfrastructure;
+        private readonly ITransactionHelper _transactionHelper;
         private string _errorData;
 
-        public UserController(IIexFetchService iexFetchService, ITransactionInfrastructure transactionInfrastructure)
+        public UserController(IIexFetchService iexFetchService, ITransactionHelper transactionHelper)
         {
             _iexFetchService = iexFetchService;
-            _transactionInfrastructure = transactionInfrastructure;
+            _transactionHelper = transactionHelper;
             _errorData = "new error";
         }
 
@@ -30,7 +30,7 @@ namespace API.Controllers
                 // check to see ()=> if userName exists in the database as a UserModel.userName ()=> if not return StatusCode(500, "error user does not exist")
                 // else return UserModel minus the password
                 var currentUser = new UserModel(userName, "Password");
-                currentUser.SetAllocatedFunds(_transactionInfrastructure.GetStockModelList(currentUser));
+                currentUser.SetAllocatedFunds(_transactionHelper.GetStockModelList(currentUser));
                 return Ok(JsonSerializer.Serialize(currentUser));
             }
             catch
