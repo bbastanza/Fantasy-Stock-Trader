@@ -1,13 +1,14 @@
 using System.Text.Json.Serialization;
+using Core.Entities.Transactions;
 
 namespace Core.Models
 {
     public class HoldingModel
     {
-        public HoldingModel(TransactionModel transactionModel)
+        public HoldingModel(Transaction transaction)
         {
-            Symbol = transactionModel.Symbol;
-            CompanyName = transactionModel.CompanyName;
+            Symbol = transaction.Symbol;
+            CompanyName = transaction.CompanyName;
         }
 
         [JsonPropertyName("symbol")]

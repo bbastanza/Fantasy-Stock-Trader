@@ -1,4 +1,5 @@
-using Core.Helpers;
+using API.Models;
+using Core.Entities.Transactions.TransactionServices;
 using Core.Models;
 using Core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,13 @@ namespace API.Controllers
     public class UserController : Controller
     {
         private readonly IIexFetchService _iexFetchService;
-        private readonly ITransactionHelper _transactionHelper;
+        private readonly IStockListService _stockListService;
         private string _errorData;
 
-        public UserController(IIexFetchService iexFetchService, ITransactionHelper transactionHelper)
+        public UserController(IIexFetchService iexFetchService, IStockListService stockListService)
         {
             _iexFetchService = iexFetchService;
-            _transactionHelper = transactionHelper;
+            _stockListService = stockListService;
             _errorData = "new error";
         }
 
@@ -29,8 +30,8 @@ namespace API.Controllers
             {
                 // check to see ()=> if userName exists in the database as a UserModel.userName ()=> if not return StatusCode(500, "error user does not exist")
                 // else return UserModel minus the password
-                var currentUser = new UserModel(userName, "Password");
-                currentUser.SetAllocatedFunds(_transactionHelper.GetStockModelList(currentUser));
+                var currentUser = new User(userName, "Password");
+                currentUser.SetAllocatedFunds(_stockListService.GetStockModelList(currentUser));
                 return Ok(JsonSerializer.Serialize(currentUser));
             }
             catch
@@ -42,14 +43,14 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("addUser")]
-        public IActionResult AddUser(UserModel newUser)
+        public IActionResult AddUser(UserInputModel newUser)
         {
             try
             {
                 // check to see ()=> if newUser.userName exists in the database => if true return "error user already in database"
                 // else ()=> add newUser(userModel to database) ()=> return valid response
                 return Ok("New User Added " +
-                          JsonSerializer.Serialize(new UserModel(newUser.UserName, newUser.Password)));
+                          JsonSerializer.Serialize(new User(newUser.UserName, newUser.Password)));
             }
             catch
             {
@@ -60,14 +61,14 @@ namespace API.Controllers
 
         [HttpDelete]
         [Route("deleteUser")]
-        public IActionResult DeleteUser(UserModel user)
+        public IActionResult DeleteUser(UserInputModel user)
         {
             try
             {
                 // check to see ()=> user.userName != in the database => if true return StatusCode(500, "error user does not exist")
                 // else ()=> if password == UserModel.password
                 //     delete user from the database ()=> return valid response
-                return Ok("deleted user " + JsonSerializer.Serialize(new UserModel(user.UserName, user.Password)));
+                return Ok("deleted user " + JsonSerializer.Serialize(new User(user.UserName, user.Password)));
             }
             catch
             {
@@ -78,7 +79,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("login")]
-        public IActionResult LogInUser(UserModel user)
+        public IActionResult LogInUser(UserInputModel user)
         {
             try
             {
@@ -94,7 +95,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("logout")]
-        public IActionResult LogOutUser(UserModel user)
+        public IActionResult LogOutUser(UserInputModel user)
         {
             try
             {

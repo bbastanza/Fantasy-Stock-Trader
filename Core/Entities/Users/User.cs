@@ -1,23 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Core.Entities.Transactions;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Models
 {
-    public class UserModel
+    public class User
     {
-        public UserModel(string userName, string password)
+        public User(string userName, string password)
         {
             UserName = userName;
             Password = password;
         }
 
-        public UserModel(UserModel userModel)
-        {
-            UserName = userModel.UserName;
-            Password = userModel.Password;
-        }
+        // public User(UserInputModel userInputModel)
+        // {
+        //     UserName = userModel.UserName;
+        //     Password = userModel.Password;
+        // }
         
         [JsonPropertyName("userName")]
         public virtual string UserName { get; set; }
@@ -33,34 +34,35 @@ namespace Core.Models
 
         [JsonPropertyName("holdings")]
         public virtual List<HoldingModel> Holdings { get; set; } = new List<HoldingModel>()
-            {new HoldingModel(new TransactionModel() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};
+            {new HoldingModel(new Transaction() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};
 
-        public void PurchaseShares(TransactionModel transactionModel, double currentPrice)
+        // made interface    
+        public void PurchaseShares(Transaction transaction, double currentPrice)
         {
-            UnallocatedFunds -= transactionModel.Amount;
-            var currentHolding = CheckExistingHolding(transactionModel);
-            var purchaseShareAmount = transactionModel.Amount / currentPrice;
+            UnallocatedFunds -= transaction.Amount;
+            var currentHolding = CheckExistingHolding(transaction);
+            var purchaseShareAmount = transaction.Amount / currentPrice;
             currentHolding.Purchase(purchaseShareAmount);
             currentHolding.SetValue(currentPrice);
         }
 
-        public void SellShares(TransactionModel transactionModel, double currentPrice)
+        public void SellShares(Transaction transaction, double currentPrice)
         {
             var existingHolding = false;
 
             foreach (var holding in Holdings)
-                if (transactionModel.Symbol == holding.Symbol)
+                if (transaction.Symbol == holding.Symbol)
                     existingHolding = true;
 
             if (!existingHolding)
                 throw new InvalidOperationException("The Holding You Are Trying to Sell Does Not Exist");
 
-            var currentHolding = CheckExistingHolding(transactionModel);
+            var currentHolding = CheckExistingHolding(transaction);
 
-            if (transactionModel.SellAll)
+            if (transaction.SellAll)
                 SellAll(currentHolding, currentPrice);
             else
-                SellPartial(currentHolding, currentPrice, transactionModel);
+                SellPartial(currentHolding, currentPrice, transaction);
 
             currentHolding.SetValue(currentPrice);
         }
@@ -89,13 +91,14 @@ namespace Core.Models
 
             AllocatedFunds = totalHoldingsValue;
         }
-
-        private HoldingModel CheckExistingHolding(TransactionModel transactionModel)
+            
+// made interface
+        private HoldingModel CheckExistingHolding(Transaction transaction)
         {
-            HoldingModel currentHolding = new HoldingModel(transactionModel);
+            HoldingModel currentHolding = new HoldingModel(transaction);
             var newHolding = true;
             foreach (var holding in Holdings)
-                if (transactionModel.Symbol == holding.Symbol)
+                if (transaction.Symbol == holding.Symbol)
                 {
                     currentHolding = holding;
                     newHolding = false;
@@ -108,16 +111,16 @@ namespace Core.Models
             return currentHolding;
         }
 
-        private void SellPartial(HoldingModel currentHolding, double currentPrice, TransactionModel transactionModel )
+        private void SellPartial(HoldingModel currentHolding, double currentPrice, Transaction transaction )
         {
-            var sellShareAmount = transactionModel.Amount / currentPrice;
+            var sellShareAmount = transaction.Amount / currentPrice;
 
             if (sellShareAmount > currentHolding.TotalShares)
                 throw new InvalidOperationException(
                     "Cannot sell that many shares, use (sellAll: true) to sell all shares");
 
             currentHolding.Sell(sellShareAmount);
-            UnallocatedFunds += transactionModel.Amount;
+            UnallocatedFunds += transaction.Amount;
         }
 
         private void SellAll(HoldingModel currentHolding, double currentPrice)

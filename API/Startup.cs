@@ -1,5 +1,7 @@
-using Core.Helpers;
+using Core.Entities.Transactions.TransactionServices;
+using Core.Entities.Users.Services;
 using Core.Services;
+using Core.Users.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -28,7 +30,10 @@ namespace API
             });
             services.AddScoped<IApiHelper, ApiHelper>();
             services.AddScoped<IIexFetchService, IexFetchService>();
-            services.AddScoped<ITransactionHelper, TransactionHelper>();
+            services.AddScoped<IStockListService, StockListService>();
+            services.AddScoped<ICheckExistingHoldingsService, CheckExistingHoldingService>();
+            services.AddScoped<IPurchaseSharesService, PurchaseSharesService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

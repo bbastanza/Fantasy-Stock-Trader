@@ -2,25 +2,24 @@ using System.Collections.Generic;
 using Core.Models;
 using Core.Services;
 
-namespace Core.Helpers
+namespace Core.Entities.Transactions.TransactionServices
 {
 
-    public interface ITransactionHelper
+    public interface IStockListService
     {
-        List<IexStockModel> GetStockModelList(UserModel userModel);
+        List<IexStockModel> GetStockModelList(User userModel);
     }
     
-    public class TransactionHelper : ITransactionHelper
+    public class StockListService : IStockListService
     {
         private readonly IIexFetchService _iexFetchService;
         
-        public TransactionHelper(IIexFetchService iexFetchService)
+        public StockListService(IIexFetchService iexFetchService)
         {
             _iexFetchService = iexFetchService;
-
         }
 
-        public List<IexStockModel> GetStockModelList(UserModel userModel)
+        public List<IexStockModel> GetStockModelList(User userModel)
         {
             var stockModelList = new List<IexStockModel>();
             foreach (var holding in userModel.Holdings)
