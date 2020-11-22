@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers" />
+    <Folder Include="Entities\Users\Services" />
     <Folder Include="Mappings" />
   </ItemGroup>
 

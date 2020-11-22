@@ -1,9 +1,7 @@
 using System;
-using Core.Entities.Transactions;
-using Core.Models;
-using Core.Users.Services;
+using Core.Entities.Users;
 
-namespace Core.Entities.Users.Services
+namespace Core.Entities.Transactions.TransactionServices
 {
     public interface ISellShareService
     {
@@ -51,6 +49,7 @@ namespace Core.Entities.Users.Services
 
             currentHolding.Sell(sellShareAmount);
             transaction.User.UnallocatedFunds += transaction.Amount;
+
         }
 
         private void SellAll(Holding currentHolding, Transaction transaction)

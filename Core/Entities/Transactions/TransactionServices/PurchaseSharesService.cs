@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using Core.Entities;
-using Core.Entities.Transactions;
-using Core.Models;
 
-namespace Core.Users.Services
+namespace Core.Entities.Transactions.TransactionServices
 {
     public interface IPurchaseSharesService
     {
