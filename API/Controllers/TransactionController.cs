@@ -1,12 +1,7 @@
 using API.ApiServices;
-using API.Mappings;
 using API.Models;
-using Core.Entities.Transactions;
-using Core.Entities.Transactions.TransactionServices;
-using JsonSerializer = System.Text.Json.JsonSerializer;
-using Core.Models;
-using Core.Services;
 using Microsoft.AspNetCore.Mvc;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Controllers
 {
