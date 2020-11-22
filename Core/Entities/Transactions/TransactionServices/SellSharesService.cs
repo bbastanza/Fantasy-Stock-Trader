@@ -5,7 +5,7 @@ namespace Core.Entities.Transactions.TransactionServices
 {
     public interface ISellShareService
     {
-        User SellShares(Transaction transaction);
+        User SellShares(Transaction transaction, bool sellAll);
     }
     
     public class SellSharesService : ISellShareService
@@ -17,7 +17,7 @@ namespace Core.Entities.Transactions.TransactionServices
             _checkExistingHoldingsService = checkExistingHoldingsService;
         }
 
-        public User SellShares(Transaction transaction)
+        public User SellShares(Transaction transaction, bool sellAll)
         {
             var existingHolding = false;
 
@@ -30,7 +30,7 @@ namespace Core.Entities.Transactions.TransactionServices
 
             var currentHolding = _checkExistingHoldingsService.CheckExistingHolding(transaction);
 
-            if (transaction.SellAll)
+            if (sellAll)
                 SellAll(currentHolding, transaction);
             else
                 SellPartial(currentHolding,transaction);

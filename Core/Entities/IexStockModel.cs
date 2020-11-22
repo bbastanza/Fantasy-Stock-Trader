@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 
-namespace Core.Models
+namespace Core.Entities
 {
 
     public class IexStockModel

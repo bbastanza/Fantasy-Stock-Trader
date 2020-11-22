@@ -1,8 +1,8 @@
 using API.Models;
+using Core.Entities;
 using Core.Entities.Transactions;
 using Core.Entities.Transactions.TransactionServices;
 using Core.Entities.Users;
-using Core.Models;
 
 namespace API.Mappings
 {
@@ -24,7 +24,6 @@ namespace API.Mappings
             var transaction = new Transaction
             {
                 Amount = transactionInput.Amount,
-                SellAll = transactionInput.SellAll,
                 Symbol = iexData.Symbol,
                 CompanyName = iexData.CompanyName,
                 CurrentPrice = iexData.LatestPrice,

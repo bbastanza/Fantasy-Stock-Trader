@@ -1,21 +1,21 @@
 using System.Collections.Generic;
+using Core.Entities.Users;
 
 namespace Core.Entities.Transactions.TransactionServices
 {
     public interface IPurchaseSharesService
     {
-        Holding PurchaseShares(Transaction transaction, double currentPrice, List<Holding> holdings);
+        User PurchaseShares(Transaction transaction);
     }
-    
     
     public class PurchaseSharesService : IPurchaseSharesService
     {
 
-        public Holding PurchaseShares(Transaction transaction, double currentPrice, List<Holding> holdings)
+        public User PurchaseShares(Transaction transaction)
         {
             Holding currentHolding = new Holding(transaction);
             var newHolding = true;
-            foreach (var holding in holdings)
+            foreach (var holding in transaction.User.Holdings)
                 if (transaction.Symbol == holding.Symbol)
                 {
                     currentHolding = holding;
@@ -24,9 +24,13 @@ namespace Core.Entities.Transactions.TransactionServices
                 }
 
             if (newHolding)
-                holdings.Add(currentHolding);
+                transaction.User.Holdings.Add(currentHolding);
+            
+            transaction.User.UnallocatedFunds -= transaction.Amount;
+            currentHolding.Purchase(transaction.Amount / transaction.CurrentPrice);
+            currentHolding.SetValue(transaction.CurrentPrice);
 
-            return currentHolding;
+            return transaction.User;
         }
 
     }

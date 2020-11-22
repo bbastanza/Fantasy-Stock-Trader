@@ -1,6 +1,6 @@
+using System;
 using System.Text.Json.Serialization;
 using Core.Entities.Users;
-using Core.Models;
 
 namespace Core.Entities.Transactions
 {
@@ -12,11 +12,11 @@ namespace Core.Entities.Transactions
         public string CompanyName { get; set; }
         [JsonPropertyName("currentPrice")]
         public double CurrentPrice { get; set; }
-        [JsonPropertyName("sellAll")]
-        public bool SellAll { get; set; }
         [JsonPropertyName("amount")]
         public double Amount { get; set; }
         [JsonPropertyName("user")]
-        public User User { get; set; }            
+        public User User { get; set; }
+        [JsonPropertyName("createdAt")] 
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

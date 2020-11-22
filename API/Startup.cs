@@ -36,7 +36,8 @@ namespace API
             services.AddScoped<ITransactionMapper, TransactionMapper>();
             services.AddScoped<ISetAllocatedFundsService, SetAllocatedFundsService>();
             services.AddScoped<ISellShareService, SellSharesService>();
-            services.AddScoped<ISellService, SellService>();
+            services.AddScoped<IApiSellService, ApiSellService>();
+            services.AddScoped<IApiPurchaseService, ApiPurchaseService>();
 
         }
 

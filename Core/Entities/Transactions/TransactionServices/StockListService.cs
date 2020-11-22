@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Core.Entities.Users;
-using Core.Models;
 using Core.Services;
 
 namespace Core.Entities.Transactions.TransactionServices

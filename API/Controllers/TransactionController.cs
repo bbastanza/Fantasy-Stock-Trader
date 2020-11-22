@@ -9,12 +9,14 @@ namespace API.Controllers
     [Route("[controller]")]
     public class TransactionController : Controller
     {
-        private readonly ISellService _sellService;
+        private readonly IApiSellService _apiSellService;
+        private readonly IApiPurchaseService _apiPurchaseService;
         private string _errorData;
 
-        public TransactionController(ISellService sellService)
+        public TransactionController(IApiSellService apiSellService, IApiPurchaseService apiPurchaseService)
         {
-            _sellService = sellService;
+            _apiSellService = apiSellService;
+            _apiPurchaseService = apiPurchaseService;
             _errorData = "new error";
         }
 
@@ -24,7 +26,7 @@ namespace API.Controllers
         {
             try
             {
-                var transaction = _sellService.SellTransaction(transactionInput);
+                var transaction = _apiSellService.SellTransaction(transactionInput);
                 return Ok("Sale Valid... UserState: " + JsonSerializer.Serialize(transaction.User));
             }
             catch
@@ -34,25 +36,20 @@ namespace API.Controllers
             }
         }
 
-        // [HttpPost]
-        // [Route("purchase")]
-        // public IActionResult Purchase(Transaction transaction)
-        // {
-        //     try
-        //     {
-        //         var iexData = _iexFetchService.GetStockBySymbol(transaction.Symbol);
-        //         // instead of new UserModel() should look up transactionModel.userName from the DB
-        //         var user = new UserModel("Sammy","passk");
-        // another purchase shares service *****************
-        //         user.PurchaseShares(transaction, iexData.LatestPrice);
-        //         user.SetAllocatedFunds(_stockListService.GetStockModelList(user));
-        //         return Ok("Purchase Valid... UserState: " + JsonSerializer.Serialize(user));
-        //     }
-        //     catch
-        //     {
-        //         _errorData = "There was an error while purchasing";
-        //         return StatusCode(500, _errorData);
-        //     }
-        // }
+        [HttpPost]
+        [Route("purchase")]
+        public IActionResult Purchase(TransactionInputModel transactionInput)
+        {
+            try
+            {
+                var transaction = _apiPurchaseService.PurchaseTransaction(transactionInput);
+                return Ok("Purchase Valid... UserState: " + JsonSerializer.Serialize(transaction.User));
+            }
+            catch
+            {
+                _errorData = "There was an error while purchasing";
+                return StatusCode(500, _errorData);
+            }
+        }
     }
 }
