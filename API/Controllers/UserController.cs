@@ -14,33 +14,31 @@ namespace API.Controllers
     {
         private readonly IAddUserService _addUserService;
         private readonly IDeleteUserService _deleteUserService;
+        private readonly IGetUserDataService _getUserDataService;
         private string _errorData;
 
-        public UserController(IAddUserService addUserService, IDeleteUserService deleteUserService)
+        public UserController(IAddUserService addUserService, IDeleteUserService deleteUserService, IGetUserDataService getUserDataService)
         {
             _addUserService = addUserService;
             _deleteUserService = deleteUserService;
+            _getUserDataService = getUserDataService;
             _errorData = "new error";
         }
 
-        // [HttpGet]
-        // [Route("getUser/{userName}")]
-        // public IActionResult GetUser(string userName)
-        // {
-        //     try
-        //     {
-        //         // check to see ()=> if userName exists in the database as a UserModel.userName ()=> if not return StatusCode(500, "error user does not exist")
-        //         // else return UserModel minus the password
-        //         var currentUser = new User(userName, "Password", "email");
-        //         // currentUser.SetAllocatedFunds(_stockListService.GetStockModelList(currentUser));
-        //         return Ok(JsonSerializer.Serialize(currentUser));
-        //     }
-        //     catch
-        //     {
-        //         _errorData = "error while fetching user data";
-        //         return StatusCode(500, _errorData);
-        //     }
-        // }
+        [HttpPost]
+        [Route("getUser")]
+        public IActionResult GetUser(UserInputModel userInputModel)
+        {
+            try
+            {
+                return Ok(JsonSerializer.Serialize(_getUserDataService.GetUserData(userInputModel.UserName, userInputModel.Password)));
+            }
+            catch
+            {
+                _errorData = "error while fetching user data";
+                return StatusCode(500, _errorData);
+            }
+        }
 
         [HttpPost]
         [Route("addUser")]

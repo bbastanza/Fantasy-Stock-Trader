@@ -41,6 +41,7 @@ namespace API
             services.AddScoped<IApiPurchaseService, ApiPurchaseService>();
             services.AddScoped<IAddUserService, AddUserService>();
             services.AddScoped<IDeleteUserService, DeleteUserService>();
+            services.AddScoped<IGetUserDataService, GetUserDataService>();
 
         }
 
