@@ -1,6 +1,7 @@
 using API.ApiServices;
 using API.Mappings;
 using Core.Entities.Transactions.TransactionServices;
+using Core.Entities.Users.Services;
 using Core.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +39,8 @@ namespace API
             services.AddScoped<ISellShareService, SellSharesService>();
             services.AddScoped<IApiSellService, ApiSellService>();
             services.AddScoped<IApiPurchaseService, ApiPurchaseService>();
+            services.AddScoped<IAddUserService, AddUserService>();
+            services.AddScoped<IDeleteUserService, DeleteUserService>();
 
         }
 

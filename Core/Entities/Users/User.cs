@@ -8,18 +8,21 @@ namespace Core.Entities.Users
 {
     public class User
     {
-        public User(string userName, string password)
+        public User(string userName, string password, string email)
         {
             UserName = userName;
             Password = password;
+            Email = email;
         }
 
         [JsonPropertyName("userName")]
         public virtual string UserName { get; set; }
         [JsonPropertyName("password")]
         public virtual string Password { get; set; }
+        [JsonPropertyName("email")]
+        public virtual string Email { get; set; }
         [JsonPropertyName("createdAt")] 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public virtual DateTime CreatedAt { get; set; } = DateTime.Now;
         [JsonPropertyName("unallocatedDollars")]
         public virtual double UnallocatedFunds { get; set; } = 100000;
         [JsonPropertyName("allocatedDollars")]

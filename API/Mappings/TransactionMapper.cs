@@ -27,7 +27,7 @@ namespace API.Mappings
                 Symbol = iexData.Symbol,
                 CompanyName = iexData.CompanyName,
                 CurrentPrice = iexData.LatestPrice,
-                User = new User(transactionInput.UserName,"Password")
+                User = new User(transactionInput.UserName,"Password", "joey@baggs.com")
                 // User = _selectUserService.GetUserByName(transactionInput.UserName)
             };
 
