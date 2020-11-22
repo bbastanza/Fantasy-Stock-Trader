@@ -5,13 +5,13 @@ namespace Core.Entities.Users.Services
 {
     public interface ICheckExistingHoldingsService
     {
-        HoldingModel CheckExistingHolding(Transaction transaction);
+        Holding CheckExistingHolding(Transaction transaction);
     }
     public class CheckExistingHoldingService : ICheckExistingHoldingsService
     {
-        public HoldingModel CheckExistingHolding(Transaction transaction)
+        public Holding CheckExistingHolding(Transaction transaction)
         {
-            HoldingModel currentHolding = new HoldingModel(transaction);
+            Holding currentHolding = new Holding(transaction);
             var newHolding = true;
             foreach (var holding in transaction.User.Holdings)
                 if (transaction.Symbol == holding.Symbol)

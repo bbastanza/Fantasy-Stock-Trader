@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core.Entities;
 using Core.Entities.Transactions;
 using Core.Models;
 
@@ -6,16 +7,16 @@ namespace Core.Users.Services
 {
     public interface IPurchaseSharesService
     {
-        HoldingModel PurchaseShares(Transaction transaction, double currentPrice, List<HoldingModel> holdings);
+        Holding PurchaseShares(Transaction transaction, double currentPrice, List<Holding> holdings);
     }
     
     
     public class PurchaseSharesService : IPurchaseSharesService
     {
 
-        public HoldingModel PurchaseShares(Transaction transaction, double currentPrice, List<HoldingModel> holdings)
+        public Holding PurchaseShares(Transaction transaction, double currentPrice, List<Holding> holdings)
         {
-            HoldingModel currentHolding = new HoldingModel(transaction);
+            Holding currentHolding = new Holding(transaction);
             var newHolding = true;
             foreach (var holding in holdings)
                 if (transaction.Symbol == holding.Symbol)

@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Core.Entities.Users;
 using Core.Models;
 
 namespace Core.Entities.Transactions

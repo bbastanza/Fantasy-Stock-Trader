@@ -16,15 +16,13 @@ namespace API.Controllers
         public class TransactionController : Controller
         {
             private readonly IIexFetchService _iexFetchService;
-            private readonly IStockListService _stockListService;
             private readonly ISellShareService _sellShareService;
             private readonly ITransactionMapper _transactionMapper;
             private string _errorData;
             
-            public TransactionController(IIexFetchService iexFetchService, IStockListService stockListService, ISellShareService sellShareService, ITransactionMapper transactionMapper)
+            public TransactionController(IIexFetchService iexFetchService, ISellShareService sellShareService, ITransactionMapper transactionMapper)
             {
                 _iexFetchService = iexFetchService;
-                _stockListService = stockListService;
                 _sellShareService = sellShareService;
                 _transactionMapper = transactionMapper;
                 _errorData =  "new error";
@@ -37,11 +35,9 @@ namespace API.Controllers
                 try
                 {
                     var iexData = _iexFetchService.GetStockBySymbol(transactionInput.Symbol);
-                    // instead of new UserModel() should look up transactionModel.userName from the DB
                     var transaction = _transactionMapper.MapTransaction(transactionInput, iexData);
-                     var user = _sellShareService.SellShares(transaction);
+                     transaction.User = _sellShareService.SellShares(transaction);
                         // should be another new service pass in user get back user with updated allocation    
-                    transaction.User.SetAllocatedFunds(_stockListService.GetStockModelList(transaction.User));
                     return Ok("Sale Valid... UserState: " /*+ JsonSerializer.Serialize(transactionInput.User)*/);
                 }
                 catch

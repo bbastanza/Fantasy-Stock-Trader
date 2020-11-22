@@ -41,7 +41,7 @@ namespace Core.Entities.Users.Services
             return transaction.User;
         }
 
-        private void SellPartial(HoldingModel currentHolding, Transaction transaction)
+        private void SellPartial(Holding currentHolding, Transaction transaction)
         {
             var sellShareAmount = transaction.Amount / transaction.CurrentPrice;
 
@@ -53,7 +53,7 @@ namespace Core.Entities.Users.Services
             transaction.User.UnallocatedFunds += transaction.Amount;
         }
 
-        private void SellAll(HoldingModel currentHolding, Transaction transaction)
+        private void SellAll(Holding currentHolding, Transaction transaction)
         {
             var saleValue = currentHolding.SellAll(transaction.CurrentPrice);
             transaction.User.UnallocatedFunds += saleValue;

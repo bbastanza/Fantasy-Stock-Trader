@@ -1,5 +1,6 @@
 using API.Models;
 using Core.Entities.Transactions.TransactionServices;
+using Core.Entities.Users;
 using Core.Models;
 using Core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace API.Controllers
                 // check to see ()=> if userName exists in the database as a UserModel.userName ()=> if not return StatusCode(500, "error user does not exist")
                 // else return UserModel minus the password
                 var currentUser = new User(userName, "Password");
-                currentUser.SetAllocatedFunds(_stockListService.GetStockModelList(currentUser));
+                // currentUser.SetAllocatedFunds(_stockListService.GetStockModelList(currentUser));
                 return Ok(JsonSerializer.Serialize(currentUser));
             }
             catch
