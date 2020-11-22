@@ -22,6 +22,7 @@ namespace Core.Entities.Users.Services
             // if true _getUserDataService.GetUserByUsername(username)
             // this code is temporary
             var user = new User(userName, password, "some@email.com");
+            //this code will stay
             user.AllocatedFunds = _setAllocatedFundsService.SetAllocatedFunds(_stockListService.GetStockModelList(user), user.Holdings);
             
 
