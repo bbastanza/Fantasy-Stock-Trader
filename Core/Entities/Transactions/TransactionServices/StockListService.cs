@@ -8,7 +8,7 @@ namespace Core.Entities.Transactions.TransactionServices
 
     public interface IStockListService
     {
-        List<IexStockModel> GetStockModelList(UserEntity userEntityModel);
+        List<IexStockModel> GetStockModelList(UserEntity user);
     }
     
     public class StockListService : IStockListService
@@ -20,10 +20,10 @@ namespace Core.Entities.Transactions.TransactionServices
             _iexFetchService = iexFetchService;
         }
 
-        public List<IexStockModel> GetStockModelList(UserEntity userEntityModel)
+        public List<IexStockModel> GetStockModelList(UserEntity user)
         {
             var stockModelList = new List<IexStockModel>();
-            foreach (var holding in userEntityModel.Holdings)
+            foreach (var holding in user.Holdings)
             {
                 stockModelList.Add(_iexFetchService.GetStockBySymbol(holding.Symbol));
             }

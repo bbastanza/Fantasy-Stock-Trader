@@ -26,11 +26,11 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("getUser")]
-        public IActionResult GetUser(UserInputModel userInputModel)
+        public IActionResult GetUser(UserInputModel userInput)
         {
             try
             {
-                return Ok(JsonSerializer.Serialize(_getUserDataService.GetUserData(userInputModel.UserName, userInputModel.Password)));
+                return Ok(JsonSerializer.Serialize(_getUserDataService.GetUserData(userInput.UserName, userInput.Password)));
             }
             catch
             {
