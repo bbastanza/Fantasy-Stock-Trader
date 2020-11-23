@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Core.Entities.Iex.IexServices;
 using Core.Entities.Users;
-using Core.Services;
 
 namespace Core.Entities.Transactions.TransactionServices
 {
@@ -30,5 +30,5 @@ namespace Core.Entities.Transactions.TransactionServices
         }
     }
 }   
-    // User ID=postgres;Password=password;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;}
+  
 

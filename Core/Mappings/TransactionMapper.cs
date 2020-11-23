@@ -1,14 +1,12 @@
-using API.Models;
 using Core.Entities;
 using Core.Entities.Transactions;
-using Core.Entities.Transactions.TransactionServices;
 using Core.Entities.Users;
 
-namespace API.Mappings
+namespace Core.Mappings
 {
     public interface ITransactionMapper
     {
-        Transaction MapTransaction(TransactionInputModel transactionInput, IexStockModel iexData);
+        Transaction MapTransaction(double amount,string userName, IexStockModel iexData);
     }
     public class TransactionMapper : ITransactionMapper
     {
@@ -19,15 +17,15 @@ namespace API.Mappings
             // _selectUserService = selectUserService
         }
 
-        public Transaction MapTransaction(TransactionInputModel transactionInput, IexStockModel iexData)
+        public Transaction MapTransaction(double amount,string userName, IexStockModel iexData)
         {
             var transaction = new Transaction
             {
-                Amount = transactionInput.Amount,
+                Amount = amount,
                 Symbol = iexData.Symbol,
                 CompanyName = iexData.CompanyName,
-                CurrentPrice = iexData.LatestPrice,
-                User = new User(transactionInput.UserName,"Password", "joey@baggs.com")
+                PurchasePrice = iexData.LatestPrice,
+                User = new User(userName,"Password", "joey@baggs.com")
                 // User = _selectUserService.GetUserByName(transactionInput.UserName)
             };
 

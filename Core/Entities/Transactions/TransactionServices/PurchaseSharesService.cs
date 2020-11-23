@@ -27,8 +27,8 @@ namespace Core.Entities.Transactions.TransactionServices
                 transaction.User.Holdings.Add(currentHolding);
             
             transaction.User.UnallocatedFunds -= transaction.Amount;
-            currentHolding.Purchase(transaction.Amount / transaction.CurrentPrice);
-            currentHolding.SetValue(transaction.CurrentPrice);
+            currentHolding.Purchase(transaction.Amount / transaction.PurchasePrice);
+            currentHolding.SetValue(transaction.PurchasePrice);
 
             return transaction.User;
         }

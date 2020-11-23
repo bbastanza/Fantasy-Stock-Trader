@@ -2,7 +2,6 @@ using API.Models;
 using Core.Entities.Transactions.TransactionServices;
 using Core.Entities.Users;
 using Core.Entities.Users.Services;
-using Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 

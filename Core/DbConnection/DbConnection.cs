@@ -22,3 +22,4 @@ namespace Core.DbConnection
         }
     }
 }
+// User ID=postgres;Password=password;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;}

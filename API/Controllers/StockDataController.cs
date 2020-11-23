@@ -1,4 +1,4 @@
-using Core.Services;
+using Core.Entities.Iex.IexServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

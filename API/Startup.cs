@@ -1,8 +1,7 @@
-using API.ApiServices;
-using API.Mappings;
+using Core.Entities.Iex.IexServices;
 using Core.Entities.Transactions.TransactionServices;
 using Core.Entities.Users.Services;
-using Core.Services;
+using Core.Mappings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -37,8 +36,8 @@ namespace API
             services.AddScoped<ITransactionMapper, TransactionMapper>();
             services.AddScoped<ISetAllocatedFundsService, SetAllocatedFundsService>();
             services.AddScoped<ISellShareService, SellSharesService>();
-            services.AddScoped<IApiSellService, ApiSellService>();
-            services.AddScoped<IApiPurchaseService, ApiPurchaseService>();
+            services.AddScoped<IHandleSaleService, HandleSaleService>();
+            services.AddScoped<IHandlePurchaseService, HandlePurchaseService>();
             services.AddScoped<IAddUserService, AddUserService>();
             services.AddScoped<IDeleteUserService, DeleteUserService>();
             services.AddScoped<IGetUserDataService, GetUserDataService>();

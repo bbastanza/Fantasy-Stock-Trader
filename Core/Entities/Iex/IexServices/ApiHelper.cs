@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace Core.Services
+namespace Core.Entities.Iex.IexServices
 {
     public interface IApiHelper
     {

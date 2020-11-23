@@ -1,39 +1,36 @@
-using API.Mappings;
-using API.Models;
-using Core.Entities.Transactions;
-using Core.Entities.Transactions.TransactionServices;
-using Core.Services;
+using Core.Entities.Iex.IexServices;
+using Core.Mappings;
 
-namespace API.ApiServices
+namespace Core.Entities.Transactions.TransactionServices
 {
-    public interface IApiPurchaseService
+    public interface IHandleSaleService
     {
-        Transaction PurchaseTransaction(TransactionInputModel transactionInput);
+        Transaction SellTransaction(double amount, string userName, string symbol, bool sellAll = false);
     }
     
-    public class ApiPurchaseService : IApiPurchaseService
+    public class HandleSaleService : IHandleSaleService
     {
         private readonly IIexFetchService _iexFetchService;
-        private readonly IPurchaseSharesService _purchaseSharesService;
+        private readonly ISellShareService _sellShareService;
         private readonly ITransactionMapper _transactionMapper;
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
         private readonly IStockListService _stockListService;
 
-        public ApiPurchaseService(IIexFetchService iexFetchService, IPurchaseSharesService purchaseSharesService,
+        public HandleSaleService(IIexFetchService iexFetchService, ISellShareService sellShareService,
             ITransactionMapper transactionMapper, ISetAllocatedFundsService setAllocatedFundsService, IStockListService stockListService)
         {
             _iexFetchService = iexFetchService;
-            _purchaseSharesService = purchaseSharesService;
+            _sellShareService = sellShareService;
             _transactionMapper = transactionMapper;
             _setAllocatedFundsService = setAllocatedFundsService;
             _stockListService = stockListService;
         }
 
-        public Transaction PurchaseTransaction(TransactionInputModel transactionInput)
+        public Transaction SellTransaction(double amount, string userName, string symbol, bool sellAll = false)
         {
-            var iexData = _iexFetchService.GetStockBySymbol(transactionInput.Symbol);
-            var transaction = _transactionMapper.MapTransaction(transactionInput, iexData);
-            transaction.User = _purchaseSharesService.PurchaseShares(transaction);
+            var iexData = _iexFetchService.GetStockBySymbol(symbol);
+            var transaction = _transactionMapper.MapTransaction(amount, userName, iexData);
+            transaction.User = _sellShareService.SellShares(transaction, sellAll);
             transaction.User.AllocatedFunds =
                 _setAllocatedFundsService.SetAllocatedFunds(
                     _stockListService.GetStockModelList(transaction.User),

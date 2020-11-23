@@ -10,10 +10,10 @@ namespace Core.Entities.Transactions
         public string Symbol { get; set; }
         [JsonPropertyName("companyName")]
         public string CompanyName { get; set; }
-        [JsonPropertyName("currentPrice")]
-        public double CurrentPrice { get; set; }
         [JsonPropertyName("amount")]
         public double Amount { get; set; }
+        [JsonPropertyName("purchasePrice")] 
+        public double PurchasePrice { get; set; }
         [JsonPropertyName("user")]
         public User User { get; set; }
         [JsonPropertyName("createdAt")] 

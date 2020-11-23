@@ -1,12 +1,11 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Core.Entities;
 using Microsoft.Extensions.Configuration;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
-namespace Core.Services
+namespace Core.Entities.Iex.IexServices
 {
     public interface IIexFetchService
     {

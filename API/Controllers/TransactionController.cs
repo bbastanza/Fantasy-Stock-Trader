@@ -1,5 +1,5 @@
-using API.ApiServices;
 using API.Models;
+using Core.Entities.Transactions.TransactionServices;
 using Microsoft.AspNetCore.Mvc;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -9,14 +9,14 @@ namespace API.Controllers
     [Route("[controller]")]
     public class TransactionController : Controller
     {
-        private readonly IApiSellService _apiSellService;
-        private readonly IApiPurchaseService _apiPurchaseService;
+        private readonly IHandleSaleService _handleSaleService;
+        private readonly IHandlePurchaseService _handlePurchaseService;
         private string _errorData;
 
-        public TransactionController(IApiSellService apiSellService, IApiPurchaseService apiPurchaseService)
+        public TransactionController(IHandleSaleService handleSaleService, IHandlePurchaseService handlePurchaseService)
         {
-            _apiSellService = apiSellService;
-            _apiPurchaseService = apiPurchaseService;
+            _handleSaleService = handleSaleService;
+            _handlePurchaseService = handlePurchaseService;
             _errorData = "new error";
         }
 
@@ -26,7 +26,8 @@ namespace API.Controllers
         {
             try
             {
-                var transaction = _apiSellService.SellTransaction(transactionInput);
+                var transaction = _handleSaleService.SellTransaction(transactionInput.Amount, transactionInput.UserName,
+                    transactionInput.Symbol, transactionInput.SellAll);
                 return Ok("Sale Valid... UserState: " + JsonSerializer.Serialize(transaction.User));
             }
             catch
@@ -42,7 +43,8 @@ namespace API.Controllers
         {
             try
             {
-                var transaction = _apiPurchaseService.PurchaseTransaction(transactionInput);
+                var transaction = _handlePurchaseService.PurchaseTransaction(transactionInput.Amount,
+                    transactionInput.UserName, transactionInput.Symbol);
                 return Ok("Purchase Valid... UserState: " + JsonSerializer.Serialize(transaction.User));
             }
             catch
