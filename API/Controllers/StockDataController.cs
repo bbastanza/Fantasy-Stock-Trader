@@ -1,3 +1,4 @@
+using System;
 using Core.Entities.Iex.IexServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +9,6 @@ namespace API.Controllers
     public class StockDataController : Controller
     {
         private readonly IIexFetchService _iexFetchService;
-        private string _errorData = "There was an error fetching data from iex";
 
         public StockDataController(IIexFetchService iexFetchService)
         {
@@ -23,9 +23,10 @@ namespace API.Controllers
             {
                 return Ok(_iexFetchService.GetStockBySymbol(stock));
             }
-            catch
+            catch(Exception ex)
             {
-                return StatusCode(500, _errorData);
+                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
+                return StatusCode(500,  ex.Message);
             }
         }
 
@@ -37,9 +38,10 @@ namespace API.Controllers
             {
                 return Ok("got available stocks");
             }
-            catch
+            catch(Exception ex)
             {
-                return StatusCode(500, "Could not return available stocks from IEX");
+                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
+                return StatusCode(500,  ex.Message);
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using API.Models;
 using Core.Entities.Transactions.TransactionServices;
 using Core.Entities.Users;
@@ -14,58 +15,56 @@ namespace API.Controllers
         private readonly IAddUserService _addUserService;
         private readonly IDeleteUserService _deleteUserService;
         private readonly IGetUserDataService _getUserDataService;
-        private string _errorData;
 
         public UserController(IAddUserService addUserService, IDeleteUserService deleteUserService, IGetUserDataService getUserDataService)
         {
             _addUserService = addUserService;
             _deleteUserService = deleteUserService;
             _getUserDataService = getUserDataService;
-            _errorData = "new error";
         }
 
         [HttpPost]
-        [Route("getUser")]
+        [Route("get")]
         public IActionResult GetUser(UserInputModel userInput)
         {
             try
             {
                 return Ok(JsonSerializer.Serialize(_getUserDataService.GetUserData(userInput.UserName, userInput.Password)));
-            }
-            catch
+            }            
+            catch(Exception ex)
             {
-                _errorData = "error while fetching user data";
-                return StatusCode(500, _errorData);
+                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
+                return StatusCode(500,  ex.Message);
             }
         }
 
         [HttpPost]
-        [Route("addUser")]
+        [Route("add")]
         public IActionResult AddUser(UserInputModel newUser)
         {
             try
             {
                 return Ok(JsonSerializer.Serialize(_addUserService.AddUser(newUser.UserName, newUser.Password, newUser.Email)));
             }
-            catch
+            catch(Exception ex)
             {
-                _errorData = "There was an error while adding a new user";
-                return StatusCode(500, _errorData);
+                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
+                return StatusCode(500,  ex.Message);
             }
         }
 
         [HttpDelete]
-        [Route("deleteUser")]
+        [Route("delete")]
         public IActionResult DeleteUser(UserInputModel user)
         {
             try
             {
                 return Ok(_deleteUserService.DeleteUser(user.UserName, user.Password));
             }
-            catch
+            catch(Exception ex)
             {
-                _errorData = "There was an error while deleting user";
-                return StatusCode(500, _errorData);
+                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
+                return StatusCode(500,  ex.Message);
             }
         }
 
@@ -78,10 +77,10 @@ namespace API.Controllers
                 // check to see if user is in the database ()=> if true check to see if user.password == databaseuser.password
                 return Ok(JsonSerializer.Serialize(user.UserName) + " is now logged in");
             }
-            catch
+            catch(Exception ex)
             {
-                _errorData = "Login Error";
-                return StatusCode(500, _errorData);
+                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
+                return StatusCode(500,  ex.Message);
             }
         }
 
@@ -94,10 +93,10 @@ namespace API.Controllers
                 // check to see if user is in the database ()=> logout user
                 return Ok(user.UserName + " has logged out");
             }
-            catch
+            catch(Exception ex)
             {
-                _errorData = "Log Out Error";
-                return StatusCode(500, _errorData);
+                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
+                return StatusCode(500,  ex.Message);
             }
         }
     }

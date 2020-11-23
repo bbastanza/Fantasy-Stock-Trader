@@ -1,3 +1,4 @@
+using System;
 using API.Models;
 using Core.Entities.Transactions.TransactionServices;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,11 @@ namespace API.Controllers
     {
         private readonly IHandleSaleService _handleSaleService;
         private readonly IHandlePurchaseService _handlePurchaseService;
-        private string _errorData;
 
         public TransactionController(IHandleSaleService handleSaleService, IHandlePurchaseService handlePurchaseService)
         {
             _handleSaleService = handleSaleService;
             _handlePurchaseService = handlePurchaseService;
-            _errorData = "new error";
         }
 
         [HttpPost]
@@ -30,10 +29,10 @@ namespace API.Controllers
                     saleInput.Symbol, saleInput.SellAll);
                 return Ok("Sale Valid... UserState: " + JsonSerializer.Serialize(transaction.UserEntity));
             }
-            catch
+            catch(Exception ex)
             {
-                _errorData = "There was an error selling stock";
-                return StatusCode(500, _errorData);
+                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
+                return StatusCode(500,  ex.Message);
             }
         }
 
@@ -47,10 +46,10 @@ namespace API.Controllers
                     purchaseInput.UserName, purchaseInput.Symbol);
                 return Ok("Purchase Valid... UserState: " + JsonSerializer.Serialize(transaction.UserEntity));
             }
-            catch
+            catch(Exception ex)
             {
-                _errorData = "There was an error while purchasing";
-                return StatusCode(500, _errorData);
+                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
+                return StatusCode(500, ex.Message);
             }
         }
     }

@@ -9,7 +9,7 @@ namespace Core.Entities.Transactions.TransactionServices
     {
         TransactionEntity SellTransaction(double amount, string userName, string symbol, bool sellAll = false);
     }
-    
+
     public class HandleSaleService : IHandleSaleService
     {
         private readonly IIexFetchService _iexFetchService;
@@ -19,7 +19,8 @@ namespace Core.Entities.Transactions.TransactionServices
         private readonly IStockListService _stockListService;
 
         public HandleSaleService(IIexFetchService iexFetchService, ISellShareService sellShareService,
-            ITransactionMapper transactionMapper, ISetAllocatedFundsService setAllocatedFundsService, IStockListService stockListService)
+            ITransactionMapper transactionMapper, ISetAllocatedFundsService setAllocatedFundsService,
+            IStockListService stockListService)
         {
             _iexFetchService = iexFetchService;
             _sellShareService = sellShareService;

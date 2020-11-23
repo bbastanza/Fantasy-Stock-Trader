@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -11,6 +13,7 @@ namespace Core.Entities.Iex.IexServices
     {
         IexStockModel GetStockBySymbol(string stockName);
     }
+
     public class IexFetchService : IIexFetchService
     {
         private readonly string _apiKey;
@@ -24,6 +27,9 @@ namespace Core.Entities.Iex.IexServices
 
         public IexStockModel GetStockBySymbol(string stockName)
         {
+            if (stockName == null) 
+                throw new InvalidDataException("A symbol has not bee provided for this search");
+
             var url =
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
 
@@ -33,12 +39,12 @@ namespace Core.Entities.Iex.IexServices
 
         private async Task<string> GetDataFromIex(string url)
         {
-           var response = await _client.GetAsync(url);
-           
-           if (response.IsSuccessStatusCode)
-               return await response.Content.ReadAsStringAsync();
-            
-           throw new Exception("error in JsonStockService");
+            var response = await _client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadAsStringAsync();
+
+            throw new ExternalException("There was a problem receiving data from the IEX API");
         }
     }
 }

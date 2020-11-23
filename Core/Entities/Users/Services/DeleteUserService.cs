@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Core.Entities.Users.Services
 {
     public interface IDeleteUserService
@@ -8,6 +10,9 @@ namespace Core.Entities.Users.Services
     {
         public string DeleteUser(string userName, string password)
         {
+            if (userName == null || password == null)
+                throw new InvalidDataException(
+                    $"You have provided incomplete data\nUserName: {userName}\nPassword: {password}");
             // if _checkCredentialsService.CheckUser(userName, password)
             //     delete user from db
             // maybe add to logging table
