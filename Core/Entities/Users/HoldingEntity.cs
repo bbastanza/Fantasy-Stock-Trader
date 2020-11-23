@@ -1,27 +1,27 @@
 using System.Text.Json.Serialization;
 using Core.Entities.Transactions;
 
-namespace Core.Entities
+namespace Core.Entities.Users
 {
-    public class Holding
+    public class HoldingEntity
     {
-        public Holding(Transaction transaction)
+        public HoldingEntity(TransactionEntity transactionEntity)
         {
-            Symbol = transaction.Symbol;
-            CompanyName = transaction.CompanyName;
+            Symbol = transactionEntity.Symbol;
+            CompanyName = transactionEntity.CompanyName;
         }
 
         [JsonPropertyName("symbol")]
-        public string Symbol { get; set; }
+        public virtual string Symbol { get; set; }
         
         [JsonPropertyName("companyName")]
-        public string CompanyName { get; set; }
+        public virtual string CompanyName { get; set; }
         
         [JsonPropertyName("value")]
-        public double Value { get; set; }
+        public virtual double Value { get; set; }
         
         [JsonPropertyName("totalShares")]
-        public double TotalShares { get; set; }
+        public virtual double TotalShares { get; set; }
 
         public double SellAll(double currentPrice)
         {

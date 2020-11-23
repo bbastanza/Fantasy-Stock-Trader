@@ -1,11 +1,13 @@
+using System;
 using Core.Entities.Iex.IexServices;
 using Core.Mappings;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities.Transactions.TransactionServices
 {
     public interface IHandlePurchaseService
     {
-        Transaction PurchaseTransaction(double amount, string symbol, string userName);
+        TransactionEntity PurchaseTransaction(double amount, string symbol, string userName);
     }
     
     public class HandlePurchaseService : IHandlePurchaseService
@@ -26,16 +28,18 @@ namespace Core.Entities.Transactions.TransactionServices
             _stockListService = stockListService;
         }
 
-        public Transaction PurchaseTransaction(double amount, string userName,string symbol)
+        public TransactionEntity PurchaseTransaction(double amount, string userName,string symbol)
         {
+            var transactionType = "purchase";
             var iexData = _iexFetchService.GetStockBySymbol(symbol);
-            var transaction = _transactionMapper.MapTransaction(amount,userName , iexData);
-            transaction.User = _purchaseSharesService.PurchaseShares(transaction);
-            transaction.User.AllocatedFunds =
+            var transaction = _transactionMapper.MapTransaction(transactionType, amount, userName, iexData);
+            transaction.UserEntity = _purchaseSharesService.PurchaseShares(transaction);
+            transaction.UserEntity.AllocatedFunds =
                 _setAllocatedFundsService.SetAllocatedFunds(
-                    _stockListService.GetStockModelList(transaction.User),
-                    transaction.User.Holdings
+                    _stockListService.GetStockModelList(transaction.UserEntity),
+                    transaction.UserEntity.Holdings
                 );
+            Console.WriteLine(JsonSerializer.Serialize(transaction));
             return transaction;
         }
     }

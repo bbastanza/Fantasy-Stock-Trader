@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Core.Entities
+namespace Core.Entities.Iex
 {
 
     public class IexStockModel

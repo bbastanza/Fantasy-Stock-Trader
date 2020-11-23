@@ -22,13 +22,13 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("sell")]
-        public IActionResult Sell(TransactionInputModel transactionInput)
+        public IActionResult Sell(SaleInputModel saleInput)
         {
             try
             {
-                var transaction = _handleSaleService.SellTransaction(transactionInput.Amount, transactionInput.UserName,
-                    transactionInput.Symbol, transactionInput.SellAll);
-                return Ok("Sale Valid... UserState: " + JsonSerializer.Serialize(transaction.User));
+                var transaction = _handleSaleService.SellTransaction(saleInput.Amount, saleInput.UserName,
+                    saleInput.Symbol, saleInput.SellAll);
+                return Ok("Sale Valid... UserState: " + JsonSerializer.Serialize(transaction.UserEntity));
             }
             catch
             {
@@ -39,13 +39,13 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("purchase")]
-        public IActionResult Purchase(TransactionInputModel transactionInput)
+        public IActionResult Purchase(PurchaseInputModel purchaseInput)
         {
             try
             {
-                var transaction = _handlePurchaseService.PurchaseTransaction(transactionInput.Amount,
-                    transactionInput.UserName, transactionInput.Symbol);
-                return Ok("Purchase Valid... UserState: " + JsonSerializer.Serialize(transaction.User));
+                var transaction = _handlePurchaseService.PurchaseTransaction(purchaseInput.Amount,
+                    purchaseInput.UserName, purchaseInput.Symbol);
+                return Ok("Purchase Valid... UserState: " + JsonSerializer.Serialize(transaction.UserEntity));
             }
             catch
             {

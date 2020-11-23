@@ -5,32 +5,32 @@ namespace Core.Entities.Transactions.TransactionServices
 {
     public interface IPurchaseSharesService
     {
-        User PurchaseShares(Transaction transaction);
+        UserEntity PurchaseShares(TransactionEntity transactionEntity);
     }
     
     public class PurchaseSharesService : IPurchaseSharesService
     {
 
-        public User PurchaseShares(Transaction transaction)
+        public UserEntity PurchaseShares(TransactionEntity transactionEntity)
         {
-            Holding currentHolding = new Holding(transaction);
+            HoldingEntity currentHoldingEntity = new HoldingEntity(transactionEntity);
             var newHolding = true;
-            foreach (var holding in transaction.User.Holdings)
-                if (transaction.Symbol == holding.Symbol)
+            foreach (var holding in transactionEntity.UserEntity.Holdings)
+                if (transactionEntity.Symbol == holding.Symbol)
                 {
-                    currentHolding = holding;
+                    currentHoldingEntity = holding;
                     newHolding = false;
                     break;
                 }
 
             if (newHolding)
-                transaction.User.Holdings.Add(currentHolding);
+                transactionEntity.UserEntity.Holdings.Add(currentHoldingEntity);
             
-            transaction.User.UnallocatedFunds -= transaction.Amount;
-            currentHolding.Purchase(transaction.Amount / transaction.CurrentPrice);
-            currentHolding.SetValue(transaction.CurrentPrice);
+            transactionEntity.UserEntity.UnallocatedFunds -= transactionEntity.Amount;
+            currentHoldingEntity.Purchase(transactionEntity.Amount / transactionEntity.CurrentPrice);
+            currentHoldingEntity.SetValue(transactionEntity.CurrentPrice);
 
-            return transaction.User;
+            return transactionEntity.UserEntity;
         }
 
     }

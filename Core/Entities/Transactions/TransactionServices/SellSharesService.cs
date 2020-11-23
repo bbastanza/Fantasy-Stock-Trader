@@ -5,7 +5,7 @@ namespace Core.Entities.Transactions.TransactionServices
 {
     public interface ISellShareService
     {
-        User SellShares(Transaction transaction, bool sellAll);
+        UserEntity SellShares(TransactionEntity transactionEntity, bool sellAll);
     }
     
     public class SellSharesService : ISellShareService
@@ -17,46 +17,46 @@ namespace Core.Entities.Transactions.TransactionServices
             _checkExistingHoldingsService = checkExistingHoldingsService;
         }
 
-        public User SellShares(Transaction transaction, bool sellAll)
+        public UserEntity SellShares(TransactionEntity transactionEntity, bool sellAll)
         {
             var existingHolding = false;
 
-            foreach (var holding in transaction.User.Holdings)
-                if (transaction.Symbol == holding.Symbol)
+            foreach (var holding in transactionEntity.UserEntity.Holdings)
+                if (transactionEntity.Symbol == holding.Symbol)
                     existingHolding = true;
 
             if (!existingHolding)
                 throw new InvalidOperationException("The Holding You Are Trying to Sell Does Not Exist");
 
-            var currentHolding = _checkExistingHoldingsService.CheckExistingHolding(transaction);
+            var currentHolding = _checkExistingHoldingsService.CheckExistingHolding(transactionEntity);
 
             if (sellAll)
-                SellAll(currentHolding, transaction);
+                SellAll(currentHolding, transactionEntity);
             else
-                SellPartial(currentHolding,transaction);
+                SellPartial(currentHolding,transactionEntity);
 
-            currentHolding.SetValue(transaction.CurrentPrice);
-            return transaction.User;
+            currentHolding.SetValue(transactionEntity.CurrentPrice);
+            return transactionEntity.UserEntity;
         }
 
-        private void SellPartial(Holding currentHolding, Transaction transaction)
+        private void SellPartial(HoldingEntity currentHoldingEntity, TransactionEntity transactionEntity)
         {
-            var sellShareAmount = transaction.Amount / transaction.CurrentPrice;
+            var sellShareAmount = transactionEntity.Amount / transactionEntity.CurrentPrice;
 
-            if (sellShareAmount > currentHolding.TotalShares)
+            if (sellShareAmount > currentHoldingEntity.TotalShares)
                 throw new InvalidOperationException(
                     "Cannot sell that many shares, use (sellAll: true) to sell all shares");
 
-            currentHolding.Sell(sellShareAmount);
-            transaction.User.UnallocatedFunds += transaction.Amount;
+            currentHoldingEntity.Sell(sellShareAmount);
+            transactionEntity.UserEntity.UnallocatedFunds += transactionEntity.Amount;
 
         }
 
-        private void SellAll(Holding currentHolding, Transaction transaction)
+        private void SellAll(HoldingEntity currentHoldingEntity, TransactionEntity transactionEntity)
         {
-            var saleValue = currentHolding.SellAll(transaction.CurrentPrice);
-            transaction.User.UnallocatedFunds += saleValue;
-            transaction.User.Holdings.Remove(currentHolding);
+            var saleValue = currentHoldingEntity.SellAll(transactionEntity.CurrentPrice);
+            transactionEntity.UserEntity.UnallocatedFunds += saleValue;
+            transactionEntity.UserEntity.Holdings.Remove(currentHoldingEntity);
         }
     }
 }

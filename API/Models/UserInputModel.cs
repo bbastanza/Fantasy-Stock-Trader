@@ -5,10 +5,12 @@ namespace API.Models
 {
     public class UserInputModel
     {
-        [JsonPropertyName("userName")]
+        [JsonPropertyName("userName")] 
         public string UserName { get; set; }
+
         [JsonPropertyName("password")]
         public string Password { get; set; }    
+        
         [JsonPropertyName("email")]
         public string Email { get; set; }
     }

@@ -4,7 +4,7 @@ namespace Core.Entities.Users.Services
 {
     public interface IGetUserDataService
     {
-        User GetUserData(string userName, string password);
+        UserEntity GetUserData(string userName, string password);
     }
     public class GetUserDataService : IGetUserDataService
     {
@@ -16,12 +16,12 @@ namespace Core.Entities.Users.Services
             _setAllocatedFundsService = setAllocatedFundsService;
             _stockListService = stockListService;
         }
-        public User GetUserData(string userName, string password)
+        public UserEntity GetUserData(string userName, string password)
         {
             // _checkUserService.ValidateUser(userName, password)
             // if true _getUserDataService.GetUserByUsername(username)
             // this code is temporary
-            var user = new User(userName, password, "some@email.com");
+            var user = new UserEntity(userName, password, "some@email.com");
             //this code will stay
             user.AllocatedFunds = _setAllocatedFundsService.SetAllocatedFunds(_stockListService.GetStockModelList(user), user.Holdings);
             

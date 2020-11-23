@@ -6,9 +6,9 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities.Users
 {
-    public class User
+    public class UserEntity
     {
-        public User(string userName, string password, string email)
+        public UserEntity(string userName, string password, string email)
         {
             UserName = userName;
             Password = password;
@@ -28,8 +28,8 @@ namespace Core.Entities.Users
         [JsonPropertyName("allocatedDollars")]
         public virtual double AllocatedFunds { get; set; }
         [JsonPropertyName("holdings")]
-        public virtual List<Holding> Holdings { get; set; } = new List<Holding>()
-            {new Holding(new Transaction() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};
+        public virtual List<HoldingEntity> Holdings { get; set; } = new List<HoldingEntity>()
+            {new HoldingEntity(new TransactionEntity() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};
 
         public string ReadHolding(string symbol)
         {
