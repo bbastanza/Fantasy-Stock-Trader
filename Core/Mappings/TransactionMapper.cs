@@ -24,7 +24,7 @@ namespace Core.Mappings
                 Amount = amount,
                 Symbol = iexData.Symbol,
                 CompanyName = iexData.CompanyName,
-                PurchasePrice = iexData.LatestPrice,
+                CurrentPrice = iexData.LatestPrice,
                 User = new User(userName,"Password", "joey@baggs.com")
                 // User = _selectUserService.GetUserByName(transactionInput.UserName)
             };

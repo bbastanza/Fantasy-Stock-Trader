@@ -13,7 +13,7 @@ namespace Core.Entities.Transactions
         [JsonPropertyName("amount")]
         public double Amount { get; set; }
         [JsonPropertyName("purchasePrice")] 
-        public double PurchasePrice { get; set; }
+        public double CurrentPrice { get; set; }
         [JsonPropertyName("user")]
         public User User { get; set; }
         [JsonPropertyName("createdAt")] 

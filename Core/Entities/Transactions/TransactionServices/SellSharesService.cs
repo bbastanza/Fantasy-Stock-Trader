@@ -35,13 +35,13 @@ namespace Core.Entities.Transactions.TransactionServices
             else
                 SellPartial(currentHolding,transaction);
 
-            currentHolding.SetValue(transaction.PurchasePrice);
+            currentHolding.SetValue(transaction.CurrentPrice);
             return transaction.User;
         }
 
         private void SellPartial(Holding currentHolding, Transaction transaction)
         {
-            var sellShareAmount = transaction.Amount / transaction.PurchasePrice;
+            var sellShareAmount = transaction.Amount / transaction.CurrentPrice;
 
             if (sellShareAmount > currentHolding.TotalShares)
                 throw new InvalidOperationException(
@@ -54,7 +54,7 @@ namespace Core.Entities.Transactions.TransactionServices
 
         private void SellAll(Holding currentHolding, Transaction transaction)
         {
-            var saleValue = currentHolding.SellAll(transaction.PurchasePrice);
+            var saleValue = currentHolding.SellAll(transaction.CurrentPrice);
             transaction.User.UnallocatedFunds += saleValue;
             transaction.User.Holdings.Remove(currentHolding);
         }
