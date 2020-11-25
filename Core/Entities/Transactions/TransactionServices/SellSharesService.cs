@@ -5,7 +5,7 @@ namespace Core.Entities.Transactions.TransactionServices
 {
     public interface ISellShareService
     {
-        UserEntity SellShares(TransactionEntity transaction, bool sellAll);
+        User SellShares(Transaction transaction, bool sellAll);
     }
     
     public class SellSharesService : ISellShareService
@@ -17,11 +17,11 @@ namespace Core.Entities.Transactions.TransactionServices
             _checkExistingHoldingsService = checkExistingHoldingsService;
         }
 
-        public UserEntity SellShares(TransactionEntity transaction, bool sellAll)
+        public User SellShares(Transaction transaction, bool sellAll)
         {
             var existingHolding = false;
 
-            foreach (var holding in transaction.UserEntity.Holdings)
+            foreach (var holding in transaction.User.Holdings)
                 if (transaction.Symbol == holding.Symbol)
                     existingHolding = true;
 
@@ -36,10 +36,10 @@ namespace Core.Entities.Transactions.TransactionServices
                 SellPartial(currentHolding,transaction);
 
             currentHolding.SetValue(transaction.CurrentPrice);
-            return transaction.UserEntity;
+            return transaction.User;
         }
 
-        private void SellPartial(HoldingEntity currentHolding, TransactionEntity transaction)
+        private void SellPartial(Holding currentHolding, Transaction transaction)
         {
             var sellShareAmount = transaction.Amount / transaction.CurrentPrice;
 
@@ -48,15 +48,15 @@ namespace Core.Entities.Transactions.TransactionServices
                     "Cannot sell that many shares, use (sellAll: true) to sell all shares");
 
             currentHolding.Sell(sellShareAmount);
-            transaction.UserEntity.UnallocatedFunds += transaction.Amount;
+            transaction.User.Balance += transaction.Amount;
 
         }
 
-        private void SellAll(HoldingEntity currentHolding, TransactionEntity transaction)
+        private void SellAll(Holding currentHolding, Transaction transaction)
         {
             var saleValue = currentHolding.SellAll(transaction.CurrentPrice);
-            transaction.UserEntity.UnallocatedFunds += saleValue;
-            transaction.UserEntity.Holdings.Remove(currentHolding);
+            transaction.User.Balance += saleValue;
+            transaction.User.Holdings.Remove(currentHolding);
         }
     }
 }

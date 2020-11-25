@@ -1,10 +1,7 @@
 using System;
 using API.Models;
-using Core.Entities.Transactions.TransactionServices;
-using Core.Entities.Users;
 using Core.Entities.Users.Services;
 using Microsoft.AspNetCore.Mvc;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Controllers
 {
@@ -29,7 +26,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(JsonSerializer.Serialize(_getUserDataService.GetUserData(userInput.UserName, userInput.Password)));
+                return Ok(_getUserDataService.GetUserData(userInput.UserName, userInput.Password));
             }            
             catch(Exception ex)
             {
@@ -44,7 +41,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(JsonSerializer.Serialize(_addUserService.AddUser(newUser.UserName, newUser.Password, newUser.Email)));
+                return Ok(_addUserService.AddUser(newUser.UserName, newUser.Password, newUser.Email));
             }
             catch(Exception ex)
             {
@@ -75,7 +72,7 @@ namespace API.Controllers
             try
             {
                 // check to see if user is in the database ()=> if true check to see if user.password == databaseuser.password
-                return Ok(JsonSerializer.Serialize(user.UserName) + " is now logged in");
+                return Ok(user.UserName + " is now logged in");
             }
             catch(Exception ex)
             {

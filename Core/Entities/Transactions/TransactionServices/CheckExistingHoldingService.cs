@@ -4,26 +4,26 @@ namespace Core.Entities.Transactions.TransactionServices
 {
     public interface ICheckExistingHoldingsService
     {
-        HoldingEntity CheckExistingHolding(TransactionEntity transaction);
+        Holding CheckExistingHolding(Transaction transaction);
     }
     public class CheckExistingHoldingService : ICheckExistingHoldingsService
     {
-        public HoldingEntity CheckExistingHolding(TransactionEntity transaction)
+        public Holding CheckExistingHolding(Transaction transaction)
         {
-            HoldingEntity currentHoldingEntity = new HoldingEntity(transaction);
+            Holding currentHolding = new Holding(transaction);
             var newHolding = true;
-            foreach (var holding in transaction.UserEntity.Holdings)
+            foreach (var holding in transaction.User.Holdings)
                 if (transaction.Symbol == holding.Symbol)
                 {
-                    currentHoldingEntity = holding;
+                    currentHolding = holding;
                     newHolding = false;
                     break;
                 }
 
             if (newHolding)
-                transaction.UserEntity.Holdings.Add(currentHoldingEntity);
+                transaction.User.Holdings.Add(currentHolding);
 
-            return currentHoldingEntity;
+            return currentHolding;
         } 
     }
 }

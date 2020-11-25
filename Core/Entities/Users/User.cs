@@ -6,9 +6,9 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities.Users
 {
-    public class UserEntity
+    public class User
     {
-        public UserEntity(string userName, string password, string email)
+        public User(string userName, string password, string email)
         {
             UserName = userName;
             Password = password;
@@ -23,21 +23,18 @@ namespace Core.Entities.Users
         public virtual string Email { get; set; }
         [JsonPropertyName("createdAt")] 
         public virtual DateTime CreatedAt { get; set; } = DateTime.Now;
-        [JsonPropertyName("unallocatedDollars")]
-        public virtual double UnallocatedFunds { get; set; } = 100000;
-        [JsonPropertyName("allocatedDollars")]
+        [JsonPropertyName("balance")]
+        public virtual double Balance { get; set; } = 100000;
+        [JsonPropertyName("allocatedFunds")]
         public virtual double AllocatedFunds { get; set; }
         [JsonPropertyName("holdings")]
-        public virtual List<HoldingEntity> Holdings { get; set; } = new List<HoldingEntity>()
-            {new HoldingEntity(new TransactionEntity() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};
+        public virtual List<Holding> Holdings { get; set; } = new List<Holding>()
+            {new Holding(new Transaction() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};
 
-        public string ReadHolding(string symbol)
+
+        public override string ToString()
         {
-            foreach (var holding in Holdings)
-                if (holding.Symbol == symbol)
-                    return JsonSerializer.Serialize(holding);
-
-            return "Holding does not exist for this user";
+            return JsonSerializer.Serialize(this);
         }
     }
 }

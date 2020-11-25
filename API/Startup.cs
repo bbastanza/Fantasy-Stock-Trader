@@ -33,7 +33,7 @@ namespace API
             services.AddScoped<IStockListService, StockListService>();
             services.AddScoped<ICheckExistingHoldingsService, CheckExistingHoldingService>();
             services.AddScoped<IPurchaseSharesService, PurchaseSharesService>();
-            services.AddScoped<ITransactionMapper, TransactionMapper>();
+            services.AddScoped<ITransactionInputMap, TransactionInputMap>();
             services.AddScoped<ISetAllocatedFundsService, SetAllocatedFundsService>();
             services.AddScoped<ISellShareService, SellSharesService>();
             services.AddScoped<IHandleSaleService, HandleSaleService>();

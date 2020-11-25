@@ -1,10 +1,11 @@
 using System;
 using System.Text.Json.Serialization;
 using Core.Entities.Users;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities.Transactions
 {
-    public class TransactionEntity
+    public class Transaction
     {
         [JsonPropertyName("type")]
         public virtual string Type { get; set; }
@@ -19,6 +20,11 @@ namespace Core.Entities.Transactions
         [JsonPropertyName("createdAt")] 
         public virtual DateTime CreatedAt { get; } = DateTime.Now;
         [JsonPropertyName("user")]
-        public virtual UserEntity UserEntity { get; set; }
+        public virtual User User { get; set; }
+
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
+        }
     }
 }

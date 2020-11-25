@@ -1,14 +1,16 @@
 using System.Text.Json.Serialization;
 using Core.Entities.Transactions;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities.Users
 {
-    public class HoldingEntity
+    public class Holding
     {
-        public HoldingEntity(TransactionEntity transactionEntity)
+        public Holding(Transaction transaction)
         {
-            Symbol = transactionEntity.Symbol;
-            CompanyName = transactionEntity.CompanyName;
+            Symbol = transaction.Symbol;
+            CompanyName = transaction.CompanyName;
         }
 
         [JsonPropertyName("symbol")]
@@ -43,6 +45,11 @@ namespace Core.Entities.Users
         public void SetValue(double currentValue)
         {
             Value = TotalShares * currentValue;
+        }
+
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
         }
     }
 }

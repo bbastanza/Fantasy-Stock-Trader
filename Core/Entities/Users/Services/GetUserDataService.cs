@@ -5,7 +5,7 @@ namespace Core.Entities.Users.Services
 {
     public interface IGetUserDataService
     {
-        UserEntity GetUserData(string userName, string password);
+        User GetUserData(string userName, string password);
     }
 
     public class GetUserDataService : IGetUserDataService
@@ -20,7 +20,7 @@ namespace Core.Entities.Users.Services
             _stockListService = stockListService;
         }
 
-        public UserEntity GetUserData(string userName, string password)
+        public User GetUserData(string userName, string password)
         {
             if (userName == null || password == null)
                 throw new InvalidDataException(
@@ -28,11 +28,10 @@ namespace Core.Entities.Users.Services
             // _checkUserService.ValidateUser(userName, password)
             // if true _getUserDataService.GetUserByUsername(username)
             // this code is temporary
-            var user = new UserEntity(userName, password, "some@email.com");
+            var user = new User(userName, password, "some@email.com");
             //this code will stay
             user.AllocatedFunds =
                 _setAllocatedFundsService.SetAllocatedFunds(_stockListService.GetStockModelList(user), user.Holdings);
-
 
             return user;
         }

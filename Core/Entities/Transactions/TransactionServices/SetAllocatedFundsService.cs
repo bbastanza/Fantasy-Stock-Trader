@@ -6,12 +6,12 @@ namespace Core.Entities.Transactions.TransactionServices
 {
     public interface ISetAllocatedFundsService
     {
-        double SetAllocatedFunds(List<IexStockModel> stockModels, List<HoldingEntity> holdings);
+        double SetAllocatedFunds(List<IexStockModel> stockModels, List<Holding> holdings);
     }
     
     public class SetAllocatedFundsService : ISetAllocatedFundsService
     {
-        public double SetAllocatedFunds(List<IexStockModel> stockModels, List<HoldingEntity> holdings)
+        public double SetAllocatedFunds(List<IexStockModel> stockModels, List<Holding> holdings)
         {
             double totalHoldingsValue = 0;
             foreach (var stockModel in stockModels)

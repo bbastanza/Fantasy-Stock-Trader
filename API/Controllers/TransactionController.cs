@@ -2,7 +2,6 @@ using System;
 using API.Models;
 using Core.Entities.Transactions.TransactionServices;
 using Microsoft.AspNetCore.Mvc;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Controllers
 {
@@ -27,7 +26,7 @@ namespace API.Controllers
             {
                 var transaction = _handleSaleService.SellTransaction(saleInput.Amount, saleInput.UserName,
                     saleInput.Symbol, saleInput.SellAll);
-                return Ok("Sale Valid... UserState: " + JsonSerializer.Serialize(transaction.UserEntity));
+                return Ok("Sale Valid... UserState: " + transaction.User);
             }
             catch(Exception ex)
             {
@@ -44,7 +43,7 @@ namespace API.Controllers
             {
                 var transaction = _handlePurchaseService.PurchaseTransaction(purchaseInput.Amount,
                     purchaseInput.UserName, purchaseInput.Symbol);
-                return Ok("Purchase Valid... UserState: " + JsonSerializer.Serialize(transaction.UserEntity));
+                return Ok("Purchase Valid... UserState: " + transaction.User);
             }
             catch(Exception ex)
             {
