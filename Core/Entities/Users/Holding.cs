@@ -24,8 +24,8 @@ namespace Core.Entities.Users
         [JsonPropertyName("totalShares")]
         public virtual double TotalShares { get; set; }
         
-        [JsonPropertyName("user")]
-        public virtual User User { get; set; }
+        // [JsonPropertyName("user")]
+        // public virtual User User { get; set; }
 
         public double SellAll(double currentPrice)
         {

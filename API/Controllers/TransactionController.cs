@@ -1,5 +1,6 @@
 using System;
 using API.Models;
+using API.OutputMappings;
 using Core.Entities.Transactions.TransactionServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,13 @@ namespace API.Controllers
     {
         private readonly IHandleSaleService _handleSaleService;
         private readonly IHandlePurchaseService _handlePurchaseService;
+        private readonly IUserOutputMap _userOutputMap;
 
-        public TransactionController(IHandleSaleService handleSaleService, IHandlePurchaseService handlePurchaseService)
+        public TransactionController(IHandleSaleService handleSaleService, IHandlePurchaseService handlePurchaseService, IUserOutputMap userOutputMap)
         {
             _handleSaleService = handleSaleService;
             _handlePurchaseService = handlePurchaseService;
+            _userOutputMap = userOutputMap;
         }
 
         [HttpPost]
@@ -26,7 +29,8 @@ namespace API.Controllers
             {
                 var transaction = _handleSaleService.SellTransaction(saleInput.Amount, saleInput.UserName,
                     saleInput.Symbol, saleInput.SellAll);
-                return Ok("Sale Valid... UserState: " + transaction.User);
+                var userOutput = _userOutputMap.MapUserOutput(transaction.User);
+                return Ok("Sale Valid... UserState: " + userOutput);
             }
             catch(Exception ex)
             {
@@ -43,7 +47,8 @@ namespace API.Controllers
             {
                 var transaction = _handlePurchaseService.PurchaseTransaction(purchaseInput.Amount,
                     purchaseInput.UserName, purchaseInput.Symbol);
-                return Ok("Purchase Valid... UserState: " + transaction.User);
+                var userOutput = _userOutputMap.MapUserOutput(transaction.User);
+                return Ok("Purchase Valid... UserState: " + userOutput);
             }
             catch(Exception ex)
             {
