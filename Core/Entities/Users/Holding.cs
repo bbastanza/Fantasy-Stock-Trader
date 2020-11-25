@@ -24,6 +24,9 @@ namespace Core.Entities.Users
         
         [JsonPropertyName("totalShares")]
         public virtual double TotalShares { get; set; }
+        
+        [JsonPropertyName("user")]
+        public virtual User User { get; set; }
 
         public double SellAll(double currentPrice)
         {
@@ -47,9 +50,6 @@ namespace Core.Entities.Users
             Value = TotalShares * currentValue;
         }
 
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this);
-        }
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

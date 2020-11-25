@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Models
 {
@@ -11,6 +12,8 @@ namespace API.Models
         public double Amount { get; set; }
         
         [JsonPropertyName("userName")]
-        public string UserName { get; set; } 
+        public string UserName { get; set; }
+
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

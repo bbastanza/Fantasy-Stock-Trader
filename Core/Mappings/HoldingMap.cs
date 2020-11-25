@@ -11,6 +11,7 @@ namespace Core.Mappings
             Map(x => x.Symbol);
             Map(x => x.CompanyName);
             Map(x => x.TotalShares);
+            References(x => x.User);
         }
     }
 }

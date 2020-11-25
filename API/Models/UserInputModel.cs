@@ -1,5 +1,5 @@
-using System;
 using System.Text.Json.Serialization;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Models
 {
@@ -13,5 +13,7 @@ namespace API.Models
         
         [JsonPropertyName("email")]
         public string Email { get; set; }
+        
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

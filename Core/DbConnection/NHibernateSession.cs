@@ -1,21 +1,27 @@
-// using System.Net;
-// using System.Net.Http;
-// using NHibernate;
-// using NHibernate.Cfg;
-//
-// namespace Core.NHibernate
-// {
-//     public class NHibernateSession
-//     {
-//         public static ISession OpenSession()
-//         {
-//             var configuration = new Configuration();
-//             var configurationPath = HttpContext.Current.Server.MapPath(@"~/Core/Models/hibernate.cfg.xml");
-//             configuration.Configure(configurationPath);
-//             var bookConfigurationFile = HttpContext.Current.Server.MapPath(@"~/Core/Mappings/User.hbm.xml");
-//             configuration.AddFile(bookConfigurationFile);
-//             ISessionFactory sessionFactory = configuration.BuildSessionFactory();
-//             return sessionFactory.OpenSession();
-//         }
-//     }
-// }
+using Core.Entities.Users;
+using Core.Mappings;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
+using NHibernate;
+
+namespace Core.DbConnection
+{
+    public interface INHibernateSessionService
+    {
+        ISessionFactory ConfigureSession();
+    }
+    public class InHibernateSessionService : INHibernateSessionService
+    {
+        public ISessionFactory ConfigureSession()
+        {
+            return Fluently.Configure()
+                .Database(PostgreSQLConfiguration.Standard)
+                .Mappings(m =>
+                    m.FluentMappings
+                        .AddFromAssemblyOf<HoldingMap>()
+                        .AddFromAssemblyOf<UserMap>()
+                        .AddFromAssemblyOf<TransactionMap>())
+                .BuildSessionFactory();
+        }
+    }
+}

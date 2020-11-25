@@ -1,3 +1,4 @@
+using Core.DbConnection;
 using Core.Entities.Iex.IexServices;
 using Core.Entities.Transactions.TransactionServices;
 using Core.Entities.Users.Services;
@@ -41,7 +42,8 @@ namespace API
             services.AddScoped<IAddUserService, AddUserService>();
             services.AddScoped<IDeleteUserService, DeleteUserService>();
             services.AddScoped<IGetUserDataService, GetUserDataService>();
-
+            services.AddScoped<INHibernateSessionService, InHibernateSessionService>();
+            services.AddScoped<IGetConnectionString, GetConnectionString>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
