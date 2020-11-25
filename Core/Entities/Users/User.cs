@@ -32,7 +32,7 @@ namespace Core.Entities.Users
         
         [JsonPropertyName("allocatedFunds")]
         public virtual double AllocatedFunds { get; set; }
-        
+       
         [JsonPropertyName("holdings")]
         public virtual List<Holding> Holdings { get; set; } = new List<Holding>()
             {new Holding(new Transaction() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};

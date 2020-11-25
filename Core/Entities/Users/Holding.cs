@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using Core.Entities.Transactions;
-using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities.Users

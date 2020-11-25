@@ -23,7 +23,10 @@ namespace Core.Entities.Transactions.TransactionServices
                 }
 
             if (newHolding)
+            {
+                currentHolding.User = transaction.User;                
                 transaction.User.Holdings.Add(currentHolding);
+            }
             
             transaction.User.Balance -= transaction.Amount;
             currentHolding.Purchase(transaction.Amount / transaction.CurrentPrice);
