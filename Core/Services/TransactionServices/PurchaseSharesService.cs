@@ -1,6 +1,7 @@
+using Core.Entities;
 using Core.Entities.Users;
 
-namespace Core.Entities.Transactions.TransactionServices
+namespace Core.Services.TransactionServices
 {
     public interface IPurchaseSharesService
     {

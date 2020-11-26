@@ -5,14 +5,14 @@ namespace API.OutputMappings
 {
     public interface IUserOutputMap
     {
-        UserOutputModel MapUserOutput(User user);
+        UserModel MapUserOutput(User user);
     }
 
     public class UserOutputMap : IUserOutputMap
     {
-        public UserOutputModel MapUserOutput(User user)
+        public UserModel MapUserOutput(User user)
         {
-            var outputModel = new UserOutputModel()
+            var outputModel = new UserModel()
             {
                 UserName = user.UserName,
                 Balance = user.Balance,

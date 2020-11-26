@@ -1,6 +1,6 @@
-using Core.Entities.Users;
+using Core.Entities;
 
-namespace Core.Entities.Transactions.TransactionServices
+namespace Core.Services.TransactionServices
 {
     public interface ICheckExistingHoldingsService
     {

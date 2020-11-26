@@ -1,22 +1,13 @@
-using System.Text.Json.Serialization;
 
-namespace Core.Entities.Iex
+namespace Core.Entities
 {
 
-    public class IexStockModel
+    public class IexStock
     {
 
-        [JsonPropertyName("symbol")] 
         public string Symbol { get; set; }
-        
-        [JsonPropertyName("companyName")] 
         public string CompanyName { get; set; }
-        
-        [JsonPropertyName("latestPrice")] 
         public double LatestPrice { get; set; }
-
-
-
 
         // [JsonPropertyName("primaryExchange")]
         // public string PrimaryExchange { get; set; }

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using Core.Entities.Users;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Core.Entities.Transactions
+namespace Core.Entities
 {
     public class Transaction
     {

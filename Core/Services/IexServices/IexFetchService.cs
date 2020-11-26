@@ -1,17 +1,17 @@
-using System;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Core.Entities;
 using Microsoft.Extensions.Configuration;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
-namespace Core.Entities.Iex.IexServices
+namespace Core.Services.IexServices
 {
     public interface IIexFetchService
     {
-        IexStockModel GetStockBySymbol(string stockName);
+        IexStock GetStockBySymbol(string stockName);
     }
 
     public class IexFetchService : IIexFetchService
@@ -25,7 +25,7 @@ namespace Core.Entities.Iex.IexServices
             _client = apiHelper.ApiClient;
         }
 
-        public IexStockModel GetStockBySymbol(string stockName)
+        public IexStock GetStockBySymbol(string stockName)
         {
             if (stockName == null) 
                 throw new InvalidDataException("A symbol has not bee provided for this search");
@@ -34,7 +34,7 @@ namespace Core.Entities.Iex.IexServices
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
 
             var stockResponse = GetDataFromIex(url);
-            return JsonSerializer.Deserialize<IexStockModel>(stockResponse.Result);
+            return JsonSerializer.Deserialize<IexStock>(stockResponse.Result);
         }
 
         private async Task<string> GetDataFromIex(string url)

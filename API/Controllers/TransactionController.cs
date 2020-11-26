@@ -1,7 +1,7 @@
 using System;
 using API.Models;
 using API.OutputMappings;
-using Core.Entities.Transactions.TransactionServices;
+using Core.Services.TransactionServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

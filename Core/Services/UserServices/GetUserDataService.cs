@@ -1,5 +1,5 @@
 using System.IO;
-using Core.Entities.Transactions.TransactionServices;
+using Core.Services.TransactionServices;
 
 namespace Core.Entities.Users.Services
 {

@@ -1,9 +1,9 @@
 using API.OutputMappings;
 using Core.DbConnection;
-using Core.Entities.Iex.IexServices;
-using Core.Entities.Transactions.TransactionServices;
 using Core.Entities.Users.Services;
 using Core.Mappings;
+using Core.Services.IexServices;
+using Core.Services.TransactionServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -44,7 +44,6 @@ namespace API
             services.AddScoped<IDeleteUserService, DeleteUserService>();
             services.AddScoped<IGetUserDataService, GetUserDataService>();
             services.AddScoped<INHibernateSessionService, InHibernateSessionService>();
-            services.AddScoped<IGetConnectionString, GetConnectionString>();
             services.AddScoped<IUserOutputMap, UserOutputMap>();
         }
 

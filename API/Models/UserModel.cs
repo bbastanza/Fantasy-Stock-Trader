@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Core.Entities.Users;
+using Core.Entities;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Models
 {
-    public class UserOutputModel
+    public class UserModel
     {
         [JsonPropertyName("userName")] 
         public string UserName { get; set; }

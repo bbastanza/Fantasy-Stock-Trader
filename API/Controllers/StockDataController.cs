@@ -1,5 +1,5 @@
 using System;
-using Core.Entities.Iex.IexServices;
+using Core.Services.IexServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

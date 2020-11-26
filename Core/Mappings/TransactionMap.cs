@@ -1,3 +1,4 @@
+using Core.Entities;
 using Core.Entities.Transactions;
 using FluentNHibernate.Mapping;
 

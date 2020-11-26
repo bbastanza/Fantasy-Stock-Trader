@@ -1,3 +1,4 @@
+using Core.Entities;
 using Core.Entities.Iex;
 using Core.Entities.Transactions;
 using Core.Entities.Users;
@@ -6,7 +7,7 @@ namespace Core.Mappings
 {
     public interface ITransactionInputMap
     {
-        Transaction MapInputTransaction(string type, double amount,string userName, IexStockModel iexData);
+        Transaction MapInputTransaction(string type, double amount,string userName, IexStock iexData);
     }
     public class TransactionInputMap : ITransactionInputMap
     {
@@ -17,7 +18,7 @@ namespace Core.Mappings
             // _selectUserService = selectUserService
         }
 
-        public Transaction MapInputTransaction(string type, double amount,string userName, IexStockModel iexData)
+        public Transaction MapInputTransaction(string type, double amount,string userName, IexStock iexData)
         {
             var transaction = new Transaction
             {

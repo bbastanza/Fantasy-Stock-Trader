@@ -1,3 +1,4 @@
+using Core.Entities;
 using Core.Entities.Users;
 using FluentNHibernate.Mapping;
 

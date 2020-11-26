@@ -1,8 +1,9 @@
 using System;
-using Core.Entities.Iex.IexServices;
+using Core.Entities;
 using Core.Mappings;
+using Core.Services.IexServices;
 
-namespace Core.Entities.Transactions.TransactionServices
+namespace Core.Services.TransactionServices
 {
     public interface IHandlePurchaseService
     {

@@ -1,17 +1,16 @@
 using System.Collections.Generic;
-using Core.Entities.Iex;
-using Core.Entities.Users;
+using Core.Entities;
 
-namespace Core.Entities.Transactions.TransactionServices
+namespace Core.Services.TransactionServices
 {
     public interface ISetAllocatedFundsService
     {
-        double SetAllocatedFunds(List<IexStockModel> stockModels, List<Holding> holdings);
+        double SetAllocatedFunds(List<IexStock> stockModels, List<Holding> holdings);
     }
     
     public class SetAllocatedFundsService : ISetAllocatedFundsService
     {
-        public double SetAllocatedFunds(List<IexStockModel> stockModels, List<Holding> holdings)
+        public double SetAllocatedFunds(List<IexStock> stockModels, List<Holding> holdings)
         {
             double totalHoldingsValue = 0;
             foreach (var stockModel in stockModels)

@@ -6,9 +6,9 @@ namespace Core.DbConnection
     {
         private readonly string _connectionString;
 
-        public DbConnection(string connectionString)
+        public DbConnection()
         {
-            _connectionString = connectionString;
+            _connectionString =  "User ID=postgres;Password=password;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;";
         }
 
         public void OpenConnection()

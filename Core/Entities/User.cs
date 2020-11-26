@@ -15,25 +15,12 @@ namespace Core.Entities.Users
             Email = email;
         }
 
-        [JsonPropertyName("userName")]
         public virtual string UserName { get; set; }
-        
-        [JsonPropertyName("password")]
         public virtual string Password { get; set; }
-        
-        [JsonPropertyName("email")]
         public virtual string Email { get; set; }
-        
-        [JsonPropertyName("createdAt")] 
         public virtual DateTime CreatedAt { get; set; } = DateTime.Now;
-        
-        [JsonPropertyName("balance")]
         public virtual double Balance { get; set; } = 100000;
-        
-        [JsonPropertyName("allocatedFunds")]
         public virtual double AllocatedFunds { get; set; }
-       
-        [JsonPropertyName("holdings")]
         public virtual List<Holding> Holdings { get; set; } = new List<Holding>()
             {new Holding(new Transaction() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};
 
