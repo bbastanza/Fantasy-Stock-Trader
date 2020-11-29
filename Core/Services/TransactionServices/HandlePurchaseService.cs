@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using Core.Entities;
 using Core.Mappings;
 using Core.Services.IexServices;
+using Infrastructure.Exceptions;
 
 namespace Core.Services.TransactionServices
 {
@@ -9,7 +11,7 @@ namespace Core.Services.TransactionServices
     {
         Transaction PurchaseTransaction(double amount, string symbol, string userName);
     }
-    
+
     public class HandlePurchaseService : IHandlePurchaseService
     {
         private readonly IIexFetchService _iexFetchService;
@@ -19,7 +21,8 @@ namespace Core.Services.TransactionServices
         private readonly IStockListService _stockListService;
 
         public HandlePurchaseService(IIexFetchService iexFetchService, IPurchaseSharesService purchaseSharesService,
-            ITransactionInputMap transactionInputMap, ISetAllocatedFundsService setAllocatedFundsService, IStockListService stockListService)
+            ITransactionInputMap transactionInputMap, ISetAllocatedFundsService setAllocatedFundsService,
+            IStockListService stockListService)
         {
             _iexFetchService = iexFetchService;
             _purchaseSharesService = purchaseSharesService;
@@ -28,7 +31,7 @@ namespace Core.Services.TransactionServices
             _stockListService = stockListService;
         }
 
-        public Transaction PurchaseTransaction(double amount, string userName,string symbol)
+        public Transaction PurchaseTransaction(double amount, string userName, string symbol)
         {
             var transactionType = "purchase";
             var iexData = _iexFetchService.GetStockBySymbol(symbol);
@@ -39,7 +42,6 @@ namespace Core.Services.TransactionServices
                     _stockListService.GetStockModelList(transaction.User),
                     transaction.User.Holdings
                 );
-            Console.WriteLine(transaction);
             return transaction;
         }
     }

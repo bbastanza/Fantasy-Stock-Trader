@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using Core.Entities.Transactions;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Core.Entities.Users
+namespace Core.Entities
 {
     public class User
     {

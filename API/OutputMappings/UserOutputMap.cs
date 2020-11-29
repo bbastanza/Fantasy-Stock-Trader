@@ -1,5 +1,5 @@
 using API.Models;
-using Core.Entities.Users;
+using Core.Entities;
 
 namespace API.OutputMappings
 {

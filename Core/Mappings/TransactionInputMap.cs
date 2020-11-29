@@ -1,7 +1,7 @@
+using System.IO;
 using Core.Entities;
-using Core.Entities.Iex;
-using Core.Entities.Transactions;
-using Core.Entities.Users;
+using Infrastructure.Exceptions;
+
 
 namespace Core.Mappings
 {
@@ -15,11 +15,15 @@ namespace Core.Mappings
         
         public TransactionInputMap(/* ISelectUserService selectUserService*/)
         {
+
             // _selectUserService = selectUserService
         }
 
         public Transaction MapInputTransaction(string type, double amount,string userName, IexStock iexData)
         {
+            if (amount <= 0 || userName == null)
+                throw new InvalidInputException(Path.GetFullPath(ToString()) , "MapInputTransaction()");
+            
             var transaction = new Transaction
             {
                 Type = type,

@@ -7,9 +7,7 @@ namespace Core.Services.IexServices
     {
         HttpClient ApiClient { get; }
     }
-    /// <summary>
-    /// helper method to set up the correct headers for a request to the IEX Api
-    /// </summary>
+
     public class ApiHelper : IApiHelper
     {
         public HttpClient ApiClient { get; }

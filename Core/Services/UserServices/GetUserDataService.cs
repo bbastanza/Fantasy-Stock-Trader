@@ -1,5 +1,6 @@
 using System.IO;
 using Core.Services.TransactionServices;
+using Infrastructure.Exceptions;
 
 namespace Core.Entities.Users.Services
 {
@@ -23,8 +24,7 @@ namespace Core.Entities.Users.Services
         public User GetUserData(string userName, string password)
         {
             if (userName == null || password == null)
-                throw new InvalidDataException(
-                    $"You have provided incomplete data\nUserName: {userName}\nPassword: {password}");
+                throw new InvalidInputException(Path.GetFullPath(ToString()), "GetUserData()");
             // _checkUserService.ValidateUser(userName, password)
             // if true _getUserDataService.GetUserByUsername(username)
             // this code is temporary

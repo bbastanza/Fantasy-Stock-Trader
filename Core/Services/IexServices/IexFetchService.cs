@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Core.Entities;
+using Infrastructure.Exceptions;
 using Microsoft.Extensions.Configuration;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -27,8 +28,9 @@ namespace Core.Services.IexServices
 
         public IexStock GetStockBySymbol(string stockName)
         {
-            if (stockName == null) 
-                throw new InvalidDataException("A symbol has not bee provided for this search");
+            if (stockName == null)
+                throw new InvalidInputException(Path.GetFullPath(ToString()),
+                    "GetStockBySymbol()");
 
             var url =
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
@@ -44,7 +46,7 @@ namespace Core.Services.IexServices
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadAsStringAsync();
 
-            throw new ExternalException("There was a problem receiving data from the IEX API");
+            throw new IexException(Path.GetFullPath(ToString()), "GetDataFromIex()");
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using API.Models;
 using API.OutputMappings;
 using Core.Services.TransactionServices;
+using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -32,6 +33,11 @@ namespace API.Controllers
                 var userOutput = _userOutputMap.MapUserOutput(transaction.User);
                 return Ok("Sale Valid... UserState: " + userOutput);
             }
+            catch (DreamTraderException ex)
+            {
+                Console.WriteLine($"DreamTraderException => {ex.Path}\n");
+                return StatusCode(409, $"{ex.Message} | {ex.Path}");
+            }
             catch(Exception ex)
             {
                 Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
@@ -49,6 +55,11 @@ namespace API.Controllers
                     purchaseInput.UserName, purchaseInput.Symbol);
                 var userOutput = _userOutputMap.MapUserOutput(transaction.User);
                 return Ok("Purchase Valid... UserState: " + userOutput);
+            }
+            catch (DreamTraderException ex)
+            {
+                Console.WriteLine($"DreamTraderException => {ex.Path}\n");
+                return StatusCode(409, $"{ex.Message} | {ex.Path}");
             }
             catch(Exception ex)
             {

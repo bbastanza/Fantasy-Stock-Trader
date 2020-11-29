@@ -4,6 +4,7 @@ using Core.Entities.Users.Services;
 using Core.Mappings;
 using Core.Services.IexServices;
 using Core.Services.TransactionServices;
+using Core.Services.UserServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;

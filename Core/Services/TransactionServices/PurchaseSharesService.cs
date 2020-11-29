@@ -1,5 +1,7 @@
+using System.IO;
 using Core.Entities;
 using Core.Entities.Users;
+using Infrastructure.Exceptions;
 
 namespace Core.Services.TransactionServices
 {
@@ -7,10 +9,9 @@ namespace Core.Services.TransactionServices
     {
         User PurchaseShares(Transaction transaction);
     }
-    
+
     public class PurchaseSharesService : IPurchaseSharesService
     {
-
         public User PurchaseShares(Transaction transaction)
         {
             Holding currentHolding = new Holding(transaction);
@@ -28,13 +29,15 @@ namespace Core.Services.TransactionServices
                 // currentHolding.User = transaction.User;                
                 transaction.User.Holdings.Add(currentHolding);
             }
-            
+
+            if (transaction.User.Balance < transaction.Amount)
+                throw new StockTransactionException(Path.GetFullPath(ToString()), "PurchaseShares()"); 
+
             transaction.User.Balance -= transaction.Amount;
             currentHolding.Purchase(transaction.Amount / transaction.CurrentPrice);
             currentHolding.SetValue(transaction.CurrentPrice);
 
             return transaction.User;
         }
-
     }
 }

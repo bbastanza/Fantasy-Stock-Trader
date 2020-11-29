@@ -1,6 +1,8 @@
 using System.IO;
+using Core.Entities;
+using Infrastructure.Exceptions;
 
-namespace Core.Entities.Users.Services
+namespace Core.Services.UserServices
 {
     public interface IAddUserService
     {
@@ -12,8 +14,7 @@ namespace Core.Entities.Users.Services
         public User AddUser(string userName, string password, string email)
         {
             if (userName == null || password == null || email == null)
-                throw new InvalidDataException(
-                    $"The data received is incomplete\nUserName: {userName}\nPassword: {password}\nEmail: {email}");
+                throw new InvalidInputException(Path.GetFullPath(ToString()), "AddUser()");
 
             // if checkUserService.CheckUserByUserName(username) returns null
             var newUser = new User(userName, password, email);

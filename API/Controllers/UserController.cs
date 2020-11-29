@@ -2,6 +2,7 @@ using System;
 using API.Models;
 using API.OutputMappings;
 using Core.Entities.Users.Services;
+using Core.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
