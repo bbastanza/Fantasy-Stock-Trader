@@ -26,7 +26,7 @@ namespace Core.Services.TransactionServices
 
             if (newHolding)
             {
-                // currentHolding.User = transaction.User;                
+                currentHolding.User = transaction.User;                
                 transaction.User.Holdings.Add(currentHolding);
             }
 

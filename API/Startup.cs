@@ -22,15 +22,12 @@ namespace API
         {
             _configuration = configuration;
         }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSpaStaticFiles(config =>
-            {
-                config.RootPath = "client/build";
-            });
+            services.AddSpaStaticFiles(config => { config.RootPath = "client/build"; });
             services.AddScoped<IApiHelper, ApiHelper>();
             services.AddScoped<IIexFetchService, IexFetchService>();
             services.AddScoped<IStockListService, StockListService>();
@@ -61,20 +58,17 @@ namespace API
             app.UseRouting();
 
             app.UseAuthorization();
-            
+
             app.UseSpaStaticFiles();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-            
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "client";
                 if (env.IsDevelopment())
                 {
-                    spa.UseReactDevelopmentServer(npmScript:"start");
+                    spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
         }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Core.Entities;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Models
@@ -16,8 +15,8 @@ namespace API.Models
         [JsonPropertyName("allocatedFunds")] 
         public double AllocatedFunds { get; set; }
         
-        [JsonPropertyName("holdings")] 
-        public List<Holding> Holdings { get; set; }
+        [JsonPropertyName("holdings")]
+        public List<HoldingModel> Holdings { get; set; } = new List<HoldingModel>();
 
         public override string ToString() => JsonSerializer.Serialize(this);
     }

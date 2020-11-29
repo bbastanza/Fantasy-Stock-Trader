@@ -11,20 +11,11 @@ namespace Core.Entities
             CompanyName = transaction.CompanyName;
         }
 
-        [JsonPropertyName("symbol")]
         public virtual string Symbol { get; set; }
-        
-        [JsonPropertyName("companyName")]
         public virtual string CompanyName { get; set; }
-        
-        [JsonPropertyName("value")]
         public virtual double Value { get; set; }
-        
-        [JsonPropertyName("totalShares")]
         public virtual double TotalShares { get; set; }
-        
-        // [JsonPropertyName("user")]
-        // public virtual User User { get; set; }
+        public virtual User User { get; set; }
 
         public double SellAll(double currentPrice)
         {

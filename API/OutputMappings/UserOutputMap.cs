@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using API.Models;
 using Core.Entities;
 
@@ -17,8 +18,11 @@ namespace API.OutputMappings
                 UserName = user.UserName,
                 Balance = user.Balance,
                 AllocatedFunds = user.AllocatedFunds,
-                Holdings = user.Holdings
             };
+            foreach (var holding in user.Holdings)
+            {
+                outputModel.Holdings.Add(new HoldingModel(holding));
+            }
 
             return outputModel;
         }
