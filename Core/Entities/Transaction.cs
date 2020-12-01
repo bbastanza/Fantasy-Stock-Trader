@@ -3,13 +3,12 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities
 {
-    public class Transaction
+    public class Transaction : EntityBase
     {
         public Transaction()
         {
             
         }
-        public virtual int Id { get; set; }
         public virtual string Type { get; set; }
         public virtual string Symbol { get; set; }
         public virtual string CompanyName { get; set; }

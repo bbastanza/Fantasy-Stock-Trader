@@ -8,11 +8,11 @@ namespace Core.Mappings
         public UserMap()
         {
             Id(x => x.Id).GeneratedBy.Increment();
-            Map(x => x.UserName).Column("userName");
-            Map(x => x.Password).Column("password");
-            Map(x => x.Email).Column("email");
-            Map(x => x.CreatedAt).Column("createdAt");
-            Map(x => x.Balance).Column("balance");
+            Map(x => x.UserName);
+            Map(x => x.Password);
+            Map(x => x.Email);
+            Map(x => x.CreatedAt);
+            Map(x => x.Balance);
             // HasMany(x => x.Holdings)
             //     .Cascade.All()
             //     .Table("Holdings");

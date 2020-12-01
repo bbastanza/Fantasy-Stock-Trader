@@ -8,14 +8,14 @@ namespace Core.Mappings
         public TransactionMap()
         {
             Id(x => x.Id).GeneratedBy.Increment();
-            Map(x => x.Type).Column("type");
+            Map(x => x.Type);
             Component(x => x.User,
                 userId => userId.Map(x => x.Id, "userId"));
             Component(x => x.Holding,
                 holdingId => holdingId.Map(x => x.Id, "holdingId"));
-            Map(x => x.Amount).Column("amount");
-            Map(x => x.TransactionPrice).Column("transactionPrice");
-            Map(x => x.TransactionDate).Column("transactionDate");
+            Map(x => x.Amount);
+            Map(x => x.TransactionPrice);
+            Map(x => x.TransactionDate);
             Table("transaction_table");
         }
     }

@@ -3,7 +3,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities
 {
-    public class Holding
+    public class Holding : EntityBase
     {
         public Holding()
         {
@@ -15,7 +15,6 @@ namespace Core.Entities
             CompanyName = transaction.CompanyName;
         }
 
-        public virtual int Id { get; set; }
         public virtual string Symbol { get; set; }
         public virtual string CompanyName { get; set; }
         public virtual double Value { get; set; }
