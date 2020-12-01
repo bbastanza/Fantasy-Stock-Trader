@@ -16,7 +16,11 @@ namespace API.Controllers
         private readonly IGetUserDataService _getUserDataService;
         private readonly IUserOutputMap _userOutputMap;
 
-        public UserController(IAddUserService addUserService, IDeleteUserService deleteUserService, IGetUserDataService getUserDataService, IUserOutputMap userOutputMap)
+        public UserController(
+            IAddUserService addUserService, 
+            IDeleteUserService deleteUserService, 
+            IGetUserDataService getUserDataService, 
+            IUserOutputMap userOutputMap)
         {
             _addUserService = addUserService;
             _deleteUserService = deleteUserService;

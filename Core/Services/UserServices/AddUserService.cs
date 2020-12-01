@@ -1,5 +1,7 @@
+using System;
 using System.IO;
 using Core.Entities;
+using Core.Services.DbServices;
 using Infrastructure.Exceptions;
 
 namespace Core.Services.UserServices
@@ -11,12 +13,19 @@ namespace Core.Services.UserServices
 
     public class AddUserService : IAddUserService
     {
+        private readonly IDbQueryService _dbQueryService;
+
+        public AddUserService(IDbQueryService dbQueryService)
+        {
+            _dbQueryService = dbQueryService;
+        } 
         public User AddUser(string userName, string password, string email)
         {
             if (userName == null || password == null || email == null)
                 throw new InvalidInputException(Path.GetFullPath(ToString()), "AddUser()");
 
-            // if checkUserService.CheckUserByUserName(username) returns null
+            Console.WriteLine(_dbQueryService.CheckExistingUser(userName));
+            
             var newUser = new User(userName, password, email);
             // add newUser to db
             return newUser;

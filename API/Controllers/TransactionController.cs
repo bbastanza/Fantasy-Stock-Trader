@@ -17,7 +17,10 @@ namespace API.Controllers
         private readonly IHandlePurchaseService _handlePurchaseService;
         private readonly IUserOutputMap _userOutputMap;
 
-        public TransactionController(IHandleSaleService handleSaleService, IHandlePurchaseService handlePurchaseService, IUserOutputMap userOutputMap)
+        public TransactionController(
+            IHandleSaleService handleSaleService, 
+            IHandlePurchaseService handlePurchaseService, 
+            IUserOutputMap userOutputMap)
         {
             _handleSaleService = handleSaleService;
             _handlePurchaseService = handlePurchaseService;
@@ -61,7 +64,7 @@ namespace API.Controllers
             catch (DreamTraderException ex)
             {
                 Console.WriteLine($"DreamTraderException => {ex.Path}\n");
-                return StatusCode(409, $"{ex.Message} | {ex.Path}");
+                return StatusCode(409, $"{ex.Message} | {ex.Path} | {ex.Method}");
             }
             catch(Exception ex)
             {

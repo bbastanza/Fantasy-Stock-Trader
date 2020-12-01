@@ -34,8 +34,8 @@ namespace Core.Services.TransactionServices
                 throw new StockTransactionException(Path.GetFullPath(ToString()), "PurchaseShares()"); 
 
             transaction.User.Balance -= transaction.Amount;
-            currentHolding.Purchase(transaction.Amount / transaction.CurrentPrice);
-            currentHolding.SetValue(transaction.CurrentPrice);
+            currentHolding.Purchase(transaction.Amount / transaction.TransactionPrice);
+            currentHolding.SetValue(transaction.TransactionPrice);
 
             return transaction.User;
         }

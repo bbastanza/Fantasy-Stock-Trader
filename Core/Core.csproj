@@ -7,13 +7,8 @@
   <ItemGroup>
     <PackageReference Include="FluentNHibernate" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NHibernate" Version="5.3.5" />
     <PackageReference Include="System.Text.Json" Version="5.0.0-rc.2.20475.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services" />
   </ItemGroup>
 
   <ItemGroup>

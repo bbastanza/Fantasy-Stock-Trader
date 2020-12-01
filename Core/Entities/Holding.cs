@@ -5,36 +5,41 @@ namespace Core.Entities
 {
     public class Holding
     {
+        public Holding()
+        {
+            
+        }
         public Holding(Transaction transaction)
         {
             Symbol = transaction.Symbol;
             CompanyName = transaction.CompanyName;
         }
 
+        public virtual int Id { get; set; }
         public virtual string Symbol { get; set; }
         public virtual string CompanyName { get; set; }
         public virtual double Value { get; set; }
         public virtual double TotalShares { get; set; }
         public virtual User User { get; set; }
 
-        public double SellAll(double currentPrice)
+        public virtual double SellAll(double currentPrice)
         {
             var sharedToSell = TotalShares;
             TotalShares = 0;
             return sharedToSell * currentPrice;
         }
 
-        public void Sell(double sellShareAmount)
+        public virtual void Sell(double sellShareAmount)
         {
             TotalShares -= sellShareAmount;
         }
 
-        public void Purchase(double shareAmount)
+        public virtual void Purchase(double shareAmount)
         {
             TotalShares += shareAmount;
         }
 
-        public void SetValue(double currentValue)
+        public virtual void SetValue(double currentValue)
         {
             Value = TotalShares * currentValue;
         }

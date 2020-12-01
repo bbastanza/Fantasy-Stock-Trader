@@ -1,5 +1,4 @@
 using Core.Entities;
-using Core.Entities.Users;
 using FluentNHibernate.Mapping;
 
 namespace Core.Mappings
@@ -9,9 +8,12 @@ namespace Core.Mappings
 
         public HoldingMap()
         {
-            Map(x => x.Symbol);
-            Map(x => x.CompanyName);
-            Map(x => x.TotalShares);
+            Id(x => x.Id).GeneratedBy.Increment();
+            Component(x => x.User,
+                userId => userId.Map(x => x.Id, "userId"));
+            Map(x => x.Symbol).Column("symbol");
+            Map(x => x.TotalShares).Column("totalShares");
+            Table("holding_table");
             // References(x => x.User);
         }
     }

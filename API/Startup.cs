@@ -1,7 +1,7 @@
 using API.OutputMappings;
-using Core.DbConnection;
 using Core.Entities.Users.Services;
 using Core.Mappings;
+using Core.Services.DbServices;
 using Core.Services.IexServices;
 using Core.Services.TransactionServices;
 using Core.Services.UserServices;
@@ -41,7 +41,8 @@ namespace API
             services.AddScoped<IAddUserService, AddUserService>();
             services.AddScoped<IDeleteUserService, DeleteUserService>();
             services.AddScoped<IGetUserDataService, GetUserDataService>();
-            services.AddScoped<INHibernateSessionService, InHibernateSessionService>();
+            services.AddScoped<INHibernateSessionService, NHibernateSessionService>();
+            services.AddScoped<IDbQueryService, DbQueryService>();
             services.AddScoped<IUserOutputMap, UserOutputMap>();
         }
 

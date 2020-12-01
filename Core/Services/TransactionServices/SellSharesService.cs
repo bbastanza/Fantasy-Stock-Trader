@@ -31,20 +31,20 @@ namespace Core.Services.TransactionServices
             if (!existingHolding)
                 throw new StockTransactionException(Path.GetFullPath(ToString()), "SellShares()");
 
-            var currentHolding = _checkExistingHoldingsService.CheckExistingHolding(transaction);
+            _checkExistingHoldingsService.CheckExistingHolding(transaction);
 
             if (sellAll)
-                SellAll(currentHolding, transaction);
+                SellAll(transaction.Holding, transaction);
             else
-                SellPartial(currentHolding, transaction);
+                SellPartial(transaction.Holding, transaction);
 
-            currentHolding.SetValue(transaction.CurrentPrice);
+            transaction.Holding.SetValue(transaction.TransactionPrice);
             return transaction.User;
         }
 
         private void SellPartial(Holding currentHolding, Transaction transaction)
         {
-            var sellShareAmount = transaction.Amount / transaction.CurrentPrice;
+            var sellShareAmount = transaction.Amount / transaction.TransactionPrice;
 
             if (sellShareAmount > currentHolding.TotalShares)
                 throw new StockTransactionException(Path.GetFullPath(ToString()), "SellPartial()");
@@ -55,7 +55,7 @@ namespace Core.Services.TransactionServices
 
         private void SellAll(Holding currentHolding, Transaction transaction)
         {
-            var saleValue = currentHolding.SellAll(transaction.CurrentPrice);
+            var saleValue = currentHolding.SellAll(transaction.TransactionPrice);
             transaction.User.Balance += saleValue;
             transaction.User.Holdings.Remove(currentHolding);
         }

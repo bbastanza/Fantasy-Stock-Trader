@@ -2,7 +2,6 @@ using System.IO;
 using Core.Entities;
 using Infrastructure.Exceptions;
 
-
 namespace Core.Mappings
 {
     public interface ITransactionInputMap
@@ -30,7 +29,7 @@ namespace Core.Mappings
                 Amount = amount,
                 Symbol = iexData.Symbol,
                 CompanyName = iexData.CompanyName,
-                CurrentPrice = iexData.LatestPrice,
+                TransactionPrice = iexData.LatestPrice,
                 User = new User(userName,"Password", "joey@baggs.com")
                 // User = _selectUserService.GetUserByName(transactionInput.UserName)
             };
