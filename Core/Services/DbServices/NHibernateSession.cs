@@ -3,7 +3,6 @@ using Core.Mappings;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
-using NHibernate.Tool.hbm2ddl;
 
 namespace Core.Services.DbServices
 {
@@ -31,7 +30,6 @@ namespace Core.Services.DbServices
                 .Mappings(m =>
                     m.FluentMappings.AddFromAssembly(Assembly
                                 .GetAssembly(typeof(HoldingMap))))
-                // .ExposeConfiguration(config => new SchemaUpdate(config).Execute(false, true))
                 .BuildSessionFactory();
         }
 

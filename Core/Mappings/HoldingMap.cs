@@ -8,11 +8,11 @@ namespace Core.Mappings
 
         public HoldingMap()
         {
-            Id(x => x.Id).GeneratedBy.Increment();
+            Id(x => x.Id).GeneratedBy.Increment().Column("id");
             Component(x => x.User,
-                userId => userId.Map(x => x.Id, "userId"));
-            Map(x => x.Symbol);
-            Map(x => x.TotalShares);
+                userId => userId.Map(x => x.Id).Column("user_id"));
+            Map(x => x.Symbol).Column("symbol");
+            Map(x => x.TotalShares).Column("total_shares");
             Table("holding_table");
             // References(x => x.User);
         }
