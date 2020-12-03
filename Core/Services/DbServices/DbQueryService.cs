@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Core.Entities;
 
@@ -20,7 +21,8 @@ namespace Core.Services.DbServices
         {
             var session = _nHibernateSessionService.GetSession();
             var currentUser = session.Query<User>()
-                .Select(user => user.UserName == userName);
+                .Single(user => user.UserName == userName);
+            Console.WriteLine(currentUser.UserName);
             return currentUser.ToString();
         }
     }
