@@ -19,10 +19,10 @@ namespace Core.Services.DbServices
 
         public string CheckExistingUser(string userName)
         {
+            Console.WriteLine(userName);
             var session = _nHibernateSessionService.GetSession();
             var currentUser = session.Query<User>()
-                .Single(user => user.UserName == userName);
-            Console.WriteLine(currentUser.UserName);
+                .First(user => user.UserName == userName);
             return currentUser.ToString();
         }
     }
