@@ -13,16 +13,9 @@ namespace API.Models
             TotalShares = holding.TotalShares;
         }
             
-        [JsonPropertyName("symbol")]
         public virtual string Symbol { get; set; }
-        
-        [JsonPropertyName("companyName")]
         public virtual string CompanyName { get; set; }
-        
-        [JsonPropertyName("value")]
         public virtual double Value { get; set; }
-        
-        [JsonPropertyName("totalShares")]
         public virtual double TotalShares { get; set; }
         
     }

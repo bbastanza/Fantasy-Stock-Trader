@@ -2,7 +2,9 @@ using System;
 using API.Models;
 using API.OutputMappings;
 using Core.Services.UserServices;
+using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using NHibernate.Impl;
 
 namespace API.Controllers
 {
@@ -38,6 +40,11 @@ namespace API.Controllers
                         _getUserDataService.GetUserData(userInput.UserName, userInput.Password));
                 return Ok(userOutput);
             }            
+            catch (DreamTraderException ex)
+            {
+                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
+                return StatusCode(409, new ExceptionModel(ex));
+            }
             catch(Exception ex)
             {
                 Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
@@ -56,6 +63,11 @@ namespace API.Controllers
                         newUser.Email));
                 return Ok(userOutput);
             }
+            catch (DreamTraderException ex)
+            {
+                Console.WriteLine($"Message {ex.GetType()}\n{ex.Message}\nPath {ex.Path}{ex.Method}");
+                return StatusCode(409, new ExceptionModel(ex));
+            }
             catch(Exception ex)
             {
                 Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
@@ -70,6 +82,11 @@ namespace API.Controllers
             try
             {
                 return Ok(_deleteUserService.DeleteUser(user.UserName, user.Password));
+            }
+            catch (DreamTraderException ex)
+            {
+                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
+                return StatusCode(409, new ExceptionModel(ex));
             }
             catch(Exception ex)
             {
@@ -87,6 +104,11 @@ namespace API.Controllers
                 // check to see if user is in the database ()=> if true check to see if user.password == databaseuser.password
                 return Ok(user.UserName + " is now logged in");
             }
+            catch (DreamTraderException ex)
+            {
+                Console.WriteLine($"Message {ex.GetType()}\n{ex.Message}\nPath {ex.Path}{ex.Method}");
+                return StatusCode(409, new ExceptionModel(ex));
+            }
             catch(Exception ex)
             {
                 Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
@@ -102,6 +124,11 @@ namespace API.Controllers
             {
                 // check to see if user is in the database ()=> logout user
                 return Ok(user.UserName + " has logged out");
+            }
+            catch (DreamTraderException ex)
+            {
+                Console.WriteLine($"Message {ex.GetType()}\n{ex.Message}\nPath {ex.Path}{ex.Method}");
+                return StatusCode(409, new ExceptionModel(ex));
             }
             catch(Exception ex)
             {
