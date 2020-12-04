@@ -37,7 +37,6 @@ namespace Core.Services.DbServices
             
             var currentUser = session.Query<User>()
                 .SingleOrDefault((user => user.UserName == userName));
-            Console.WriteLine(currentUser);
             _nHibernateSessionService.CloseSession();
             
             if (currentUser == null)
