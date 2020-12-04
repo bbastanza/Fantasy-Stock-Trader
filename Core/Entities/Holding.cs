@@ -7,7 +7,6 @@ namespace Core.Entities
     {
         public Holding()
         {
-            
         }
         public Holding(Transaction transaction)
         {

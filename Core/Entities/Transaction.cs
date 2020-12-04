@@ -7,8 +7,8 @@ namespace Core.Entities
     {
         public Transaction()
         {
-            
         }
+        
         public virtual string Type { get; set; }
         public virtual string Symbol { get; set; }
         public virtual string CompanyName { get; set; }

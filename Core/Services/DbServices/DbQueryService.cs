@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using Core.Entities;
-using FluentNHibernate.Visitors;
 using Infrastructure.Exceptions;
 
 namespace Core.Services.DbServices
@@ -35,13 +34,14 @@ namespace Core.Services.DbServices
         public User GetUserFromDb(string userName, string password)
         {
             var session = _nHibernateSessionService.GetSession();
+            
             var currentUser = session.Query<User>()
                 .SingleOrDefault((user => user.UserName == userName));
-            
+            Console.WriteLine(currentUser);
             _nHibernateSessionService.CloseSession();
             
             if (currentUser == null)
-                throw new DbInteractionException(_path, "GetUserFromDb()");
+                throw new NonExistingUserException(_path, "GetUserFromDb()");
             
             if (currentUser.Password != password)
                 throw new UserValidationException(_path, "GetUserFromDb()");
