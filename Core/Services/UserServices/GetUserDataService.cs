@@ -1,8 +1,10 @@
 using System.IO;
+using Core.Entities;
+using Core.Services.DbServices;
 using Core.Services.TransactionServices;
 using Infrastructure.Exceptions;
 
-namespace Core.Entities.Users.Services
+namespace Core.Services.UserServices
 {
     public interface IGetUserDataService
     {
@@ -13,23 +15,23 @@ namespace Core.Entities.Users.Services
     {
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
         private readonly IStockListService _stockListService;
+        private readonly IDbQueryService _dbQueryService;
 
         public GetUserDataService(ISetAllocatedFundsService setAllocatedFundsService,
-            IStockListService stockListService)
+            IStockListService stockListService, IDbQueryService dbQueryService)
         {
             _setAllocatedFundsService = setAllocatedFundsService;
             _stockListService = stockListService;
+            _dbQueryService = dbQueryService;
         }
 
         public User GetUserData(string userName, string password)
         {
             if (userName == null || password == null)
                 throw new InvalidInputException(Path.GetFullPath(ToString()), "GetUserData()");
-            // _checkUserService.ValidateUser(userName, password)
-            // if true _getUserDataService.GetUserByUsername(username)
-            // this code is temporary
-            var user = new User(userName, password, "some@email.com");
-            //this code will stay
+            
+            var user = _dbQueryService.GetUserFromDb(userName, password);
+            
             user.AllocatedFunds =
                 _setAllocatedFundsService.SetAllocatedFunds(_stockListService.GetStockModelList(user), user.Holdings);
 

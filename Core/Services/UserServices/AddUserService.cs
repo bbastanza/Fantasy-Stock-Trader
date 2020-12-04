@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using Core.Entities;
 using Core.Services.DbServices;
@@ -14,20 +13,24 @@ namespace Core.Services.UserServices
     public class AddUserService : IAddUserService
     {
         private readonly IDbQueryService _dbQueryService;
+        private readonly IDbAddService _dbAddService;
 
-        public AddUserService(IDbQueryService dbQueryService)
+        public AddUserService(IDbQueryService dbQueryService, IDbAddService dbAddService)
         {
             _dbQueryService = dbQueryService;
+            _dbAddService = dbAddService;
         } 
         public User AddUser(string userName, string password, string email)
         {
             if (userName == null || password == null || email == null)
                 throw new InvalidInputException(Path.GetFullPath(ToString()), "AddUser()");
 
-            Console.WriteLine(_dbQueryService.CheckExistingUser(userName));
+            if (!_dbQueryService.CheckExistingUser(userName))
+                throw new ExistingUserException(Path.GetFullPath(ToString()), "AddUser()");
             
             var newUser = new User(userName, password, email);
-            // add newUser to db
+            _dbAddService.AddUser(newUser);
+            
             return newUser;
         }
     }

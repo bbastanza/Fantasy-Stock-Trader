@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities
@@ -7,7 +6,6 @@ namespace Core.Entities
     {
         public Holding()
         {
-            
         }
         public Holding(Transaction transaction)
         {
