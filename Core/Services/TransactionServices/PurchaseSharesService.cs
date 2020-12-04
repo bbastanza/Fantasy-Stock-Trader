@@ -1,6 +1,5 @@
 using System.IO;
 using Core.Entities;
-using Core.Entities.Users;
 using Infrastructure.Exceptions;
 
 namespace Core.Services.TransactionServices

@@ -1,5 +1,4 @@
 using API.OutputMappings;
-using Core.Entities.Users.Services;
 using Core.Mappings;
 using Core.Services.DbServices;
 using Core.Services.IexServices;
@@ -44,6 +43,7 @@ namespace API
             services.AddScoped<INHibernateSessionService, NHibernateSessionService>();
             services.AddScoped<IDbQueryService, DbQueryService>();
             services.AddScoped<IUserOutputMap, UserOutputMap>();
+            services.AddScoped<IDbAddService, DbAddService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

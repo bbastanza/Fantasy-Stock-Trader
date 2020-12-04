@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Core.Entities;
-using Core.Entities.Users;
 using Core.Services.IexServices;
 
 namespace Core.Services.TransactionServices
