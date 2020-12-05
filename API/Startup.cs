@@ -43,7 +43,8 @@ namespace API
             services.AddScoped<INHibernateSessionService, NHibernateSessionService>();
             services.AddScoped<IDbQueryService, DbQueryService>();
             services.AddScoped<IUserOutputMap, UserOutputMap>();
-            services.AddScoped<IDbAddService, DbAddService>();
+            services.AddScoped<IDbAddUserService, DbAddUserService>();
+            services.AddScoped<IDbDeleteUserService, DbDeleteUserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

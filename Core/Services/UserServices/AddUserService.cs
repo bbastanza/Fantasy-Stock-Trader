@@ -13,12 +13,12 @@ namespace Core.Services.UserServices
     public class AddUserService : IAddUserService
     {
         private readonly IDbQueryService _dbQueryService;
-        private readonly IDbAddService _dbAddService;
+        private readonly IDbAddUserService _dbAddUserService;
 
-        public AddUserService(IDbQueryService dbQueryService, IDbAddService dbAddService)
+        public AddUserService(IDbQueryService dbQueryService, IDbAddUserService dbAddUserService)
         {
             _dbQueryService = dbQueryService;
-            _dbAddService = dbAddService;
+            _dbAddUserService = dbAddUserService;
         } 
         public User AddUser(string userName, string password, string email)
         {
@@ -29,7 +29,7 @@ namespace Core.Services.UserServices
                 throw new ExistingUserException(Path.GetFullPath(ToString()), "AddUser()");
             
             var newUser = new User(userName, password, email);
-            _dbAddService.AddUser(newUser);
+            _dbAddUserService.AddUser(newUser);
             
             return newUser;
         }
