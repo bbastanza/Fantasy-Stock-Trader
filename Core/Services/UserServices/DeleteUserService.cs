@@ -8,7 +8,7 @@ namespace Core.Services.UserServices
     {
         string DeleteUser(string userName, string password);
     }
-    public sealed class DeleteUserService : IDeleteUserService
+    public class DeleteUserService : IDeleteUserService
     {
         private readonly IDbQueryService _dbQueryService;
         private readonly IDbDeleteUserService _dbDeleteUserService;

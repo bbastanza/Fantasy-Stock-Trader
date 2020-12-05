@@ -34,14 +34,19 @@ namespace Core.Services.TransactionServices
         public Transaction PurchaseTransaction(double amount, string userName, string symbol)
         {
             var transactionType = "purchase";
+            
             var iexData = _iexFetchService.GetStockBySymbol(symbol);
+            
             var transaction = _transactionInputMap.MapInputTransaction(transactionType, amount, userName, iexData);
+            
             transaction.User = _purchaseSharesService.PurchaseShares(transaction);
+            
             transaction.User.AllocatedFunds =
                 _setAllocatedFundsService.SetAllocatedFunds(
                     _stockListService.GetStockModelList(transaction.User),
                     transaction.User.Holdings
                 );
+            
             return transaction;
         }
     }

@@ -23,8 +23,7 @@ namespace Core.Entities
         public virtual DateTime CreatedAt { get; set; } = DateTime.Now;
         public virtual double Balance { get; set; } = 100000;
         public virtual double AllocatedFunds { get; set; }
-        public virtual List<Holding> Holdings { get; set; } = new List<Holding>()
-            {new Holding(new Transaction() {CompanyName = "Caterpillar", Symbol = "CAT"}) {TotalShares = 30}};
+        public virtual List<Holding> Holdings { get; set; } = new List<Holding>();
 
         public override string ToString() => JsonSerializer.Serialize(this);
     }

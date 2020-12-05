@@ -12,22 +12,21 @@ namespace Core.Services.TransactionServices
     public class SellSharesService : ISellShareService
     {
         private readonly ICheckExistingHoldingsService _checkExistingHoldingsService;
+        private readonly string _path;
 
         public SellSharesService(ICheckExistingHoldingsService checkExistingHoldingsService)
         {
             _checkExistingHoldingsService = checkExistingHoldingsService;
+            _path = Path.GetFullPath(ToString());
         }
 
         public User SellShares(Transaction transaction, bool sellAll)
         {
-            var existingHolding = false;
-
-            foreach (var holding in transaction.User.Holdings)
-                if (transaction.Symbol == holding.Symbol)
-                    existingHolding = true;
+            var existingHolding = transaction.User.Holdings
+                .Exists(x => x.Symbol == transaction.Symbol);
 
             if (!existingHolding)
-                throw new StockTransactionException(Path.GetFullPath(ToString()), "SellShares()");
+                throw new StockTransactionException(_path, "SellShares()");
 
             _checkExistingHoldingsService.CheckExistingHolding(transaction);
 

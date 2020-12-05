@@ -14,7 +14,7 @@ namespace Core.Services.DbServices
     public class DbDeleteUserService : IDbDeleteUserService
     {
         private readonly INHibernateSessionService _nHibernateSessionService;
-        private string _path;
+        private readonly string _path;
 
         public DbDeleteUserService(INHibernateSessionService nHibernateSessionService)
         {

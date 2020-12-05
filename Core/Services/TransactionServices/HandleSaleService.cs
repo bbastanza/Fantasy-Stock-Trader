@@ -32,15 +32,19 @@ namespace Core.Services.TransactionServices
         public Transaction SellTransaction(double amount, string userName, string symbol, bool sellAll = false)
         {
             var transactionType = "sale";
+            
             var iexData = _iexFetchService.GetStockBySymbol(symbol);
+            
             var transaction = _transactionInputMap.MapInputTransaction(transactionType, amount, userName, iexData);
+            
             transaction.User = _sellShareService.SellShares(transaction, sellAll);
+            
             transaction.User.AllocatedFunds =
                 _setAllocatedFundsService.SetAllocatedFunds(
                     _stockListService.GetStockModelList(transaction.User),
                     transaction.User.Holdings
                 );
-            Console.WriteLine(transaction);
+            
             return transaction;
         }
     }

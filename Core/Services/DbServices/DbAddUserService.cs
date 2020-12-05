@@ -9,10 +9,10 @@ namespace Core.Services.DbServices
     {
         void AddUser(User user);
     }
-    public sealed class DbAddUserService : IDbAddUserService
+    public class DbAddUserService : IDbAddUserService
     {
         private readonly INHibernateSessionService _nHibernateSessionService;
-        private string _path;
+        private readonly string _path;
 
         public DbAddUserService(INHibernateSessionService nHibernateSessionService)
         {

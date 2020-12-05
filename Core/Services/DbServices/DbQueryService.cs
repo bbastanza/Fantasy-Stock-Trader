@@ -15,7 +15,7 @@ namespace Core.Services.DbServices
     public class DbQueryService : IDbQueryService
     {
         private readonly INHibernateSessionService _nHibernateSessionService;
-        private string _path;
+        private readonly string _path;
 
         public DbQueryService(INHibernateSessionService nHibernateSessionService)
         {

@@ -19,18 +19,19 @@ namespace Core.Services.IexServices
     {
         private readonly string _apiKey;
         private readonly HttpClient _client;
+        private readonly string _path;
 
         public IexFetchService(IApiHelper apiHelper, IConfiguration configuration)
         {
             _apiKey = configuration["iexKeys:TestKey"];
             _client = apiHelper.ApiClient;
+            _path = Path.GetFullPath(ToString());
         }
 
         public IexStock GetStockBySymbol(string stockName)
         {
             if (stockName == null)
-                throw new InvalidInputException(Path.GetFullPath(ToString()),
-                    "GetStockBySymbol()");
+                throw new InvalidInputException(_path, "GetStockBySymbol()");
 
             var url =
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
