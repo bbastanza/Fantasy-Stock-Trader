@@ -6,6 +6,7 @@ using Core.Services.TransactionServices;
 using Core.Services.UserServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.NodeServices;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,23 +28,7 @@ namespace API
         {
             services.AddControllers();
             services.AddSpaStaticFiles(config => { config.RootPath = "client/build"; });
-            services.AddScoped<IApiHelper, ApiHelper>();
-            services.AddScoped<IIexFetchService, IexFetchService>();
-            services.AddScoped<IStockListService, StockListService>();
-            services.AddScoped<ICheckExistingHoldingsService, CheckExistingHoldingService>();
-            services.AddScoped<IPurchaseSharesService, PurchaseSharesService>();
-            services.AddScoped<ITransactionInputMap, TransactionInputMap>();
-            services.AddScoped<ISetAllocatedFundsService, SetAllocatedFundsService>();
-            services.AddScoped<ISellShareService, SellSharesService>();
-            services.AddScoped<IHandleSaleService, HandleSaleService>();
-            services.AddScoped<IHandlePurchaseService, HandlePurchaseService>();
-            services.AddScoped<IAddUserService, AddUserService>();
-            services.AddScoped<IDeleteUserService, DeleteUserService>();
-            services.AddScoped<IGetUserDataService, GetUserDataService>();
-            services.AddScoped<INHibernateSessionService, NHibernateSessionService>();
-            services.AddScoped<IDbQueryService, DbQueryService>();
-            services.AddScoped<IUserOutputMap, UserOutputMap>();
-            services.AddScoped<IDbAddService, DbAddService>();
+            InterfaceConfig.Configure(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

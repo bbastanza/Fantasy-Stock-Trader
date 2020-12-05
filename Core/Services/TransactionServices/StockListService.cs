@@ -23,9 +23,9 @@ namespace Core.Services.TransactionServices
         {
             var stockModelList = new List<IexStock>();
             foreach (var holding in user.Holdings)
-            {
                 stockModelList.Add(_iexFetchService.GetStockBySymbol(holding.Symbol));
-            }
+            
+            
             return stockModelList;
         }
     }

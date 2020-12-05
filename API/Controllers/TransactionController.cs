@@ -1,11 +1,9 @@
 using System;
-using System.Linq;
 using API.Models;
 using API.OutputMappings;
 using Core.Services.TransactionServices;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Controllers
 {
@@ -40,8 +38,8 @@ namespace API.Controllers
             }
             catch (DreamTraderException ex)
             {
-                Console.WriteLine($"DreamTraderException => {ex.Path}\n");
-                return StatusCode(409, $"{ex.Message} | {ex.Path}");
+                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
+                return StatusCode(409, new ExceptionModel(ex));
             }
             catch(Exception ex)
             {
@@ -63,8 +61,8 @@ namespace API.Controllers
             }
             catch (DreamTraderException ex)
             {
-                Console.WriteLine($"DreamTraderException => {ex.Path}\n");
-                return StatusCode(409, $"{ex.Message} | {ex.Path} | {ex.Method}");
+                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
+                return StatusCode(409, new ExceptionModel(ex));
             }
             catch(Exception ex)
             {

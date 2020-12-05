@@ -9,12 +9,13 @@ namespace Core.Services.DbServices
     public interface IDbQueryService
     {
         bool CheckExistingUser(string userName);
+        bool ValidateUser(string userName, string password);
         User GetUserFromDb(string userName, string password);
     }
     public class DbQueryService : IDbQueryService
     {
         private readonly INHibernateSessionService _nHibernateSessionService;
-        private string _path;
+        private readonly string _path;
 
         public DbQueryService(INHibernateSessionService nHibernateSessionService)
         {
@@ -36,7 +37,7 @@ namespace Core.Services.DbServices
             var session = _nHibernateSessionService.GetSession();
             
             var currentUser = session.Query<User>()
-                .SingleOrDefault((user => user.UserName == userName));
+                .SingleOrDefault(user => user.UserName == userName);
             _nHibernateSessionService.CloseSession();
             
             if (currentUser == null)
@@ -46,6 +47,14 @@ namespace Core.Services.DbServices
                 throw new UserValidationException(_path, "GetUserFromDb()");
 
             return currentUser;
+        }
+
+        public bool ValidateUser(string userName, string password)
+        {
+            var session = _nHibernateSessionService.GetSession();
+            var currentUser = session.Query<User>()
+                .SingleOrDefault(user => user.UserName == userName);
+            return currentUser != null && currentUser.Password == password;
         }
     }
 }

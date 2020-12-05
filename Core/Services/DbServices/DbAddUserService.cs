@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using Core.Entities;
 using Infrastructure.Exceptions;
@@ -6,17 +5,19 @@ using NHibernate;
 
 namespace Core.Services.DbServices
 {
-    public interface IDbAddService
+    public interface IDbAddUserService
     {
         void AddUser(User user);
     }
-    public class DbAddService : IDbAddService
+    public class DbAddUserService : IDbAddUserService
     {
         private readonly INHibernateSessionService _nHibernateSessionService;
+        private readonly string _path;
 
-        public DbAddService(INHibernateSessionService nHibernateSessionService)
+        public DbAddUserService(INHibernateSessionService nHibernateSessionService)
         {
             _nHibernateSessionService = nHibernateSessionService;
+            _path = Path.GetFullPath(ToString());
         }
 
         public async void AddUser(User user)
@@ -32,7 +33,7 @@ namespace Core.Services.DbServices
             }
             catch
             {
-                throw new DbInteractionException(Path.GetFullPath(ToString()), "AddUser()");
+                throw new DbInteractionException(_path,"AddUser()");
             }
             finally
             {

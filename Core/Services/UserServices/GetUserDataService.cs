@@ -17,8 +17,10 @@ namespace Core.Services.UserServices
         private readonly IStockListService _stockListService;
         private readonly IDbQueryService _dbQueryService;
 
-        public GetUserDataService(ISetAllocatedFundsService setAllocatedFundsService,
-            IStockListService stockListService, IDbQueryService dbQueryService)
+        public GetUserDataService(
+            ISetAllocatedFundsService setAllocatedFundsService,
+            IStockListService stockListService, 
+            IDbQueryService dbQueryService)
         {
             _setAllocatedFundsService = setAllocatedFundsService;
             _stockListService = stockListService;

@@ -27,9 +27,8 @@ namespace Core.Services.DbServices
                         .Database("stock_db")
                         .Port(5432)
                     )) 
-                .Mappings(m =>
-                    m.FluentMappings.AddFromAssembly(Assembly
-                                .GetAssembly(typeof(HoldingMap))))
+                .Mappings(m => m.FluentMappings
+                    .AddFromAssembly(Assembly.GetAssembly(typeof(HoldingMap))))
                 .BuildSessionFactory();
         }
 

@@ -1,3 +1,4 @@
+using System.Linq;
 using Core.Entities;
 
 namespace Core.Services.TransactionServices
@@ -6,22 +7,25 @@ namespace Core.Services.TransactionServices
     {
         void CheckExistingHolding(Transaction transaction);
     }
+
     public class CheckExistingHoldingService : ICheckExistingHoldingsService
     {
         public void CheckExistingHolding(Transaction transaction)
         {
             transaction.Holding = new Holding(transaction);
+
             var newHolding = true;
-            foreach (var holding in transaction.User.Holdings)
-                if (transaction.Symbol == holding.Symbol)
-                {
-                    transaction.Holding = holding;
-                    newHolding = false;
-                    break;
-                }
+
+            foreach (var holding in transaction.User.Holdings
+                .Where(holding => holding.Symbol == transaction.Symbol))
+            {
+                transaction.Holding = holding;
+                newHolding = false;
+                break;
+            }
 
             if (newHolding)
                 transaction.User.Holdings.Add(transaction.Holding);
-        } 
+        }
     }
 }
