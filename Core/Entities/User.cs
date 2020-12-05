@@ -17,13 +17,13 @@ namespace Core.Entities
             Email = email;
         }
 
-        public virtual string UserName { get; set; }
-        public virtual string Password { get; set; }
-        public virtual string Email { get; set; }
-        public virtual DateTime CreatedAt { get; set; } = DateTime.Now;
+        public virtual string UserName { get; }
+        public virtual string Password { get; }
+        public virtual string Email { get; }
+        public virtual DateTime CreatedAt { get; } = DateTime.Now;
         public virtual double Balance { get; set; } = 100000;
         public virtual double AllocatedFunds { get; set; }
-        public virtual List<Holding> Holdings { get; set; } = new List<Holding>();
+        public virtual List<Holding> Holdings { get; } = new List<Holding>();    
 
         public override string ToString() => JsonSerializer.Serialize(this);
     }

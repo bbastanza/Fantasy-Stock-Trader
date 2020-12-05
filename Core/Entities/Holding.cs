@@ -7,14 +7,15 @@ namespace Core.Entities
         public Holding()
         {
         }
+        
         public Holding(Transaction transaction)
         {
             Symbol = transaction.Symbol;
             CompanyName = transaction.CompanyName;
         }
 
-        public virtual string Symbol { get; set; }
-        public virtual string CompanyName { get; set; }
+        public virtual string Symbol { get; }
+        public virtual string CompanyName { get; }
         public virtual double Value { get; set; }
         public virtual double TotalShares { get; set; }
         public virtual User User { get; set; }
