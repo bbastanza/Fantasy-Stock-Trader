@@ -4,7 +4,6 @@ using API.OutputMappings;
 using Core.Services.UserServices;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using NHibernate.Impl;
 
 namespace API.Controllers
 {
@@ -48,7 +47,7 @@ namespace API.Controllers
             catch(Exception ex)
             {
                 Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500,  ex.Message);
+                return StatusCode(500,  ex);
             }
         }
 
@@ -86,48 +85,6 @@ namespace API.Controllers
             catch (DreamTraderException ex)
             {
                 Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500,  ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [Route("login")]
-        public IActionResult LogInUser(UserInputModel user)
-        {
-            try
-            {
-                // check to see if user is in the database ()=> if true check to see if user.password == databaseuser.password
-                return Ok(user.UserName + " is now logged in");
-            }
-            catch (DreamTraderException ex)
-            {
-                Console.WriteLine($"Message {ex.GetType()}\n{ex.Message}\nPath {ex.Path}{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500,  ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [Route("logout")]
-        public IActionResult LogOutUser(UserInputModel user)
-        {
-            try
-            {
-                // check to see if user is in the database ()=> logout user
-                return Ok(user.UserName + " has logged out");
-            }
-            catch (DreamTraderException ex)
-            {
-                Console.WriteLine($"Message {ex.GetType()}\n{ex.Message}\nPath {ex.Path}{ex.Method}");
                 return StatusCode(409, new ExceptionModel(ex));
             }
             catch(Exception ex)

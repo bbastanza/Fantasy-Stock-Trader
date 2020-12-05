@@ -1,4 +1,5 @@
 using System;
+using API.Models;
 using Core.Services.IexServices;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +27,8 @@ namespace API.Controllers
             }
             catch (DreamTraderException ex)
             {
-                Console.WriteLine($"DreamTraderException => {ex.Path}\n");
-                return StatusCode(409, $"{ex.Message} | {ex.Path}");
+                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
+                return StatusCode(409, new ExceptionModel(ex));
             }
             catch(Exception ex)
             {
@@ -46,8 +47,8 @@ namespace API.Controllers
             }
             catch (DreamTraderException ex)
             {
-                Console.WriteLine($"DreamTraderException => {ex.Path}\n");
-                return StatusCode(409, $"{ex.Message} | {ex.Path}");
+                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
+                return StatusCode(409, new ExceptionModel(ex));
             }
             catch(Exception ex)
             {
