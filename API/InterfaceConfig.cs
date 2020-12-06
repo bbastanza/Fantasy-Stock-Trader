@@ -30,6 +30,8 @@ namespace API
             services.AddScoped<IUserOutputMap, UserOutputMap>();
             services.AddScoped<IDbAddUserService, DbAddUserService>();
             services.AddScoped<IDbDeleteUserService, DbDeleteUserService>();
+            services.AddScoped<IDbAddTransactionService, DbAddTransactionService>();
+            services.AddScoped<IDbHandleSale, DbHandleSale>();
         }
     }
 }

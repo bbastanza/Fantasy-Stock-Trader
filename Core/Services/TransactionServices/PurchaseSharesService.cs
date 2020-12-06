@@ -13,7 +13,7 @@ namespace Core.Services.TransactionServices
     {
         public User PurchaseShares(Transaction transaction)
         {
-            Holding currentHolding = new Holding(transaction);
+            var currentHolding = new Holding(transaction);
             var newHolding = true;
             foreach (var holding in transaction.User.Holdings)
                 if (transaction.Symbol == holding.Symbol)

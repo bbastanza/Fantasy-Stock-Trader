@@ -39,7 +39,7 @@ namespace API
 
             app.UseSpaStaticFiles();
 
-            app.UseMiddleware<ExceptionMiddleWare>();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
 

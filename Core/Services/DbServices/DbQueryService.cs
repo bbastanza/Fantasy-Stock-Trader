@@ -13,7 +13,7 @@ namespace Core.Services.DbServices
     {
         bool CheckExistingUser(string userName);
         bool ValidateUser(string userName, string password);
-        User GetUserFromDb(string userName, string password);
+        User GetUserFromDb(string userName);
         List<Holding> GetUserHoldings(int userId);
     }
 
@@ -35,10 +35,10 @@ namespace Core.Services.DbServices
             var potentialUser = _session.Query<User>()
                 .SingleOrDefault(user => user.UserName == userName);
             _nHibernateSessionService.CloseSession();
-            return (potentialUser == null);
+            return potentialUser == null;
         }
 
-        public User GetUserFromDb(string userName, string password)
+        public User GetUserFromDb(string userName)
         {
             var currentUser = _session.Query<User>()
                 .SingleOrDefault(user => user.UserName == userName);
@@ -46,9 +46,6 @@ namespace Core.Services.DbServices
 
             if (currentUser == null)
                 throw new NonExistingUserException(_path, "GetUserFromDb()");
-
-            if (currentUser.Password != password)
-                throw new UserValidationException(_path, "GetUserFromDb()");
 
             return currentUser;
         }
