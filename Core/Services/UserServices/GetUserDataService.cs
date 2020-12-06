@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Core.Entities;
 using Core.Services.DbServices;
@@ -19,7 +20,7 @@ namespace Core.Services.UserServices
 
         public GetUserDataService(
             ISetAllocatedFundsService setAllocatedFundsService,
-            IStockListService stockListService, 
+            IStockListService stockListService,
             IDbQueryService dbQueryService)
         {
             _setAllocatedFundsService = setAllocatedFundsService;
@@ -31,9 +32,11 @@ namespace Core.Services.UserServices
         {
             if (userName == null || password == null)
                 throw new InvalidInputException(Path.GetFullPath(ToString()), "GetUserData()");
-            
+
             var user = _dbQueryService.GetUserFromDb(userName, password);
-            
+
+            user.Holdings = _dbQueryService.GetUserHoldings(user.Id);
+
             user.AllocatedFunds =
                 _setAllocatedFundsService.SetAllocatedFunds(_stockListService.GetStockModelList(user), user.Holdings);
 

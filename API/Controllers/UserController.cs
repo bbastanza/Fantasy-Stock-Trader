@@ -42,7 +42,7 @@ namespace API.Controllers
             catch (DreamTraderException ex)
             {
                 Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
+                return StatusCode(409, new DreamTraderExceptionModel(ex));
             }
             catch(Exception ex)
             {
@@ -65,7 +65,7 @@ namespace API.Controllers
             catch (DreamTraderException ex)
             {
                 Console.WriteLine($"Message {ex.GetType()}\n{ex.Message}\nPath {ex.Path}{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
+                return StatusCode(409, new DreamTraderExceptionModel(ex));
             }
             catch(Exception ex)
             {
@@ -85,7 +85,7 @@ namespace API.Controllers
             catch (DreamTraderException ex)
             {
                 Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
+                return StatusCode(409, new DreamTraderExceptionModel(ex));
             }
             catch(Exception ex)
             {
