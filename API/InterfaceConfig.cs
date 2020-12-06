@@ -32,6 +32,7 @@ namespace API
             services.AddScoped<IDbDeleteUserService, DbDeleteUserService>();
             services.AddScoped<IDbAddTransactionService, DbAddTransactionService>();
             services.AddScoped<IDbHandleSale, DbHandleSale>();
+            services.AddScoped<IDbUpdateUser, DbUpdateUser>();
         }
     }
 }

@@ -15,13 +15,14 @@ namespace Core.Entities
             UserName = userName;
             Password = password;
             Email = email;
+            Balance = 10000;
         }
 
         public virtual string UserName { get; }
         public virtual string Password { get; }
         public virtual string Email { get; }
         public virtual DateTime CreatedAt { get; } = DateTime.Now;
-        public virtual double Balance { get; set; } = 100000;
+        public virtual double Balance { get; set; } 
         public virtual double AllocatedFunds { get; set; }
         public virtual List<Holding> Holdings { get; set; }
 

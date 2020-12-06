@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using Core.Entities;
 using Infrastructure.Exceptions;
@@ -6,38 +5,36 @@ using NHibernate;
 
 namespace Core.Services.DbServices
 {
-    public interface IDbAddTransactionService
+    public interface IDbUpdateUser
     {
-        void AddTransaction(Transaction stockTransaction);
+        void UpdateBalance(User user);
     }
-    
-    public class DbAddTransactionService : IDbAddTransactionService
+    public class DbUpdateUser : IDbUpdateUser
     {
         private readonly INHibernateSessionService _nHibernateSessionService;
-        private readonly ISession _session;
         private readonly string _path;
+        private readonly ISession _session;
 
-        public DbAddTransactionService(INHibernateSessionService nHibernateSessionService)
+        public DbUpdateUser(INHibernateSessionService nHibernateSessionService)
         {
             _nHibernateSessionService = nHibernateSessionService;
             _session = nHibernateSessionService.GetSession();
             _path = Path.GetFullPath(ToString());
         }
-        
-        
-        public async void AddTransaction(Transaction stockTransaction)
+
+        public async void UpdateBalance(User user)
         {
             try
             {
                 using (ITransaction transaction = _session.BeginTransaction())
                 {
-                    await _session.SaveAsync(stockTransaction);
+                    await _session.UpdateAsync(user);
                     await transaction.CommitAsync();
                 }
             }
-            catch 
+            catch
             {
-                throw new DbInteractionException(_path, "AddTransaction()");
+                throw new DbInteractionException(_path, "UpdateBalance()");
             }
             finally
             {

@@ -1,4 +1,3 @@
-using System;
 using Core.Entities;
 using Core.Mappings;
 using Core.Services.DbServices;
@@ -19,6 +18,7 @@ namespace Core.Services.TransactionServices
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
         private readonly IStockListService _stockListService;
         private readonly IDbHandleSale _dbHandleSale;
+        private readonly IDbUpdateUser _updateUser;
 
         public HandleSaleService(
             IIexFetchService iexFetchService,
@@ -26,7 +26,8 @@ namespace Core.Services.TransactionServices
             ITransactionInputMap transactionInputMap, 
             ISetAllocatedFundsService setAllocatedFundsService,
             IStockListService stockListService,
-            IDbHandleSale dbHandleSale)
+            IDbHandleSale dbHandleSale,
+            IDbUpdateUser updateUser)
         {
             _iexFetchService = iexFetchService;
             _sellShareService = sellShareService;
@@ -34,6 +35,7 @@ namespace Core.Services.TransactionServices
             _setAllocatedFundsService = setAllocatedFundsService;
             _stockListService = stockListService;
             _dbHandleSale = dbHandleSale;
+            _updateUser = updateUser;
         }
 
         public Transaction SellTransaction(double amount, string userName, string symbol, bool sellAll = false)
@@ -53,6 +55,9 @@ namespace Core.Services.TransactionServices
                 );
             
             _dbHandleSale.DbSale(transaction);
+            
+            _updateUser.UpdateBalance(transaction.User);
+            
             return transaction;
         }
     }

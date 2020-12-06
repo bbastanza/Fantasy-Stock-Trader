@@ -31,7 +31,7 @@ namespace Core.Services.TransactionServices
             _checkExistingHoldingsService.CheckExistingHolding(transaction);
 
             if (sellAll)
-                SellAll(transaction);
+                transaction.Amount = SellAll(transaction);
             else
                 SellPartial(transaction);
 
@@ -50,11 +50,12 @@ namespace Core.Services.TransactionServices
             transaction.User.Balance += transaction.Amount;
         }
 
-        private void SellAll(Transaction transaction)
+        private double SellAll(Transaction transaction)
         {
             var saleValue = transaction.Holding.SellAll(transaction.TransactionPrice);
             transaction.User.Balance += saleValue;
             transaction.User.Holdings.Remove(transaction.Holding);
+            return saleValue;
         }
     }
 }
