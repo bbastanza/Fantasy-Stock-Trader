@@ -56,7 +56,7 @@ namespace Core.Services.TransactionServices
             
             _dbHandleSale.DbSale(transaction);
             
-            _updateUser.UpdateBalance(transaction.User);
+            _updateUser.Update(transaction.User);
             
             return transaction;
         }

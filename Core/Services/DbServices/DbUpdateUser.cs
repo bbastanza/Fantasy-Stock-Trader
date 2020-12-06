@@ -7,7 +7,7 @@ namespace Core.Services.DbServices
 {
     public interface IDbUpdateUser
     {
-        void UpdateBalance(User user);
+        void Update(User user);
     }
     public class DbUpdateUser : IDbUpdateUser
     {
@@ -22,7 +22,7 @@ namespace Core.Services.DbServices
             _path = Path.GetFullPath(ToString());
         }
 
-        public async void UpdateBalance(User user)
+        public async void Update(User user)
         {
             try
             {
