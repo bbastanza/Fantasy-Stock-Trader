@@ -27,48 +27,22 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("sell")]
-        public IActionResult Sell(SaleInputModel saleInput)
+        public UserModel Sell(SaleInputModel saleInput)
         {
-            try
-            {
-                var transaction = _handleSaleService.SellTransaction(saleInput.Amount, saleInput.UserName,
-                    saleInput.Symbol, saleInput.SellAll);
-                var userOutput = _userOutputMap.MapUserOutput(transaction.User);
-                return Ok("Sale Valid... UserState: " + userOutput );
-            }
-            catch (DreamTraderException ex)
-            {
-                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                return StatusCode(409, new DreamTraderExceptionModel(ex));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500,  ex.Message);
-            }
+                var transaction = _handleSaleService
+                    .SellTransaction(saleInput.Amount, saleInput.UserName, saleInput.Symbol, saleInput.SellAll);
+                
+                return _userOutputMap.MapUserOutput(transaction.User);
         }
 
         [HttpPost]
         [Route("purchase")]
-        public IActionResult Purchase(PurchaseInputModel purchaseInput)
+        public UserModel Purchase(PurchaseInputModel purchaseInput)
         {
-            try
-            {
-                var transaction = _handlePurchaseService.PurchaseTransaction(purchaseInput.Amount,
-                    purchaseInput.UserName, purchaseInput.Symbol);
-                var userOutput = _userOutputMap.MapUserOutput(transaction.User);
-                return Ok($"Purchase Valid... UserState: {userOutput}");
-            }
-            catch (DreamTraderException ex)
-            {
-                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                return StatusCode(409, new DreamTraderExceptionModel(ex));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500, ex.Message);
-            }
+                var transaction = _handlePurchaseService
+                    .PurchaseTransaction(purchaseInput.Amount, purchaseInput.UserName, purchaseInput.Symbol);
+                
+                return _userOutputMap.MapUserOutput(transaction.User);
         }
     }
 }
