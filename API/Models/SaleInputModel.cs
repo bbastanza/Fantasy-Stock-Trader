@@ -5,6 +5,9 @@ namespace API.Models
 {
     public class SaleInputModel
     {
+        [JsonPropertyName("userName")]
+        public string UserName { get; set; }
+        
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; }
 
@@ -13,9 +16,6 @@ namespace API.Models
 
         [JsonPropertyName("sellAll")]
         public bool SellAll { get; set; }
-        
-        [JsonPropertyName("userName")]
-        public string UserName { get; set; }
         
         public override string ToString() => JsonSerializer.Serialize(this);
     }

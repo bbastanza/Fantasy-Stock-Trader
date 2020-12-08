@@ -1,8 +1,6 @@
-using System;
 using API.Models;
 using API.OutputMappings;
 using Core.Services.UserServices;
-using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -30,68 +28,25 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("get")]
-        public IActionResult GetUser(UserInputModel userInput)
+        public UserModel GetUser(UserInputModel userInput)
         {
-            try
-            {
-                var userOutput =
-                    _userOutputMap.MapUserOutput(
-                        _getUserDataService.GetUserData(userInput.UserName, userInput.Password));
-                return Ok(userOutput);
-            }            
-            catch (DreamTraderException ex)
-            {
-                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500,  ex);
-            }
+                return _userOutputMap.MapUserOutput(_getUserDataService
+                    .GetUserData(userInput.UserName, userInput.Password));
         }
 
         [HttpPost]
         [Route("add")]
-        public IActionResult AddUser(UserInputModel newUser)
+        public UserModel AddUser(UserInputModel newUser)
         {
-            try
-            {
-                var userOutput =
-                    _userOutputMap.MapUserOutput(_addUserService.AddUser(newUser.UserName, newUser.Password,
-                        newUser.Email));
-                return Ok(userOutput);
-            }
-            catch (DreamTraderException ex)
-            {
-                Console.WriteLine($"Message {ex.GetType()}\n{ex.Message}\nPath {ex.Path}{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500,  ex.Message);
-            }
+            return _userOutputMap.MapUserOutput(_addUserService
+                .AddUser(newUser.UserName, newUser.Password, newUser.Email));
         }
 
         [HttpDelete]
         [Route("delete")]
-        public IActionResult DeleteUser(UserInputModel user)
+        public string DeleteUser(UserInputModel user)
         {
-            try
-            {
-                return Ok(_deleteUserService.DeleteUser(user.UserName, user.Password));
-            }
-            catch (DreamTraderException ex)
-            {
-                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500,  ex.Message);
-            }
+                return _deleteUserService.DeleteUser(user.UserName, user.Password);
         }
     }
 }

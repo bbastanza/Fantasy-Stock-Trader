@@ -1,6 +1,5 @@
 using System.IO;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Core.Entities;
 using Infrastructure.Exceptions;

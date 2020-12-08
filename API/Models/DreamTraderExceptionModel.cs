@@ -1,16 +1,15 @@
-using System.Text.Json.Serialization;
 using Infrastructure.Exceptions;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Models
 {
-    public class ExceptionModel
+    public class DreamTraderExceptionModel
     {
-        public string Type { get; set; }
-        public string Path { get; set; }
-        public string Message { get; set; }
+        public string Type { get; }
+        public string Path { get; }
+        public string Message { get; }
         
-        public ExceptionModel(DreamTraderException ex)
+        public DreamTraderExceptionModel(DreamTraderException ex)
         {
             Type = ex.GetType().ToString();
             Path = $"{ex.Path}.{ex.Method}";

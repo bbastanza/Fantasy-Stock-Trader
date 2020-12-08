@@ -1,7 +1,5 @@
-using System;
-using API.Models;
+using Core.Entities;
 using Core.Services.IexServices;
-using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,42 +17,10 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("{stock}")]
-        public IActionResult GetStockData(string stock)
-        {
-            try
-            {
-                return Ok(_iexFetchService.GetStockBySymbol(stock));
-            }
-            catch (DreamTraderException ex)
-            {
-                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500,  ex.Message);
-            }
-        }
+        public IexStock GetStockData(string stock) => _iexFetchService.GetStockBySymbol(stock);
 
         [HttpGet]
         [Route("getAvailable")]
-        public IActionResult GetAvailableStocks()
-        {
-            try
-            {
-                return Ok("got available stocks");
-            }
-            catch (DreamTraderException ex)
-            {
-                Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                return StatusCode(409, new ExceptionModel(ex));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Message: {ex.Message}\n \nStackTrace: {ex.StackTrace}");
-                return StatusCode(500,  ex.Message);
-            }
-        }
+        public string GetAvailableStocks() => "got available stocks";
     }
 }

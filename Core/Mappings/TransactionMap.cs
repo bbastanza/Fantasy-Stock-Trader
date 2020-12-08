@@ -16,6 +16,7 @@ namespace Core.Mappings
                 holdingId => holdingId
                         .Map(x => x.Id).Column("holding_id"));
             Map(x => x.Amount).Column("amount");
+            Map(x => x.SellAll).Column("sell_all");
             Map(x => x.TransactionPrice).Column("transaction_price");
             Map(x => x.TransactionDate).Column("transaction_date");
             Table("transaction_table");

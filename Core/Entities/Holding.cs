@@ -4,6 +4,7 @@ namespace Core.Entities
 {
     public class Holding : EntityBase
     {
+
         public Holding()
         {
         }
@@ -14,6 +15,7 @@ namespace Core.Entities
             CompanyName = transaction.CompanyName;
         }
 
+        public virtual int UserId { get; set; }
         public virtual string Symbol { get; }
         public virtual string CompanyName { get; }
         public virtual double Value { get; set; }

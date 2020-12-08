@@ -26,35 +26,36 @@ namespace Core.Services.TransactionServices
                 .Exists(x => x.Symbol == transaction.Symbol);
 
             if (!existingHolding)
-                throw new StockTransactionException(_path, "SellShares()");
+                throw new NonExistingHoldingException(_path, "SellShares()");
 
             _checkExistingHoldingsService.CheckExistingHolding(transaction);
 
             if (sellAll)
-                SellAll(transaction.Holding, transaction);
+                transaction.Amount = SellAll(transaction);
             else
-                SellPartial(transaction.Holding, transaction);
+                SellPartial(transaction);
 
             transaction.Holding.SetValue(transaction.TransactionPrice);
             return transaction.User;
         }
 
-        private void SellPartial(Holding currentHolding, Transaction transaction)
+        private void SellPartial(Transaction transaction)
         {
             var sellShareAmount = transaction.Amount / transaction.TransactionPrice;
 
-            if (sellShareAmount > currentHolding.TotalShares)
-                throw new StockTransactionException(Path.GetFullPath(ToString()), "SellPartial()");
+            if (sellShareAmount > transaction.Holding.TotalShares)
+                throw new OverDrawnHoldingException(_path, "SellPartial()");
 
-            currentHolding.Sell(sellShareAmount);
+            transaction.Holding.Sell(sellShareAmount);
             transaction.User.Balance += transaction.Amount;
         }
 
-        private void SellAll(Holding currentHolding, Transaction transaction)
+        private double SellAll(Transaction transaction)
         {
-            var saleValue = currentHolding.SellAll(transaction.TransactionPrice);
+            var saleValue = transaction.Holding.SellAll(transaction.TransactionPrice);
             transaction.User.Balance += saleValue;
-            transaction.User.Holdings.Remove(currentHolding);
+            transaction.User.Holdings.Remove(transaction.Holding);
+            return saleValue;
         }
     }
 }
