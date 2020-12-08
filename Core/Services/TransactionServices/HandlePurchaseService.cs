@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Core.Entities;
 using Core.Mappings;
+using Core.Services.DbServices;
 using Core.Services.IexServices;
 using Infrastructure.Exceptions;
 
@@ -19,16 +20,25 @@ namespace Core.Services.TransactionServices
         private readonly ITransactionInputMap _transactionInputMap;
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
         private readonly IStockListService _stockListService;
+        private readonly IDbHandlePurchase _dbHandlePurchase;
+        private readonly IDbUpdateUser _dbUpdateUser;
 
-        public HandlePurchaseService(IIexFetchService iexFetchService, IPurchaseSharesService purchaseSharesService,
-            ITransactionInputMap transactionInputMap, ISetAllocatedFundsService setAllocatedFundsService,
-            IStockListService stockListService)
+        public HandlePurchaseService(
+            IIexFetchService iexFetchService, 
+            IPurchaseSharesService purchaseSharesService,
+            ITransactionInputMap transactionInputMap, 
+            ISetAllocatedFundsService setAllocatedFundsService,
+            IStockListService stockListService,
+            IDbHandlePurchase dbHandlePurchase,
+            IDbUpdateUser dbUpdateUser)
         {
             _iexFetchService = iexFetchService;
             _purchaseSharesService = purchaseSharesService;
             _transactionInputMap = transactionInputMap;
             _setAllocatedFundsService = setAllocatedFundsService;
             _stockListService = stockListService;
+            _dbHandlePurchase = dbHandlePurchase;
+            _dbUpdateUser = dbUpdateUser;
         }
 
         public Transaction PurchaseTransaction(double amount, string userName, string symbol)
@@ -46,6 +56,12 @@ namespace Core.Services.TransactionServices
                     _stockListService.GetStockModelList(transaction.User),
                     transaction.User.Holdings
                 );
+            
+            transaction.Holding.UserId = transaction.User.Id;
+            
+            _dbHandlePurchase.DbPurchase(transaction);
+            
+            _dbUpdateUser.Update(transaction.User);
             
             return transaction;
         }

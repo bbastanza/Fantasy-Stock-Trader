@@ -23,7 +23,7 @@ namespace Core.Mappings
 
         public Transaction MapInputTransaction(string type, double amount,string userName, IexStock iexData, bool sellAll = false)
         {
-            if (amount <= 0 || userName == null)
+            if (userName == null || (amount <= 0 && !sellAll))
                 throw new InvalidInputException(_path, "MapInputTransaction()");
             
             var transaction = new Transaction

@@ -27,6 +27,7 @@ namespace Core.Services.TransactionServices
             {
                 currentHolding.User = transaction.User;                
                 transaction.User.Holdings.Add(currentHolding);
+                transaction.NewHolding = true;
             }
 
             if (transaction.User.Balance < transaction.Amount)
@@ -35,6 +36,7 @@ namespace Core.Services.TransactionServices
             transaction.User.Balance -= transaction.Amount;
             currentHolding.Purchase(transaction.Amount / transaction.TransactionPrice);
             currentHolding.SetValue(transaction.TransactionPrice);
+            transaction.Holding = currentHolding; 
 
             return transaction.User;
         }

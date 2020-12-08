@@ -16,6 +16,7 @@ namespace Core.Entities
         public virtual double TransactionPrice { get; set; }
         public virtual DateTime TransactionDate { get; } = DateTime.Now;
         public virtual bool SellAll { get; set; }
+        public virtual bool NewHolding { get; set; }
         public virtual User User { get; set; }
         public virtual Holding Holding { get; set; }
 

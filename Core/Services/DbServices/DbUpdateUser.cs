@@ -13,22 +13,21 @@ namespace Core.Services.DbServices
     {
         private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
-        private readonly ISession _session;
 
         public DbUpdateUser(INHibernateSessionService nHibernateSessionService)
         {
             _nHibernateSessionService = nHibernateSessionService;
-            _session = nHibernateSessionService.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
         public async void Update(User user)
         {
+            var session = _nHibernateSessionService.GetSession();
             try
             {
-                using (ITransaction transaction = _session.BeginTransaction())
+                using (ITransaction transaction = session.BeginTransaction())
                 {
-                    await _session.UpdateAsync(user);
+                    await session.UpdateAsync(user);
                     await transaction.CommitAsync();
                 }
             }

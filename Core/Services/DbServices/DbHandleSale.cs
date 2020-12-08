@@ -10,41 +10,42 @@ namespace Core.Services.DbServices
 {
     public interface IDbHandleSale
     {
-        void DbSale(Transaction transaciton);
+        void DbSale(Transaction transaction);
     }
     
     public class DbHandleSale : IDbHandleSale
     {
         private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly IDbAddTransactionService _dbAddTransactionService;
+        private readonly IDbUpdateHolding _dbUpdateHolding;
         private readonly string _path;
-        private readonly ISession _session;
 
         public DbHandleSale(
             INHibernateSessionService nHibernateSessionService,
-            IDbAddTransactionService dbAddTransactionService)
+            IDbAddTransactionService dbAddTransactionService,
+            IDbUpdateHolding dbUpdateHolding)
         {
             _nHibernateSessionService = nHibernateSessionService;
             _dbAddTransactionService = dbAddTransactionService;
-            _session = nHibernateSessionService.GetSession();
+            _dbUpdateHolding = dbUpdateHolding;
             _path = Path.GetFullPath(ToString());
         }
 
         public void DbSale(Transaction transaction)
         {
             if (transaction.SellAll) RemoveHolding(transaction.Holding);
-            else UpdateHolding(transaction.Holding);
-
+            else _dbUpdateHolding.UpdateHolding(transaction.Holding);
             _dbAddTransactionService.AddTransaction(transaction);
         }
 
         private async void RemoveHolding(Holding holding)
         {
+            var session = _nHibernateSessionService.GetSession();
             try
             {
-                using (ITransaction transaction = _session.BeginTransaction())
+                using (ITransaction transaction = session.BeginTransaction())
                 {
-                    await _session.Query<Holding>()
+                    await session.Query<Holding>()
                         .Where(x => x.Symbol == holding.Symbol).DeleteAsync();
                     await transaction.CommitAsync();
                 }
@@ -52,27 +53,6 @@ namespace Core.Services.DbServices
             catch
             {
                 throw new DbInteractionException(_path, "RemoveHolding");
-            }
-            finally
-            {
-                _nHibernateSessionService.CloseSession();
-            }
-        }
-
-        private async void UpdateHolding(Holding holding)
-        {
-            try
-            {
-                using (ITransaction transaction = _session.BeginTransaction())
-                {
-                    await _session.SaveOrUpdateAsync(holding);
-                    await transaction.CommitAsync();
-                }
-
-            }
-            catch
-            {
-                throw new DbInteractionException(_path, "UpdateHolding()");
             }
             finally
             {

@@ -33,6 +33,8 @@ namespace API
             services.AddScoped<IDbAddTransactionService, DbAddTransactionService>();
             services.AddScoped<IDbHandleSale, DbHandleSale>();
             services.AddScoped<IDbUpdateUser, DbUpdateUser>();
+            services.AddScoped<IDbUpdateHolding, DbUpdateHolding>();
+            services.AddScoped<IDbHandlePurchase, DbHandlePurchase>();
         }
     }
 }
