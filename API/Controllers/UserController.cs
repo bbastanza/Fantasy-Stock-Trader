@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using API.Models;
 using API.OutputMappings;
+using Core.Entities;
 using Core.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +36,13 @@ namespace API.Controllers
                     .GetUserData(userInput.UserName, userInput.Password));
         }
 
+        [HttpPost]
+        [Route("transactions")]
+        public List<Transaction> GetUserTransactions(UserInputModel userInput)
+        {
+            return _getUserDataService.GetUserTransactions(userInput.UserName);
+        }
+        
         [HttpPost]
         [Route("add")]
         public UserModel AddUser(UserInputModel newUser)

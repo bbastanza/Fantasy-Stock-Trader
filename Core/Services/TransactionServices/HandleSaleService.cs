@@ -54,6 +54,8 @@ namespace Core.Services.TransactionServices
                     transaction.User.Holdings
                 );
             
+            transaction.Holding.UserId = transaction.User.Id;
+            
             _dbHandleSale.DbSale(transaction);
             
             _updateUser.Update(transaction.User);

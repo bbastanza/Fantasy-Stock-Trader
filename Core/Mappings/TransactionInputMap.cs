@@ -21,7 +21,7 @@ namespace Core.Mappings
             _path = Path.GetFullPath(ToString());
         }
 
-        public Transaction MapInputTransaction(string type, double amount,string userName, IexStock iexData, bool sellAll = false)
+        public Transaction MapInputTransaction(string type, double amount, string userName, IexStock iexData, bool sellAll = false)
         {
             if (userName == null || (amount <= 0 && !sellAll))
                 throw new InvalidInputException(_path, "MapInputTransaction()");

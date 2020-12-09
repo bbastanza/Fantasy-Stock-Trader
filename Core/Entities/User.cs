@@ -15,7 +15,7 @@ namespace Core.Entities
             UserName = userName;
             Password = password;
             Email = email;
-            Balance = 10000;
+            Balance = 100000;
         }
 
         public virtual string UserName { get; }

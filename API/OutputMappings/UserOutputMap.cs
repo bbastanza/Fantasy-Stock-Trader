@@ -19,9 +19,12 @@ namespace API.OutputMappings
                 Balance = user.Balance,
                 AllocatedFunds = user.AllocatedFunds,
             };
-            foreach (var holding in user.Holdings)
+            if (user.Holdings != null)
             {
-                outputModel.Holdings.Add(new HoldingModel(holding));
+                foreach (var holding in user.Holdings)
+                {
+                    outputModel.Holdings.Add(new HoldingModel(holding));
+                }
             }
 
             return outputModel;

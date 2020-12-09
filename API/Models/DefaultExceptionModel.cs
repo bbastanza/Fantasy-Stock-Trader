@@ -7,12 +7,15 @@ namespace API.Models
     {
         public string Type { get; }
         public string Message { get; }
+        public string StackTrace { get; set; }
         
         public DefaultExceptionModel(Exception ex)
         {
             Type = ex.GetType().ToString();
             Message = $"{ex.Message}";
+            StackTrace = ex.StackTrace;
         }
+
 
         public override string ToString() => JsonSerializer.Serialize(this);
     }

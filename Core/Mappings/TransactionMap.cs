@@ -20,6 +20,7 @@ namespace Core.Mappings
             Map(x => x.TransactionPrice).Column("transaction_price");
             Map(x => x.TransactionDate).Column("transaction_date");
             Table("transaction_table");
+
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Core.Services.DbServices
         bool ValidateUser(string userName, string password);
         User GetUserFromDb(string userName);
         List<Holding> GetUserHoldings(int userId);
+        List<Transaction> GetUserTransactions(int userId);
     }
 
     public class DbQueryService : IDbQueryService
@@ -48,6 +49,17 @@ namespace Core.Services.DbServices
                 throw new NonExistingUserException(_path, "GetUserFromDb()");
 
             return currentUser;
+        }
+
+        public List<Transaction> GetUserTransactions(int userId)
+        {
+            var session = _nHibernateSessionService.GetSession();
+            var transactions = session.Query<Transaction>()
+                .Where(x => x.User.Id == userId).ToList();
+
+            _nHibernateSessionService.CloseSession();
+            
+            return transactions;
         }
 
         public List<Holding> GetUserHoldings(int userId)

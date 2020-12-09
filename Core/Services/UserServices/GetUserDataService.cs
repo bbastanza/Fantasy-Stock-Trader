@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Core.Entities;
 using Core.Services.DbServices;
@@ -10,6 +11,7 @@ namespace Core.Services.UserServices
     public interface IGetUserDataService
     {
         User GetUserData(string userName, string password);
+        List<Transaction> GetUserTransactions(string userName);
     }
 
     public class GetUserDataService : IGetUserDataService
@@ -17,7 +19,7 @@ namespace Core.Services.UserServices
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
         private readonly IStockListService _stockListService;
         private readonly IDbQueryService _dbQueryService;
-        private string _path;
+        private readonly string _path;
 
         public GetUserDataService(
             ISetAllocatedFundsService setAllocatedFundsService,
@@ -46,6 +48,15 @@ namespace Core.Services.UserServices
                 _setAllocatedFundsService.SetAllocatedFunds(_stockListService.GetStockModelList(user), user.Holdings);
 
             return user;
+        }
+
+        public List<Transaction> GetUserTransactions(string userName)
+        {
+            var user = _dbQueryService.GetUserFromDb(userName);
+            
+            user.Holdings = _dbQueryService.GetUserHoldings(user.Id);
+
+            return _dbQueryService.GetUserTransactions(user.Id);
         }
     }
 }
