@@ -25,8 +25,9 @@ export default function Login() {
             {context => {
                 console.log(context);
                 return !context.isLoggedIn ? (
-                    <div style={{ margin: "auto" }}>
-                        <h1 className="title">Log In</h1>
+                    <div className="dream-shadow" 
+                         style={{ margin: "5% auto", width: "50%", backgroundColor: "rgba(255, 255, 255, .05)", borderRadius: 10}}>
+                        <h1 className="title">login</h1>
                         <Form
                             onSubmit={e => handleSubmit(e)}
                             className="login-container"

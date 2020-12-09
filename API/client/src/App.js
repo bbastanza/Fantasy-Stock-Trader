@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DreamTraderNavbar from "./FixedComponents/DreamTraderNavbar";
+import Footer from "./FixedComponents/Footer";
 import axios from "axios";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -42,6 +43,7 @@ function App() {
                     userHoldings={userHoldings}
                 />
             </LoginContextProvider>
+            <Footer />
         </div>
     );
 }

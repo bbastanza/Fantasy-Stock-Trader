@@ -4,6 +4,7 @@ import Portfolio from "./../Pages/Portfolio";
 import Purchase from "./../Pages/Purchase";
 import Login from "./../Pages/Login";
 import Register from "./../Pages/Register";
+import Splash from "./../Pages/Splash"
 
 export default function PageRouter({ availableFunds, allocatedFunds }) {
     return (
@@ -22,7 +23,7 @@ export default function PageRouter({ availableFunds, allocatedFunds }) {
                     <Register />
                 </Route>
                 <Route path="/">
-                    <Redirect to="/login" />
+                    <Splash />
                 </Route>
             </Switch>
         </Router>
