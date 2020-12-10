@@ -13,6 +13,7 @@ namespace Core.Mappings
             Map(x => x.Symbol).Column("symbol");
             Map(x => x.CompanyName).Column("company_name");
             Map(x => x.TotalShares).Column("total_shares");
+            // References(x => x.User).Column("user_id");
             Table("holding_table");
         }
     }
