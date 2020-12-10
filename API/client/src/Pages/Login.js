@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
+import Modal from "./../FixedComponents/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import LogoutBtn from "./../IndividualComponents/LogoutBtn";
 import { Link } from "react-router-dom";
 import { LoginContext } from "./../contexts/LoginContext";
 
@@ -25,64 +27,41 @@ export default function Login() {
             {context => {
                 console.log(context);
                 return !context.isLoggedIn ? (
-                    <div className="dream-shadow" 
-                         style={{ margin: "5% auto", width: "50%", backgroundColor: "rgba(255, 255, 255, .05)", borderRadius: 10}}>
-                        <h1 className="title">login</h1>
-                        <Form
-                            onSubmit={e => handleSubmit(e)}
-                            className="login-container"
-                        >
-                            <Form.Group as={Row} controlId="formBasicEmail">
-                                <Form.Label column sm="3">
-                                    Email address
-                                </Form.Label>
-                                <Col sm="9">
-                                    <Form.Control
-                                        type="email"
-                                        placeholder="Enter email"
-                                    />
-                                </Col>
-                            </Form.Group>
-                            <Form.Group
-                                as={Row}
-                                controlId="formPlaintextPassword"
-                            >
-                                <Form.Label column sm="3">
-                                    Password
-                                </Form.Label>
-                                <Col sm="9">
-                                    <Form.Control
-                                        type="password"
-                                        placeholder="Password"
-                                    />
-                                </Col>
-                            </Form.Group>{" "}
-                            <Button
-                                variant="warning"
-                                type="submit"
-                                style={{ margin: 15 }}
-                            >
-                                Log In
-                            </Button>
-                            <h6
-                                className="text-muted"
-                                style={{ padding: "20px 0 5px" }}
-                            >
-                                No Account? Register Now!
-                            </h6>
-                            <Link to="/register">
-                                <Button variant="secondary">Register</Button>
-                            </Link>
-                        </Form>
-                    </div>
+                    <Modal>
+                        <div
+                            className="dream-shadow login-container">
+                            <h1 className="title">login</h1>
+                            <Form onSubmit={e => handleSubmit(e)}>
+                                <Form.Group as={Row} controlId="formBasicEmail">
+                                    <Form.Label column sm="3">
+                                        Email address
+                                    </Form.Label>
+                                    <Col sm="9">
+                                        <Form.Control type="email" placeholder="Enter email" />
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group as={Row} controlId="formPlaintextPassword">
+                                    <Form.Label column sm="3">
+                                        Password
+                                    </Form.Label>
+                                    <Col sm="9">
+                                        <Form.Control type="password" placeholder="Password" />
+                                    </Col>
+                                </Form.Group>{" "}
+                                <Button variant="warning" type="submit" className="btn-shadow"style={{ margin: 15 }}>
+                                    Log In
+                                </Button>
+                                <h6 className="text-muted" style={{ padding: "20px 0 5px" }}>
+                                    No Account? Register Now!
+                                </h6>
+                                <Link to="/register">
+                                    <Button variant="secondary">Register</Button>
+                                </Link>
+                            </Form>
+                        </div>
+                    </Modal>
                 ) : (
-                    <Button
-                        variant="secondary"
-                        style={{ margin: 40 }}
-                        onClick={logOut}
-                    >
-                        Log Out
-                    </Button>
+                    <LogoutBtn logOut={logOut} />
                 );
             }}
         </LoginContext.Consumer>

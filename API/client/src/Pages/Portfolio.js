@@ -11,7 +11,7 @@ export default function Portfolio({ allocatedFunds }) {
 
     return (
         <div className="portfolio-page">
-            <h1 className="title">Portfolio</h1>
+            <h1 className="title">portfolio</h1>
             <div className="user-holding-container">
                 <UserHolding holdingData={mockData} allocatedFunds={allocatedFunds} />
                 <UserHolding holdingData={mockData} allocatedFunds={allocatedFunds} />
