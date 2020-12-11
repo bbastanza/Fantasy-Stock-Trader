@@ -8,6 +8,8 @@ namespace Core.Entities
     {
         public User()
         {
+            Holdings = new List<Holding>();
+            Transactions = new List<Transaction>();
         }
 
         public User(string userName, string password, string email)
@@ -18,12 +20,13 @@ namespace Core.Entities
             Balance = 100000;
         }
 
-        public virtual string UserName { get; }
-        public virtual string Password { get; }
-        public virtual string Email { get; }
-        public virtual DateTime CreatedAt { get; } = DateTime.Now;
+        public virtual string UserName { get; set; }
+        public virtual string Password { get; set; }
+        public virtual string Email { get; set; }
+        public virtual DateTime CreatedAt { get; set; } = DateTime.Now;
         public virtual double Balance { get; set; } 
         public virtual double AllocatedFunds { get; set; }
+        public virtual List<Transaction> Transactions { get; set; }
         public virtual List<Holding> Holdings { get; set; }
 
         public override string ToString() => JsonSerializer.Serialize(this);

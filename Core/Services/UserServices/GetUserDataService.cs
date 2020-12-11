@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Core.Entities;
 using Core.Services.DbServices;
 using Core.Services.TransactionServices;
@@ -19,16 +20,19 @@ namespace Core.Services.UserServices
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
         private readonly IStockListService _stockListService;
         private readonly IDbQueryService _dbQueryService;
+        private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
 
         public GetUserDataService(
             ISetAllocatedFundsService setAllocatedFundsService,
             IStockListService stockListService,
-            IDbQueryService dbQueryService)
+            IDbQueryService dbQueryService,
+            INHibernateSessionService nHibernateSessionService)
         {
             _setAllocatedFundsService = setAllocatedFundsService;
             _stockListService = stockListService;
             _dbQueryService = dbQueryService;
+            _nHibernateSessionService = nHibernateSessionService;
             _path = Path.GetFullPath(ToString());
         }
 
@@ -52,11 +56,11 @@ namespace Core.Services.UserServices
 
         public List<Transaction> GetUserTransactions(string userName)
         {
-            var user = _dbQueryService.GetUserFromDb(userName);
-            
-            user.Holdings = _dbQueryService.GetUserHoldings(user.Id);
+            var session = _nHibernateSessionService.GetSession();
+            return session.Query<User>()
+                .Where(x => x.UserName = userName)
+                .
 
-            return _dbQueryService.GetUserTransactions(user.Id);
         }
     }
 }
