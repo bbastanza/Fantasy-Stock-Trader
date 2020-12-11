@@ -58,8 +58,8 @@ namespace Core.Services.UserServices
         {
             var session = _nHibernateSessionService.GetSession();
             return session.Query<User>()
-                .Where(x => x.UserName = userName)
-                .
+                .Single(x => x.UserName == userName)
+                .Transactions;
 
         }
     }
