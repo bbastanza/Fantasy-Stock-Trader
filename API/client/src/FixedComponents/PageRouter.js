@@ -4,9 +4,10 @@ import Portfolio from "./../Pages/Portfolio";
 import Purchase from "./../Pages/Purchase";
 import Login from "./../Pages/Login";
 import Register from "./../Pages/Register";
-import Splash from "./../Pages/Splash"
+import Splash from "./../Pages/Splash";
 
 export default function PageRouter({ availableFunds, allocatedFunds }) {
+
     return (
         <Router>
             <Switch>

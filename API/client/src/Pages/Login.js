@@ -7,15 +7,23 @@ import Button from "react-bootstrap/Button";
 import LogoutBtn from "./../IndividualComponents/LogoutBtn";
 import { Link } from "react-router-dom";
 import { LoginContext } from "./../contexts/LoginContext";
+import { Route , Redirect, useHistory} from "react-router-dom";
+import Portfolio from "./../Pages/Portfolio";
 
-export default function Login() {
+export default function Login(props) {
     const loginContext = useContext(LoginContext);
+    const history = useHistory();
 
     function handleSubmit(e) {
         e.preventDefault();
         loginContext.setIsLoggedIn(true);
         sessionStorage.setItem("isLoggedIn", JSON.stringify(true));
+        // send request to backend
+        // if successful push to portfolio
+        // else display message in login page
+        history.push("/portfolio")
     }
+
 
     function logOut() {
         loginContext.setIsLoggedIn(false);
@@ -28,8 +36,7 @@ export default function Login() {
                 console.log(context);
                 return !context.isLoggedIn ? (
                     <Modal>
-                        <div
-                            className="dream-shadow login-container">
+                        <div className="dream-shadow login-container">
                             <h1 className="title">login</h1>
                             <Form onSubmit={e => handleSubmit(e)}>
                                 <Form.Group as={Row} controlId="formBasicEmail">
@@ -48,7 +55,7 @@ export default function Login() {
                                         <Form.Control type="password" placeholder="Password" />
                                     </Col>
                                 </Form.Group>{" "}
-                                <Button variant="warning" type="submit" className="btn-shadow"style={{ margin: 15 }}>
+                                <Button variant="warning" type="submit" className="btn-shadow" style={{ margin: 15 }}>
                                     Log In
                                 </Button>
                                 <h6 className="text-muted" style={{ padding: "20px 0 5px" }}>

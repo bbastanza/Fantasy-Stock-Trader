@@ -12,7 +12,7 @@ namespace Core.Services.UserServices
     public interface IGetUserDataService
     {
         User GetUserData(string userName, string password);
-        List<Transaction> GetUserTransactions(string userName);
+        IList<Transaction> GetUserTransactions(string userName);
     }
 
     public class GetUserDataService : IGetUserDataService
@@ -54,7 +54,7 @@ namespace Core.Services.UserServices
             return user;
         }
 
-        public List<Transaction> GetUserTransactions(string userName)
+        public IList<Transaction> GetUserTransactions(string userName)
         {
             var session = _nHibernateSessionService.GetSession();
             return session.Query<User>()

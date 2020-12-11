@@ -27,7 +27,7 @@ export default function Modal({ children }) {
     return ReactDOM.createPortal(
         <>
             <div style={overlayStyle} />
-            <div  className="m" style={modalStyle}>{children}</div>
+            <div  className="" style={modalStyle}>{children}</div>
         </>
     ,
     document.getElementById("portal"))

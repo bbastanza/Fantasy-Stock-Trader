@@ -22,9 +22,12 @@ namespace Core.Services.TransactionServices
 
         public User SellShares(Transaction transaction, bool sellAll)
         {
-            var existingHolding = transaction.User.Holdings
-                .Exists(x => x.Symbol == transaction.Symbol);
-
+            var existingHolding = false;
+            foreach (var holding in transaction.User.Holdings)
+            {
+                if (holding.Symbol == transaction.Symbol) existingHolding = true;
+            }
+            
             if (!existingHolding)
                 throw new NonExistingHoldingException(_path, "SellShares()");
 

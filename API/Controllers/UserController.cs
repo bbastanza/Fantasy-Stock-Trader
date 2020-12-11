@@ -38,7 +38,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("transactions")]
-        public List<Transaction> GetUserTransactions(UserInputModel userInput)
+        public IList<Transaction> GetUserTransactions(UserInputModel userInput)
         {
             return _getUserDataService.GetUserTransactions(userInput.UserName);
         }
