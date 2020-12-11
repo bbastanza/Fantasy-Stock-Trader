@@ -17,7 +17,7 @@ namespace API
             services.AddScoped<IStockListService, StockListService>();
             services.AddScoped<ICheckExistingHoldingsService, CheckExistingHoldingService>();
             services.AddScoped<IPurchaseSharesService, PurchaseSharesService>();
-            services.AddScoped<ITransactionInputMap, TransactionInputMap>();
+            services.AddScoped<IMapService, MapService>();
             services.AddScoped<ISetAllocatedFundsService, SetAllocatedFundsService>();
             services.AddScoped<ISellShareService, SellSharesService>();
             services.AddScoped<IHandleSaleService, HandleSaleService>();
@@ -28,13 +28,8 @@ namespace API
             services.AddScoped<INHibernateSessionService, NHibernateSessionService>();
             services.AddScoped<IDbQueryService, DbQueryService>();
             services.AddScoped<IUserOutputMap, UserOutputMap>();
-            services.AddScoped<IDbAddUserService, DbAddUserService>();
-            services.AddScoped<IDbDeleteUserService, DbDeleteUserService>();
-            services.AddScoped<IDbAddTransactionService, DbAddTransactionService>();
-            services.AddScoped<IDbHandleSale, DbHandleSale>();
-            services.AddScoped<IDbUpdateUser, DbUpdateUser>();
-            services.AddScoped<IDbUpdateHolding, DbUpdateHolding>();
-            services.AddScoped<IDbHandlePurchase, DbHandlePurchase>();
+            services.AddScoped<IDbAddService, DbAddService>();
+            services.AddScoped<IDbUpdateService, DbUpdateService>();
         }
     }
 }

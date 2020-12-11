@@ -5,40 +5,40 @@ using NHibernate;
 
 namespace Core.Services.DbServices
 {
-    public interface IDbAddUserService
+    public interface IDbUpdateService
     {
-        void AddUser(User user);
+        void Update(EntityBase entity);
     }
-    public class DbAddUserService : IDbAddUserService
+    public class DbUpdateService : IDbUpdateService
     {
         private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
 
-        public DbAddUserService(INHibernateSessionService nHibernateSessionService)
+        public DbUpdateService(INHibernateSessionService nHibernateSessionService)
         {
             _nHibernateSessionService = nHibernateSessionService;
             _path = Path.GetFullPath(ToString());
         }
 
-        public async void AddUser(User user)
+        public async void Update(EntityBase entity)
         {
             var session = _nHibernateSessionService.GetSession();
             try
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    await session.SaveAsync(user);
+                    await session.UpdateAsync(entity);
                     await transaction.CommitAsync();
                 }
             }
             catch
             {
-                throw new DbInteractionException(_path,"AddUser()");
+                throw new DbInteractionException(_path, "UpdateBalance()");
             }
             finally
             {
                 _nHibernateSessionService.CloseSession();
             }
-        } 
+        }
     }
 }

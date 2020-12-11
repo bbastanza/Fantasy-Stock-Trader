@@ -3,19 +3,19 @@ using Core.Entities;
 using Core.Services.DbServices;
 using Infrastructure.Exceptions;
 
-namespace Core.Mappings
+namespace Core.Services.TransactionServices
 {
-    public interface ITransactionInputMap
+    public interface IMapService
     {
         Transaction MapInputTransaction(string type, double amount,string userName, IexStock iexData, bool sellAll = false);
     }
     
-    public class TransactionInputMap : ITransactionInputMap
+    public class MapService : IMapService
     {
         private readonly IDbQueryService _dbQueryService;
         private readonly string _path;
 
-        public TransactionInputMap(IDbQueryService dbQueryService)
+        public MapService(IDbQueryService dbQueryService)
         {
             _dbQueryService = dbQueryService;
             _path = Path.GetFullPath(ToString());

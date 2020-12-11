@@ -13,13 +13,13 @@ namespace Core.Services.UserServices
     public class AddUserService : IAddUserService
     {
         private readonly IDbQueryService _dbQueryService;
-        private readonly IDbAddUserService _dbAddUserService;
+        private readonly IDbAddService _dbAddService;
         private readonly string _path;
 
-        public AddUserService(IDbQueryService dbQueryService, IDbAddUserService dbAddUserService)
+        public AddUserService(IDbQueryService dbQueryService, IDbAddService dbAddService)
         {
             _dbQueryService = dbQueryService;
-            _dbAddUserService = dbAddUserService;
+            _dbAddService = dbAddService;
             _path = Path.GetFullPath(ToString());
         } 
         
@@ -33,7 +33,7 @@ namespace Core.Services.UserServices
             
             var newUser = new User(userName, password, email);
             
-            _dbAddUserService.AddUser(newUser);
+            _dbAddService.Add(newUser);
             
             return newUser;
         }

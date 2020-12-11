@@ -1,10 +1,6 @@
-using System;
-using System.IO;
 using Core.Entities;
-using Core.Mappings;
 using Core.Services.DbServices;
 using Core.Services.IexServices;
-using Infrastructure.Exceptions;
 
 namespace Core.Services.TransactionServices
 {
@@ -17,28 +13,28 @@ namespace Core.Services.TransactionServices
     {
         private readonly IIexFetchService _iexFetchService;
         private readonly IPurchaseSharesService _purchaseSharesService;
-        private readonly ITransactionInputMap _transactionInputMap;
+        private readonly IMapService _mapService;
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
         private readonly IStockListService _stockListService;
-        private readonly IDbHandlePurchase _dbHandlePurchase;
-        private readonly IDbUpdateUser _dbUpdateUser;
+        private readonly IDbUpdateService _dbUpdateService;
+        private readonly IDbAddService _dbAddService;
 
         public HandlePurchaseService(
             IIexFetchService iexFetchService, 
             IPurchaseSharesService purchaseSharesService,
-            ITransactionInputMap transactionInputMap, 
+            IMapService mapService, 
             ISetAllocatedFundsService setAllocatedFundsService,
             IStockListService stockListService,
-            IDbHandlePurchase dbHandlePurchase,
-            IDbUpdateUser dbUpdateUser)
+            IDbUpdateService dbUpdateService,
+            IDbAddService dbAddService)
         {
             _iexFetchService = iexFetchService;
             _purchaseSharesService = purchaseSharesService;
-            _transactionInputMap = transactionInputMap;
+            _mapService = mapService;
             _setAllocatedFundsService = setAllocatedFundsService;
             _stockListService = stockListService;
-            _dbHandlePurchase = dbHandlePurchase;
-            _dbUpdateUser = dbUpdateUser;
+            _dbUpdateService = dbUpdateService;
+            _dbAddService = dbAddService;
         }
 
         public Transaction PurchaseTransaction(double amount, string userName, string symbol)
@@ -47,7 +43,7 @@ namespace Core.Services.TransactionServices
             
             var iexData = _iexFetchService.GetStockBySymbol(symbol);
             
-            var transaction = _transactionInputMap.MapInputTransaction(transactionType, amount, userName, iexData);
+            var transaction = _mapService.MapInputTransaction(transactionType, amount, userName, iexData);
             
             transaction.User = _purchaseSharesService.PurchaseShares(transaction);
             
@@ -59,11 +55,21 @@ namespace Core.Services.TransactionServices
             
             transaction.Holding.UserId = transaction.User.Id;
             
-            _dbHandlePurchase.DbPurchase(transaction);
+            DbPurchase(transaction);
             
-            _dbUpdateUser.Update(transaction.User);
+            _dbUpdateService.Update(transaction.User);
             
             return transaction;
+        }
+        
+        private void DbPurchase(Transaction transaction)
+        {
+            if (transaction.NewHolding)
+                _dbAddService.Add(transaction.Holding);
+            else 
+                _dbUpdateService.Update(transaction.Holding);
+                
+            _dbAddService.Add(transaction);
         }
     }
 }
