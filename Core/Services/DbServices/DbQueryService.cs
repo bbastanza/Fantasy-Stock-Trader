@@ -15,7 +15,6 @@ namespace Core.Services.DbServices
         bool ValidateUser(string userName, string password);
         User GetUserFromDb(string userName);
         List<Holding> GetUserHoldings(int userId);
-        List<Transaction> GetUserTransactions(int userId);
     }
 
     public class DbQueryService : IDbQueryService

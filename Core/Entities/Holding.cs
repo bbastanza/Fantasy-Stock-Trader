@@ -44,6 +44,6 @@ namespace Core.Entities
             Value = TotalShares * currentValue;
         }
 
-        public override string ToString() => JsonSerializer.Serialize(this);
+        // public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

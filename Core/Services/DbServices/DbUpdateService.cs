@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Core.Entities;
 using Infrastructure.Exceptions;
@@ -22,12 +23,13 @@ namespace Core.Services.DbServices
 
         public async void Update(EntityBase entity)
         {
+            Console.WriteLine(entity);
             var session = _nHibernateSessionService.GetSession();
             try
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    await session.UpdateAsync(entity);
+                    await session.SaveOrUpdateAsync(entity);
                     await transaction.CommitAsync();
                 }
             }

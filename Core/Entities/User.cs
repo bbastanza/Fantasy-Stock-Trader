@@ -29,6 +29,6 @@ namespace Core.Entities
         public virtual IList<Transaction> Transactions { get; set; }
         public virtual IList<Holding> Holdings { get; set; }
 
-        public override string ToString() => JsonSerializer.Serialize(this);
+        // public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

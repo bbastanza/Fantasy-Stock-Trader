@@ -20,6 +20,6 @@ namespace Core.Entities
         public virtual User User { get; set; }
         public virtual Holding Holding { get; set; }
 
-        public override string ToString() => JsonSerializer.Serialize(this);
+        // public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

@@ -17,6 +17,5 @@ namespace API.Models
         public virtual string CompanyName { get; set; }
         public virtual double Value { get; set; }
         public virtual double TotalShares { get; set; }
-        
     }
 }
