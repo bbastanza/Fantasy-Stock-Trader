@@ -38,9 +38,16 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("transactions")]
-        public IList<Transaction> GetUserTransactions(UserInputModel userInput)
+        public IList<TransactionModel> GetUserTransactions(UserInputModel userInput)
         {
-            return _getUserDataService.GetUserTransactions(userInput.UserName);
+            var transactions = _getUserDataService.GetUserTransactions(userInput.UserName);
+            var transactionModels = new List<TransactionModel>();
+            foreach (var transaction in transactions)
+            {
+               transactionModels.Add(new TransactionModel(transaction)); 
+            }
+
+            return transactionModels;
         }
         
         [HttpPost]

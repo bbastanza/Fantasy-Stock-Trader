@@ -5,14 +5,14 @@ namespace API.Models
 {
     public class TransactionModel
     {
-        public TransactionModel(Transaction transaction, Holding holding)
+        public TransactionModel(Transaction transaction)
         {
             Type = transaction.Type;
             Date = transaction.TransactionDate;
             Amount = transaction.Amount;
             TransactionPrice = transaction.TransactionPrice;
-            Symbol = holding.Symbol;
-            CompanyName = holding.CompanyName;
+            Symbol = transaction.Symbol;
+            CompanyName = transaction.CompanyName;
         }
         
         public string Symbol { get; set; }
