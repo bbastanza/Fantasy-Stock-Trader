@@ -11,7 +11,7 @@ namespace Core.Mappings
             Map(x => x.Type).Column("type");
             
             References(x => x.User).Column("user_id");
-            // References(x => x.Holding).Column("holding_id");
+            References(x => x.Holding).Column("holding_id");
             
             Map(x => x.Amount).Column("amount");
             Map(x => x.SellAll).Column("sell_all");

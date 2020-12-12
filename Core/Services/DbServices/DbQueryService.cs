@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Core.Entities;
 using Infrastructure.Exceptions;
 using NHibernate;
-using NHibernate.Linq;
 
 namespace Core.Services.DbServices
 {
@@ -19,30 +17,26 @@ namespace Core.Services.DbServices
 
     public class DbQueryService : IDbQueryService
     {
-        private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
+        private readonly ISession _session;
 
         public DbQueryService(INHibernateSessionService nHibernateSessionService)
         {
-            _nHibernateSessionService = nHibernateSessionService;
             _path = Path.GetFullPath(ToString());
+            _session = nHibernateSessionService.GetSession();
         }
 
         public bool CheckExistingUser(string userName)
         {
-            var session = GetSession();
-            var potentialUser = session.Query<User>()
+            var potentialUser = _session.Query<User>()
                 .SingleOrDefault(user => user.UserName == userName);
-            _nHibernateSessionService.CloseSession();
             return potentialUser == null;
         }
 
         public User GetUserFromDb(string userName)
         {
-            var session = GetSession();
-            var currentUser = session.Query<User>()
+            var currentUser = _session.Query<User>()
                 .SingleOrDefault(user => user.UserName == userName);
-            _nHibernateSessionService.CloseSession();
 
             if (currentUser == null)
                 throw new NonExistingUserException(_path, "GetUserFromDb()");
@@ -52,37 +46,21 @@ namespace Core.Services.DbServices
 
         public List<Transaction> GetUserTransactions(int userId)
         {
-            var session = _nHibernateSessionService.GetSession();
-            var transactions = session.Query<Transaction>()
+            return _session.Query<Transaction>()
                 .Where(x => x.User.Id == userId).ToList();
-
-            _nHibernateSessionService.CloseSession();
-            
-            return transactions;
         }
 
         public List<Holding> GetUserHoldings(int userId)
         {
-            var session = GetSession();
-             var holdings = session.Query<Holding>()
+             return _session.Query<Holding>()
                     .Where(x => x.UserId == userId).ToList();
-
-            _nHibernateSessionService.CloseSession();
-
-            return holdings;
         }
 
         public bool ValidateUser(string userName, string password)
         {
-            var session = GetSession();
-            var currentUser = session.Query<User>()
+            var currentUser = _session.Query<User>()
                 .SingleOrDefault(user => user.UserName == userName);
             return currentUser != null && currentUser.Password == password;
-        }
-
-        private ISession GetSession()
-        {
-            return _nHibernateSessionService.GetSession();
         }
     }
 }

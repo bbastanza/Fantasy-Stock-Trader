@@ -1,32 +1,24 @@
-using System;
 using System.Threading.Tasks;
-using API.Models;
 using Core.Services.DbServices;
-using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Http;
 using NHibernate;
-using ISession = NHibernate.ISession;
 
 namespace API.MiddleWare
 {
     public class DbConnectionMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly INHibernateSessionService _nHibernateSessionService;
-        private readonly ISession _session;
 
-        public DbConnectionMiddleware(
-            RequestDelegate next,
-            INHibernateSessionService nHibernateSessionService)
+        public DbConnectionMiddleware(RequestDelegate next)
         {
             _next = next;
-            _nHibernateSessionService = nHibernateSessionService;
-            _session = nHibernateSessionService.GetSession();
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, INHibernateSessionService nHibernateSessionService)
         {
-            using ITransaction transaction = _session.BeginTransaction();
+            var session = nHibernateSessionService.GetSession();
+            
+            using ITransaction transaction = session.BeginTransaction();
             await _next(context);
 
             try
@@ -40,7 +32,7 @@ namespace API.MiddleWare
             }
             finally
             {
-                _nHibernateSessionService.CloseSession();
+                nHibernateSessionService.CloseSession();
             }
         }
     }

@@ -11,33 +11,25 @@ namespace Core.Services.DbServices
     }
     public class DbAddService : IDbAddService
     {
-        private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
+        private readonly ISession _session;
 
         public DbAddService(INHibernateSessionService nHibernateSessionService)
         {
-            _nHibernateSessionService = nHibernateSessionService;
+            _session = nHibernateSessionService.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
         public async void Add(EntityBase entity)
         {
-            var session = _nHibernateSessionService.GetSession();
             try
             {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    await session.SaveAsync(entity);
-                    await transaction.CommitAsync();
-                }
+                    await _session.SaveAsync(entity);
+                    await _session.FlushAsync();
             }
             catch
             {
                 throw new DbInteractionException(_path,"AddUser()");
-            }
-            finally
-            {
-                _nHibernateSessionService.CloseSession();
             }
         } 
     }

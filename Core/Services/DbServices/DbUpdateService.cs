@@ -12,34 +12,25 @@ namespace Core.Services.DbServices
     }
     public class DbUpdateService : IDbUpdateService
     {
-        private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
+        private readonly ISession _session;
 
         public DbUpdateService(INHibernateSessionService nHibernateSessionService)
         {
-            _nHibernateSessionService = nHibernateSessionService;
+            _session = nHibernateSessionService.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
         public async void Update(EntityBase entity)
         {
-            Console.WriteLine(entity);
-            var session = _nHibernateSessionService.GetSession();
             try
             {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    await session.SaveOrUpdateAsync(entity);
-                    await transaction.CommitAsync();
-                }
+                    await _session.UpdateAsync(entity);
+                    await _session.FlushAsync();
             }
             catch
             {
                 throw new DbInteractionException(_path, "UpdateBalance()");
-            }
-            finally
-            {
-                _nHibernateSessionService.CloseSession();
             }
         }
     }

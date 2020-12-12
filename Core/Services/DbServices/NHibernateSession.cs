@@ -15,6 +15,7 @@ namespace Core.Services.DbServices
     public class NHibernateSessionService : INHibernateSessionService
     {
         private static readonly ISessionFactory _sessionFactory;
+        private ISession _session;
 
         static NHibernateSessionService()
         {
@@ -34,7 +35,7 @@ namespace Core.Services.DbServices
 
         public ISession GetSession()
         {
-            return _sessionFactory.OpenSession();
+            return _session ?? (_session = _sessionFactory.OpenSession());
         }
 
         public void CloseSession()
@@ -44,4 +45,3 @@ namespace Core.Services.DbServices
     }
 }
 
-// User ID=postgres;Password=password;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;}
