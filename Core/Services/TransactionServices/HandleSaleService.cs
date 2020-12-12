@@ -20,12 +20,9 @@ namespace Core.Services.TransactionServices
         private readonly ISellShareService _sellShareService;
         private readonly IMapService _mapService;
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
-        private readonly IStockListService _stockListService;
-        private readonly IDbUpdateService _updateService;
-        private readonly IDbAddService _dbAddService;
-        private readonly IDbUpdateService _dbUpdateService;
         private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
+        private readonly ISession _session;
 
         public HandleSaleService(
             IIexFetchService iexFetchService,
@@ -33,20 +30,14 @@ namespace Core.Services.TransactionServices
             IMapService mapService, 
             ISetAllocatedFundsService setAllocatedFundsService,
             IStockListService stockListService,
-            IDbUpdateService updateService,
-            IDbAddService dbAddService,
-            IDbUpdateService dbUpdateService,
             INHibernateSessionService nHibernateSessionService)
         {
             _iexFetchService = iexFetchService;
             _sellShareService = sellShareService;
             _mapService = mapService;
             _setAllocatedFundsService = setAllocatedFundsService;
-            _stockListService = stockListService;
-            _updateService = updateService;
-            _dbAddService = dbAddService;
-            _dbUpdateService = dbUpdateService;
             _nHibernateSessionService = nHibernateSessionService;
+            _session = nHibernateSessionService.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
@@ -61,16 +52,13 @@ namespace Core.Services.TransactionServices
             transaction.User = _sellShareService.SellShares(transaction, sellAll);
             
             transaction.User.AllocatedFunds =
-                _setAllocatedFundsService.SetAllocatedFunds(
-                    _stockListService.GetStockModelList(transaction.User),
-                    transaction.User.Holdings
-                );
+                _setAllocatedFundsService.SetAllocatedFunds(transaction.User);
             
             transaction.Holding.UserId = transaction.User.Id;
             
             DbSale(transaction);
             
-            _updateService.Update(transaction.User);
+            // _updateService.Update(transaction.User);
             
             return transaction;
         }
@@ -78,18 +66,38 @@ namespace Core.Services.TransactionServices
         private void DbSale(Transaction transaction)
         {
             if (transaction.SellAll) RemoveHolding(transaction.Holding);
-            else _dbUpdateService.Update(transaction.Holding);
-            _dbAddService.Add(transaction);
+            else UpdateHolding(transaction.Holding);
+            // _dbAddService.Add(transaction);
+        }
+
+        private async void UpdateHolding(Holding holding)
+        {
+            try
+            {
+                using (ITransaction transaction = _session.BeginTransaction())
+                {
+                    await _session.Query<Holding>()
+                        .UpdateAsync(x => x.Symbol == holding.Symbol);
+                    await transaction.CommitAsync();
+                }
+            }
+            catch
+            {
+                throw new DbInteractionException(_path, "UpdateHolding");
+            }
+            finally
+            {
+                _nHibernateSessionService.CloseSession();
+            }
         }
         
         private async void RemoveHolding(Holding holding)
         {
-            var session = _nHibernateSessionService.GetSession();
             try
             {
-                using (ITransaction transaction = session.BeginTransaction())
+                using (ITransaction transaction = _session.BeginTransaction())
                 {
-                    await session.Query<Holding>()
+                    await _session.Query<Holding>()
                         .Where(x => x.Symbol == holding.Symbol).DeleteAsync();
                     await transaction.CommitAsync();
                 }

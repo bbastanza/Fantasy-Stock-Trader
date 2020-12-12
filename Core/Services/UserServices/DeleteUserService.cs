@@ -14,15 +14,12 @@ namespace Core.Services.UserServices
     }
     public class DeleteUserService : IDeleteUserService
     {
-        private readonly IDbQueryService _dbQueryService;
         private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
 
         public DeleteUserService(
-            IDbQueryService dbQueryService, 
             INHibernateSessionService nHibernateSessionService)
         {
-            _dbQueryService = dbQueryService;
             _nHibernateSessionService = nHibernateSessionService;
             _path = Path.GetFullPath(ToString());
         }
@@ -32,8 +29,8 @@ namespace Core.Services.UserServices
             if (userName == null || password == null)
                 throw new InvalidInputException(Path.GetFullPath(ToString()), "DeleteUser");
             
-            if (!_dbQueryService.ValidateUser(userName, password))
-                throw new UserValidationException(_path, "DeleteUser()");
+            // if (!_dbQueryService.ValidateUser(userName, password))
+            //     throw new UserValidationException(_path, "DeleteUser()");
             
             DeleteUserFromDb(userName);
             

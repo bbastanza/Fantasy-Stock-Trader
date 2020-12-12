@@ -26,10 +26,7 @@ namespace API
             services.AddScoped<IDeleteUserService, DeleteUserService>();
             services.AddScoped<IGetUserDataService, GetUserDataService>();
             services.AddScoped<INHibernateSessionService, NHibernateSessionService>();
-            services.AddScoped<IDbQueryService, DbQueryService>();
             services.AddScoped<IUserOutputMap, UserOutputMap>();
-            services.AddScoped<IDbAddService, DbAddService>();
-            services.AddScoped<IDbUpdateService, DbUpdateService>();
         }
     }
 }

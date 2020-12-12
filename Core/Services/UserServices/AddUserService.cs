@@ -2,6 +2,7 @@ using System.IO;
 using Core.Entities;
 using Core.Services.DbServices;
 using Infrastructure.Exceptions;
+using NHibernate;
 
 namespace Core.Services.UserServices
 {
@@ -12,14 +13,14 @@ namespace Core.Services.UserServices
 
     public class AddUserService : IAddUserService
     {
-        private readonly IDbQueryService _dbQueryService;
-        private readonly IDbAddService _dbAddService;
+        private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
+        private ISession _session;
 
-        public AddUserService(IDbQueryService dbQueryService, IDbAddService dbAddService)
+        public AddUserService(INHibernateSessionService nHibernateSessionService)
         {
-            _dbQueryService = dbQueryService;
-            _dbAddService = dbAddService;
+            _nHibernateSessionService = nHibernateSessionService;
+            _session = nHibernateSessionService.GetSession();
             _path = Path.GetFullPath(ToString());
         } 
         
@@ -28,14 +29,35 @@ namespace Core.Services.UserServices
             if (userName == null || password == null || email == null)
                 throw new InvalidInputException(_path, "AddUser()");
 
-            if (!_dbQueryService.CheckExistingUser(userName))
-                throw new ExistingUserException(_path, "AddUser()");
+            // if (!_dbQueryService.CheckExistingUser(userName))
+            //     throw new ExistingUserException(_path, "AddUser()");
             
             var newUser = new User(userName, password, email);
-            
-            _dbAddService.Add(newUser);
+
+            AddUserToDb(newUser);
             
             return newUser;
+        }
+
+        private async void AddUserToDb(User user)
+        {
+            
+            try
+            {
+                using (ITransaction transaction = _session.BeginTransaction())
+                {
+                    await _session.SaveAsync(user);
+                    await transaction.CommitAsync();
+                }
+            }
+            catch
+            {
+                throw new DbInteractionException(_path, "UpdateHolding");
+            }
+            finally
+            {
+                _nHibernateSessionService.CloseSession();
+            }
         }
     }
 }

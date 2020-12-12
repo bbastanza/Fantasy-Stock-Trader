@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.IO;
 using Core.Entities;
 using Infrastructure.Exceptions;
+using NHibernate.Mapping;
 
 namespace Core.Services.TransactionServices
 {
@@ -22,12 +24,9 @@ namespace Core.Services.TransactionServices
 
         public User SellShares(Transaction transaction, bool sellAll)
         {
-            var existingHolding = false;
-            foreach (var holding in transaction.User.Holdings)
-            {
-                if (holding.Symbol == transaction.Symbol) existingHolding = true;
-            }
-            
+            var existingHolding = ((List<Holding>) transaction.User.Holdings)
+                .Exists(x => x.Symbol == transaction.Symbol);
+
             if (!existingHolding)
                 throw new NonExistingHoldingException(_path, "SellShares()");
 

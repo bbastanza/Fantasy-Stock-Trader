@@ -1,6 +1,10 @@
+using System.IO;
 using Core.Entities;
 using Core.Services.DbServices;
 using Core.Services.IexServices;
+using Infrastructure.Exceptions;
+using NHibernate;
+using NHibernate.Linq;
 
 namespace Core.Services.TransactionServices
 {
@@ -16,8 +20,9 @@ namespace Core.Services.TransactionServices
         private readonly IMapService _mapService;
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
         private readonly IStockListService _stockListService;
-        private readonly IDbUpdateService _dbUpdateService;
-        private readonly IDbAddService _dbAddService;
+        private readonly INHibernateSessionService _nHibernateSessionService;
+        private readonly ISession _session;
+        private string _path;
 
         public HandlePurchaseService(
             IIexFetchService iexFetchService, 
@@ -25,16 +30,16 @@ namespace Core.Services.TransactionServices
             IMapService mapService, 
             ISetAllocatedFundsService setAllocatedFundsService,
             IStockListService stockListService,
-            IDbUpdateService dbUpdateService,
-            IDbAddService dbAddService)
+            INHibernateSessionService nHibernateSessionService)
         {
             _iexFetchService = iexFetchService;
             _purchaseSharesService = purchaseSharesService;
             _mapService = mapService;
             _setAllocatedFundsService = setAllocatedFundsService;
             _stockListService = stockListService;
-            _dbUpdateService = dbUpdateService;
-            _dbAddService = dbAddService;
+            _nHibernateSessionService = nHibernateSessionService;
+            _session = nHibernateSessionService.GetSession();
+            _path = Path.GetFullPath(ToString());
         }
 
         public Transaction PurchaseTransaction(double amount, string userName, string symbol)
@@ -46,18 +51,13 @@ namespace Core.Services.TransactionServices
             var transaction = _mapService.MapInputTransaction(transactionType, amount, userName, iexData);
             
             transaction.User = _purchaseSharesService.PurchaseShares(transaction);
-            
+
             transaction.User.AllocatedFunds =
-                _setAllocatedFundsService.SetAllocatedFunds(
-                    _stockListService.GetStockModelList(transaction.User),
-                    transaction.User.Holdings
-                );
-            
-            transaction.Holding.UserId = transaction.User.Id;
+                _setAllocatedFundsService.SetAllocatedFunds(transaction.User);
             
             DbPurchase(transaction);
             
-            _dbUpdateService.Update(transaction.User);
+            // _dbUpdateService.Update(transaction.User);
             
             return transaction;
         }
@@ -65,11 +65,52 @@ namespace Core.Services.TransactionServices
         private void DbPurchase(Transaction transaction)
         {
             if (transaction.NewHolding)
-                _dbAddService.Add(transaction.Holding);
+                AddHolding(transaction.Holding);
             else 
-                _dbUpdateService.Update(transaction.Holding);
+                UpdateHolding(transaction.Holding);
                 
-            _dbAddService.Add(transaction);
+            // _dbAddService.Add(transaction);
+        }
+        
+        private async void UpdateHolding(Holding holding)
+        {
+            try
+            {
+                using (ITransaction transaction = _session.BeginTransaction())
+                {
+                    await _session.Query<Holding>()
+                        .UpdateAsync(x => x.Symbol == holding.Symbol);
+                    await transaction.CommitAsync();
+                }
+            }
+            catch
+            {
+                throw new DbInteractionException(_path, "UpdateHolding");
+            }
+            finally
+            {
+                _nHibernateSessionService.CloseSession();
+            }
+        }
+        
+        private async void AddHolding(Holding holding)
+        {
+            try
+            {
+                using (ITransaction transaction = _session.BeginTransaction())
+                {
+                    await _session.SaveAsync(holding);
+                    await transaction.CommitAsync();
+                }
+            }
+            catch
+            {
+                throw new DbInteractionException(_path, "RemoveHolding");
+            }
+            finally
+            {
+                _nHibernateSessionService.CloseSession();
+            }
         }
     }
 }

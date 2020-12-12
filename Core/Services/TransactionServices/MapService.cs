@@ -1,7 +1,9 @@
 using System.IO;
+using System.Linq;
 using Core.Entities;
 using Core.Services.DbServices;
 using Infrastructure.Exceptions;
+using NHibernate;
 
 namespace Core.Services.TransactionServices
 {
@@ -12,12 +14,12 @@ namespace Core.Services.TransactionServices
     
     public class MapService : IMapService
     {
-        private readonly IDbQueryService _dbQueryService;
         private readonly string _path;
+        private readonly ISession _session;
 
-        public MapService(IDbQueryService dbQueryService)
+        public MapService(INHibernateSessionService nHibernateSessionService)
         {
-            _dbQueryService = dbQueryService;
+            _session = nHibernateSessionService.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
@@ -34,10 +36,8 @@ namespace Core.Services.TransactionServices
                 SellAll = sellAll,
                 CompanyName = iexData.CompanyName,
                 TransactionPrice = iexData.LatestPrice,
-                User = _dbQueryService.GetUserFromDb(userName)
+                User = new User(userName, "password", "email")
             };
-            
-            transaction.User.Holdings = _dbQueryService.GetUserHoldings(transaction.User.Id);
 
             return transaction;
         }
