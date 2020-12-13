@@ -11,8 +11,8 @@ namespace API.Models
             Date = transaction.TransactionDate;
             Amount = transaction.Amount;
             TransactionPrice = transaction.TransactionPrice;
-            Symbol = transaction.Symbol;
-            CompanyName = transaction.CompanyName;
+            Symbol = transaction.Holding.Symbol;
+            CompanyName = transaction.Holding.CompanyName;
         }
         
         public string Symbol { get; set; }

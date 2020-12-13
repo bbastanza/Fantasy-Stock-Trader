@@ -6,6 +6,7 @@ using Core.Entities;
 using Core.Services.DbServices;
 using Core.Services.TransactionServices;
 using Infrastructure.Exceptions;
+using NHibernate;
 
 namespace Core.Services.UserServices
 {
@@ -18,21 +19,15 @@ namespace Core.Services.UserServices
     public class GetUserDataService : IGetUserDataService
     {
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
-        private readonly IStockListService _stockListService;
-        private readonly IDbQueryService _dbQueryService;
-        private readonly INHibernateSessionService _nHibernateSessionService;
         private readonly string _path;
+        private readonly ISession _session;
 
         public GetUserDataService(
             ISetAllocatedFundsService setAllocatedFundsService,
-            IStockListService stockListService,
-            IDbQueryService dbQueryService,
             INHibernateSessionService nHibernateSessionService)
         {
             _setAllocatedFundsService = setAllocatedFundsService;
-            _stockListService = stockListService;
-            _dbQueryService = dbQueryService;
-            _nHibernateSessionService = nHibernateSessionService;
+            _session = nHibernateSessionService.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
@@ -41,26 +36,19 @@ namespace Core.Services.UserServices
             if (userName == null || password == null)
                 throw new InvalidInputException(_path, "GetUserData()");
 
-            if (!_dbQueryService.ValidateUser(userName, password))
-                throw new UserValidationException(_path, "GetUserData()");
+            var user = _session.Query<User>().FirstOrDefault(x => x.UserName == userName);
+            if (user == null)
+                throw new NonExistingUserException(_path, "GetUserData()");
             
-            var user = _dbQueryService.GetUserFromDb(userName);
-
-            user.Holdings = _dbQueryService.GetUserHoldings(user.Id);
-
-            user.AllocatedFunds =
-                _setAllocatedFundsService.SetAllocatedFunds(_stockListService.GetStockModelList(user), user.Holdings);
+            user.AllocatedFunds = _setAllocatedFundsService.SetAllocatedFunds(user);
 
             return user;
         }
 
         public IList<Transaction> GetUserTransactions(string userName)
         {
-            var session = _nHibernateSessionService.GetSession();
-            return session.Query<User>()
-                .Single(x => x.UserName == userName)
-                .Transactions;
-
+            return _session.Query<User>().FirstOrDefault(x => x.UserName == userName)
+                ?.Transactions;
         }
     }
 }

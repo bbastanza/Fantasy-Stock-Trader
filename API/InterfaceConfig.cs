@@ -15,21 +15,14 @@ namespace API
             services.AddScoped<IApiHelper, ApiHelper>();
             services.AddScoped<IIexFetchService, IexFetchService>();
             services.AddScoped<IStockListService, StockListService>();
-            services.AddScoped<ICheckExistingHoldingsService, CheckExistingHoldingService>();
-            services.AddScoped<IPurchaseSharesService, PurchaseSharesService>();
-            services.AddScoped<IMapService, MapService>();
-            services.AddScoped<ISetAllocatedFundsService, SetAllocatedFundsService>();
-            services.AddScoped<ISellShareService, SellSharesService>();
-            services.AddScoped<IHandleSaleService, HandleSaleService>();
             services.AddScoped<IHandlePurchaseService, HandlePurchaseService>();
+            services.AddScoped<IHandleSaleService, HandleSaleService>();
+            services.AddScoped<ISetAllocatedFundsService, SetAllocatedFundsService>();
             services.AddScoped<IAddUserService, AddUserService>();
             services.AddScoped<IDeleteUserService, DeleteUserService>();
             services.AddScoped<IGetUserDataService, GetUserDataService>();
             services.AddScoped<INHibernateSessionService, NHibernateSessionService>();
-            services.AddScoped<IDbQueryService, DbQueryService>();
             services.AddScoped<IUserOutputMap, UserOutputMap>();
-            services.AddScoped<IDbAddService, DbAddService>();
-            services.AddScoped<IDbUpdateService, DbUpdateService>();
         }
     }
 }
