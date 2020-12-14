@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 using Core.Entities;
 
 namespace API.Models
@@ -13,9 +14,11 @@ namespace API.Models
             TotalShares = holding.TotalShares;
         }
             
-        public virtual string Symbol { get; set; }
-        public virtual string CompanyName { get; set; }
-        public virtual double Value { get; set; }
-        public virtual double TotalShares { get; set; }
+        public virtual string Symbol { get; }
+        public virtual string CompanyName { get; }
+        public virtual double Value { get; }
+        public virtual double TotalShares { get; }
+        
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

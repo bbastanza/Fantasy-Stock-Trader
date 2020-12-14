@@ -17,9 +17,9 @@ namespace Core.Services.UserServices
         private readonly string _path;
         private readonly ISession _session;
 
-        public AddUserService(INHibernateSessionService nHibernateSessionService)
+        public AddUserService(INHibernateSession inHibernateSession)
         {
-            _session = nHibernateSessionService.GetSession();
+            _session = inHibernateSession.GetSession();
             _path = Path.GetFullPath(ToString());
         } 
         

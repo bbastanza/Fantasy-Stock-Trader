@@ -1,5 +1,4 @@
 using API.Models;
-using API.OutputMappings;
 using Core.Services.TransactionServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +10,33 @@ namespace API.Controllers
     {
         private readonly IHandleSaleService _handleSaleService;
         private readonly IHandlePurchaseService _handlePurchaseService;
-        private readonly IUserOutputMap _userOutputMap;
 
         public TransactionController(
             IHandleSaleService handleSaleService, 
-            IHandlePurchaseService handlePurchaseService, 
-            IUserOutputMap userOutputMap)
+            IHandlePurchaseService handlePurchaseService)
         {
             _handleSaleService = handleSaleService;
             _handlePurchaseService = handlePurchaseService;
-            _userOutputMap = userOutputMap;
         }
 
         [HttpPost]
         [Route("sell")]
-        public UserModel Sell(SaleInputModel saleInput)
+        public UserModel Sell(TransactionInputModel transactionInput)
         {
                 var transaction = _handleSaleService
-                    .SellTransaction(saleInput.Amount, saleInput.UserName, saleInput.Symbol, saleInput.SellAll);
+                    .Sell(transactionInput.Amount, transactionInput.UserName, transactionInput.Symbol, transactionInput.SellAll);
                 
-                return _userOutputMap.MapUserOutput(transaction.User);
+                return new UserModel(transaction.User);
         }
 
         [HttpPost]
         [Route("purchase")]
-        public UserModel Purchase(PurchaseInputModel purchaseInput)
+        public UserModel Purchase(TransactionInputModel transactionInput)
         {
                 var transaction = _handlePurchaseService
-                    .PurchaseTransaction(purchaseInput.Amount, purchaseInput.UserName, purchaseInput.Symbol);
+                    .Purchase(transactionInput.Amount, transactionInput.UserName, transactionInput.Symbol);
                 
-                return _userOutputMap.MapUserOutput(transaction.User);
+                return new UserModel(transaction.User);
         }
     }
 }

@@ -3,7 +3,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Models
 {
-    public class SaleInputModel
+    public class TransactionInputModel
     {
         [JsonPropertyName("userName")]
         public string UserName { get; set; }
@@ -17,6 +17,5 @@ namespace API.Models
         [JsonPropertyName("sellAll")]
         public bool SellAll { get; set; }
         
-        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

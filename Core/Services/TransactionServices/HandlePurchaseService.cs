@@ -11,7 +11,7 @@ namespace Core.Services.TransactionServices
 {
     public interface IHandlePurchaseService
     {
-        Transaction PurchaseTransaction(double amount, string symbol, string userName);
+        Transaction Purchase(double amount, string symbol, string userName);
     }
 
     public class HandlePurchaseService : IHandlePurchaseService
@@ -23,17 +23,17 @@ namespace Core.Services.TransactionServices
 
         public HandlePurchaseService(
             IIexFetchService iexFetchService,
-            INHibernateSessionService nHibernateSessionService,
+            INHibernateSession inHibernateSession,
             ISetAllocatedFundsService setAllocatedFundsService)
         {
             _iexFetchService = iexFetchService;
             _setAllocatedFundsService = setAllocatedFundsService;
-            _session = nHibernateSessionService.GetSession();
+            _session = inHibernateSession.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
 
-        public Transaction PurchaseTransaction(double amount, string userName, string symbol)
+        public Transaction Purchase(double amount, string userName, string symbol)
         {
             var user = _session.Query<User>().FirstOrDefault(x => x.UserName == userName);
 

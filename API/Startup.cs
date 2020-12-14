@@ -45,7 +45,7 @@ namespace API
             app.UseSpaStaticFiles();
 
             app.UseMiddleware<ExceptionMiddleware>();
-            
+
             app.UseMiddleware<DbConnectionMiddleware>();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());

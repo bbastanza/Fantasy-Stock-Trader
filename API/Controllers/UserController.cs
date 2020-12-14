@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using API.Models;
-using API.OutputMappings;
-using Core.Entities;
 using Core.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,25 +12,23 @@ namespace API.Controllers
         private readonly IAddUserService _addUserService;
         private readonly IDeleteUserService _deleteUserService;
         private readonly IGetUserDataService _getUserDataService;
-        private readonly IUserOutputMap _userOutputMap;
 
         public UserController(
             IAddUserService addUserService, 
             IDeleteUserService deleteUserService, 
-            IGetUserDataService getUserDataService, 
-            IUserOutputMap userOutputMap)
+            IGetUserDataService getUserDataService 
+            )
         {
             _addUserService = addUserService;
             _deleteUserService = deleteUserService;
             _getUserDataService = getUserDataService;
-            _userOutputMap = userOutputMap;
         }
 
         [HttpPost]
         [Route("get")]
         public UserModel GetUser(UserInputModel userInput)
         {
-                return _userOutputMap.MapUserOutput(_getUserDataService
+                return new UserModel(_getUserDataService
                     .GetUserData(userInput.UserName, userInput.Password));
         }
 
@@ -54,7 +50,7 @@ namespace API.Controllers
         [Route("add")]
         public UserModel AddUser(UserInputModel newUser)
         {
-            return _userOutputMap.MapUserOutput(_addUserService
+            return new UserModel(_addUserService
                 .AddUser(newUser.UserName, newUser.Password, newUser.Email));
         }
 

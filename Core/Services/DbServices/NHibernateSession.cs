@@ -6,18 +6,18 @@ using NHibernate;
 
 namespace Core.Services.DbServices
 {
-    public interface INHibernateSessionService
+    public interface INHibernateSession
     {
         ISession GetSession();
         void CloseSession();
     }
 
-    public class NHibernateSessionService : INHibernateSessionService
+    public class NHibernateSession : INHibernateSession
     {
         private static readonly ISessionFactory _sessionFactory;
         private ISession _session;
 
-        static NHibernateSessionService()
+        static NHibernateSession()
         {
             _sessionFactory = Fluently.Configure()
                 .Database(PostgreSQLConfiguration.PostgreSQL82

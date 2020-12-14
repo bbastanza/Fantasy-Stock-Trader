@@ -24,10 +24,10 @@ namespace Core.Services.UserServices
 
         public GetUserDataService(
             ISetAllocatedFundsService setAllocatedFundsService,
-            INHibernateSessionService nHibernateSessionService)
+            INHibernateSession inHibernateSession)
         {
             _setAllocatedFundsService = setAllocatedFundsService;
-            _session = nHibernateSessionService.GetSession();
+            _session = inHibernateSession.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
@@ -37,6 +37,7 @@ namespace Core.Services.UserServices
                 throw new InvalidInputException(_path, "GetUserData()");
 
             var user = _session.Query<User>().FirstOrDefault(x => x.UserName == userName);
+            
             if (user == null)
                 throw new NonExistingUserException(_path, "GetUserData()");
             

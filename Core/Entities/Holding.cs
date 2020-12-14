@@ -1,10 +1,14 @@
-using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.IO;
+using Infrastructure.Exceptions;
 
 namespace Core.Entities
 {
     public class Holding : EntityBase
     {
-        public virtual int UserId { get; set; }
+        public Holding()
+        {
+        }
+        
         public virtual string Symbol { get; set; }
         public virtual string CompanyName { get; set; }
         public virtual double Value { get; set; }
@@ -18,9 +22,10 @@ namespace Core.Entities
             return sharedToSell * currentPrice;
         }
 
-        public virtual void Sell(double sellShareAmount)
+        public virtual bool Sell(double sellShareAmount)
         {
             TotalShares -= sellShareAmount;
+            return TotalShares < 0;
         }
 
         public virtual void Purchase(double shareAmount)
@@ -32,7 +37,5 @@ namespace Core.Entities
         {
             Value = TotalShares * currentValue;
         }
-
-        // public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

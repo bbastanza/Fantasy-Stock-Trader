@@ -5,10 +5,6 @@ namespace API.Models
 {
     public class DefaultExceptionModel
     {
-        public string Type { get; }
-        public string Message { get; }
-        public string StackTrace { get; set; }
-        
         public DefaultExceptionModel(Exception ex)
         {
             Type = ex.GetType().ToString();
@@ -16,7 +12,10 @@ namespace API.Models
             StackTrace = ex.StackTrace;
         }
 
-
+        public string Type { get; set; }
+        public string Message { get; set; }
+        public string StackTrace { get; set; }
+        
         public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

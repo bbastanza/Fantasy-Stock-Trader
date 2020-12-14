@@ -19,9 +19,9 @@ namespace Core.Services.UserServices
         private readonly string _path;
 
         public DeleteUserService(
-            INHibernateSessionService nHibernateSessionService)
+            INHibernateSession inHibernateSession)
         {
-            _session = nHibernateSessionService.GetSession();
+            _session = inHibernateSession.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
