@@ -8,7 +8,7 @@ namespace Core.Entities
         {
         }
         
-        public virtual string GuidString { get; set; }
+        public virtual string SessionId { get; set; }
         public virtual DateTime InitDateTime { get; set; }
         public virtual DateTime ExpireDateTime { get; set; }
         public virtual User User { get; set; }

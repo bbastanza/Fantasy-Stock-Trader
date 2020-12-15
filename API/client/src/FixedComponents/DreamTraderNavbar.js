@@ -16,9 +16,7 @@ export default function DreamTraderNavbar({isLoggedIn}) {
                             <Nav className="mr-auto" />
                             <Nav>
                                 <Nav.Link 
-                                    href={context.isLoggedIn ? "/purchase" : "/login"}>Purchase</Nav.Link>
-                                <Nav.Link 
-                                    href={context.isLoggedIn ? "/portfolio" : "/login"}>Portfolio</Nav.Link>
+                                    href={context.isLoggedIn ? "/dashboard" : "/login"}>Dashboard</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>

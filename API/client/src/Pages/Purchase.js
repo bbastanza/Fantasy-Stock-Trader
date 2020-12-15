@@ -4,8 +4,10 @@ import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Modal from "./../FixedComponents/Modal"
+import { useHistory } from "react-router-dom";
 
 export default function Purchase({ availableFunds }) {
+    const history = useHistory();
     const [unavailableFunds, setUnavailableFunds] = useState(0);
     const [purchaseAmount, setPurchaseAmount] = useState(0);
     const [validInput, setValidInput] = useState(true);
@@ -32,11 +34,12 @@ export default function Purchase({ availableFunds }) {
             return;
         }
         console.log(`purchased ${stock} in the amount of $${purchaseAmount}`);
+        history.push("/dashboard")
     }
 
     return (
         <Modal>
-            <div className="login-container">
+            <div className="login-container dream-shadow">
                 <div className="purchase-form">
                     <h1 className="title">purchase</h1>
                     <h2 className="available-funds">Available Funds: {availableFunds}</h2>

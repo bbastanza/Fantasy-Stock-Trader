@@ -17,6 +17,10 @@ namespace Core.Mappings
                 .KeyColumn("user_id")
                 .Inverse()
                 .Cascade.All();
+            HasMany(x => x.Sessions)
+                .KeyColumn("user_id")
+                .Inverse()
+                .Cascade.All();
             HasMany(x => x.Holdings)
                 .KeyColumn("user_id")
                 .Inverse()

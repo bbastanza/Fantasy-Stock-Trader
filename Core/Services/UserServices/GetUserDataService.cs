@@ -12,31 +12,31 @@ namespace Core.Services.UserServices
 {
     public interface IGetUserDataService
     {
-        User GetUserData(string userName, string password);
-        IList<Transaction> GetUserTransactions(string userName);
+        User GetUserData(string sessionId);
+        IList<Transaction> GetUserTransactions(string sessionId);
     }
 
     public class GetUserDataService : IGetUserDataService
     {
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
+        private readonly ICheckExpiration _checkExpiration;
         private readonly string _path;
         private readonly ISession _session;
 
         public GetUserDataService(
             ISetAllocatedFundsService setAllocatedFundsService,
-            INHibernateSession inHibernateSession)
+            INHibernateSession inHibernateSession,
+            ICheckExpiration checkExpiration)
         {
             _setAllocatedFundsService = setAllocatedFundsService;
+            _checkExpiration = checkExpiration;
             _session = inHibernateSession.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 
-        public User GetUserData(string userName, string password)
+        public User GetUserData(string sessionId)
         {
-            if (userName == null || password == null)
-                throw new InvalidInputException(_path, "GetUserData()");
-
-            var user = _session.Query<User>().FirstOrDefault(x => x.UserName == userName);
+            var user = _checkExpiration.CheckUserSession(sessionId);
             
             if (user == null)
                 throw new NonExistingUserException(_path, "GetUserData()");
@@ -46,10 +46,11 @@ namespace Core.Services.UserServices
             return user;
         }
 
-        public IList<Transaction> GetUserTransactions(string userName)
+        public IList<Transaction> GetUserTransactions(string sessionId)
         {
-            return _session.Query<User>().FirstOrDefault(x => x.UserName == userName)
-                ?.Transactions;
+            var user = _checkExpiration.CheckUserSession(sessionId);
+
+            return user.Transactions;
         }
     }
 }

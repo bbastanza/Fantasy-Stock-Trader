@@ -10,7 +10,7 @@ namespace Core.Mappings
             Id(x => x.Id).GeneratedBy.Increment().Column("id");
             Map(x => x.InitDateTime).Column("init");
             Map(x => x.ExpireDateTime).Column("expire");
-            Map(x => x.GuidString).Column("guid");
+            Map(x => x.SessionId).Column("session_id");
             References(x => x.User).Column("user_id");
             Table("session_table");
         }

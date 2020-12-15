@@ -32,18 +32,17 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("get")]
-        public UserModel GetUser(UserInputModel userInput)
+        public UserModel GetUser(SessionInputModel session)
         {
-            var session = new UserSession();
             return new UserModel(_getUserDataService
-                .GetUserData(userInput.UserName, userInput.Password));
+                .GetUserData(session.Id));
         }
 
         [HttpPost]
         [Route("transactions")]
-        public IList<TransactionModel> GetUserTransactions(UserInputModel userInput)
+        public IList<TransactionModel> GetUserTransactions(SessionInputModel session)
         {
-            var transactions = _getUserDataService.GetUserTransactions(userInput.UserName);
+            var transactions = _getUserDataService.GetUserTransactions(session.Id);
             
             return transactions.Select(transaction => new TransactionModel(transaction)).ToList();
         }
@@ -68,7 +67,7 @@ namespace API.Controllers
         public UserSessionModel Login(UserInputModel userInput)
         {
             var userSession =  _loginUser.Login(userInput.UserName, userInput.Password);
-            return new UserSessionModel(userSession.GuidString, userSession.ExpireDateTime);
+            return new UserSessionModel(userSession.SessionId, userSession.ExpireDateTime);
         }
     }
 }

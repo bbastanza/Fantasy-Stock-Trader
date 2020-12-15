@@ -38,7 +38,7 @@ namespace Core.Services.UserServices
             
             var userSession = new UserSession()
             {
-                GuidString = Guid.NewGuid().ToString(),
+                SessionId = Guid.NewGuid().ToString(),
                 InitDateTime = DateTime.Now,
                 ExpireDateTime = DateTime.Now.AddDays(1),
                 User = user

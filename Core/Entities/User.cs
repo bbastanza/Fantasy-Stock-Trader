@@ -26,6 +26,7 @@ namespace Core.Entities
         public virtual DateTime CreatedAt { get; set; } 
         public virtual double Balance { get; set; } 
         public virtual double AllocatedFunds { get; set; }
+        public virtual IList<UserSession> Sessions { get; set; }
         public virtual IList<Transaction> Transactions { get; set; }
         public virtual IList<Holding> Holdings { get; set; }
     }

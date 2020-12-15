@@ -8,9 +8,8 @@ import LogoutBtn from "./../IndividualComponents/LogoutBtn";
 import { Link } from "react-router-dom";
 import { LoginContext } from "./../contexts/LoginContext";
 import { Route , Redirect, useHistory} from "react-router-dom";
-import Portfolio from "./../Pages/Portfolio";
 
-export default function Login(props) {
+export default function Login() {
     const loginContext = useContext(LoginContext);
     const history = useHistory();
 
@@ -21,7 +20,7 @@ export default function Login(props) {
         // send request to backend
         // if successful push to portfolio
         // else display message in login page
-        history.push("/portfolio")
+        history.push("/dashboard")
     }
 
 

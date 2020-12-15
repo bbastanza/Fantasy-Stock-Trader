@@ -27,7 +27,7 @@ namespace Core.Services.UserServices
         public User CheckUserSession(string sessionId)
         {
             var userSession = _session.Query<UserSession>()
-                .FirstOrDefault(x => x.GuidString == sessionId);
+                .FirstOrDefault(x => x.SessionId == sessionId);
             
             if (userSession == null)
                 throw new NonExistingSessionException(_path, "CheckUserSession()");
