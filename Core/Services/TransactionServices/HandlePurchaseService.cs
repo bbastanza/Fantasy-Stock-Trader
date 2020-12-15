@@ -4,6 +4,7 @@ using System.Linq;
 using Core.Entities;
 using Core.Services.DbServices;
 using Core.Services.IexServices;
+using Core.Services.UserServices;
 using Infrastructure.Exceptions;
 using NHibernate;
 
@@ -11,31 +12,31 @@ namespace Core.Services.TransactionServices
 {
     public interface IHandlePurchaseService
     {
-        Transaction Purchase(double amount, string symbol, string userName);
+        Transaction Purchase(string sessionId, double amount, string symbol);
     }
 
     public class HandlePurchaseService : IHandlePurchaseService
     {
         private readonly IIexFetchService _iexFetchService;
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
-        private readonly ISession _session;
+        private readonly ICheckExpiration _checkExpiration;
         private readonly string _path;
 
         public HandlePurchaseService(
             IIexFetchService iexFetchService,
-            INHibernateSession inHibernateSession,
-            ISetAllocatedFundsService setAllocatedFundsService)
+            ISetAllocatedFundsService setAllocatedFundsService,
+            ICheckExpiration checkExpiration)
         {
             _iexFetchService = iexFetchService;
             _setAllocatedFundsService = setAllocatedFundsService;
-            _session = inHibernateSession.GetSession();
+            _checkExpiration = checkExpiration;
             _path = Path.GetFullPath(ToString());
         }
 
 
-        public Transaction Purchase(double amount, string userName, string symbol)
+        public Transaction Purchase(string sessionId, double amount, string symbol)
         {
-            var user = _session.Query<User>().FirstOrDefault(x => x.UserName == userName);
+            var user = _checkExpiration.CheckUserSession(sessionId);
 
             if (user == null)
                 throw new NonExistingUserException(_path, "PurchaseTransaction()");

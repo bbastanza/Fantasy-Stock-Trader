@@ -19,6 +19,8 @@ namespace API
             services.AddScoped<IDeleteUserService, DeleteUserService>();
             services.AddScoped<IGetUserDataService, GetUserDataService>();
             services.AddScoped<INHibernateSession, NHibernateSession>();
+            services.AddScoped<ILoginUser, LoginUser>();
+            services.AddScoped<ICheckExpiration, CheckExpiration>();
         }
     }
 }

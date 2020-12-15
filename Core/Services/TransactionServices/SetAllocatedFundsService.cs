@@ -21,18 +21,11 @@ namespace Core.Services.TransactionServices
 
         public double SetAllocatedFunds(User user)
         {
-            var stockModels = new List<IexStock>();
-            foreach (var holding in user.Holdings)
-                stockModels.Add(_iexFetchService.GetStockBySymbol(holding.Symbol));
-
-
             double totalHoldingsValue = 0;
 
-            foreach (var stockModel in stockModels)
-            foreach (var holding in user.Holdings
-                .Where(holding => stockModel.Symbol == holding.Symbol))
+            foreach (var holding in user.Holdings)
             {
-                holding.SetValue(stockModel.LatestPrice);
+                _iexFetchService.UpdateHolding(holding);
                 totalHoldingsValue += holding.Value;
             }
 

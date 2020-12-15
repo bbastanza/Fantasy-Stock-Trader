@@ -2,17 +2,16 @@ using System;
 
 namespace Core.Entities
 {
-    public class UserSession
+    public class UserSession : EntityBase
     {
-        public Guid Guid { get; set; }
-        public DateTime InitDateTime { get; set; }
-        public DateTime ExpireDateTime { get; set; }
-        
         public UserSession()
         {
-            Guid = Guid.NewGuid();
-            InitDateTime = DateTime.Now;
-            ExpireDateTime = DateTime.Now.AddDays(1);
         }
+        
+        public virtual string GuidString { get; set; }
+        public virtual DateTime InitDateTime { get; set; }
+        public virtual DateTime ExpireDateTime { get; set; }
+        public virtual User User { get; set; }
+        
     }
 }

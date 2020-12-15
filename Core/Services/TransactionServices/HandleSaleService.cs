@@ -2,40 +2,38 @@ using System;
 using System.IO;
 using System.Linq;
 using Core.Entities;
-using Core.Services.DbServices;
 using Core.Services.IexServices;
+using Core.Services.UserServices;
 using Infrastructure.Exceptions;
-using NHibernate;
-using NHibernate.Linq;
 
 namespace Core.Services.TransactionServices
 {
     public interface IHandleSaleService
     {
-        Transaction Sell(double amount, string userName, string symbol, bool sellAll = false);
+        Transaction Sell(string sessionId, double amount, string symbol, bool sellAll = false);
     }
 
     public class HandleSaleService : IHandleSaleService
     {
         private readonly IIexFetchService _iexFetchService;
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
+        private readonly ICheckExpiration _checkExpiration;
         private readonly string _path;
-        private readonly ISession _session;
 
         public HandleSaleService(
             IIexFetchService iexFetchService,
             ISetAllocatedFundsService setAllocatedFundsService,
-            INHibernateSession inHibernateSession)
+            ICheckExpiration checkExpiration)
         {
             _iexFetchService = iexFetchService;
             _setAllocatedFundsService = setAllocatedFundsService;
-            _session = inHibernateSession.GetSession();
+            _checkExpiration = checkExpiration;
             _path = Path.GetFullPath(ToString());
         }
 
-        public Transaction Sell(double amount, string userName, string symbol, bool sellAll = false)
+        public Transaction Sell(string sessionId, double amount, string symbol, bool sellAll = false)
         {
-            var user = _session.Query<User>().FirstOrDefault(x => x.UserName == userName);
+            var user = _checkExpiration.CheckUserSession(sessionId);
 
             if (user == null)
                 throw new NonExistingUserException(_path, "Sell()");
@@ -55,6 +53,7 @@ namespace Core.Services.TransactionServices
                 amountSold = holding.SellAll(iexData.LatestPrice);
                 user.Holdings.Remove(holding);
             }
+            
             else
             {
                 var overdrawn = holding.Sell(amount / iexData.LatestPrice);

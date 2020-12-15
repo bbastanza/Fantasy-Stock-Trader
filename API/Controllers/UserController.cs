@@ -15,16 +15,19 @@ namespace API.Controllers
         private readonly IAddUserService _addUserService;
         private readonly IDeleteUserService _deleteUserService;
         private readonly IGetUserDataService _getUserDataService;
+        private readonly ILoginUser _loginUser;
 
         public UserController(
             IAddUserService addUserService,
             IDeleteUserService deleteUserService,
-            IGetUserDataService getUserDataService
+            IGetUserDataService getUserDataService,
+            ILoginUser loginUser
         )
         {
             _addUserService = addUserService;
             _deleteUserService = deleteUserService;
             _getUserDataService = getUserDataService;
+            _loginUser = loginUser;
         }
 
         [HttpPost]
@@ -58,6 +61,14 @@ namespace API.Controllers
         public string DeleteUser(UserInputModel user)
         {
             return _deleteUserService.DeleteUser(user.UserName, user.Password);
+        }
+
+        [HttpPost]
+        [Route(("login"))]
+        public UserSessionModel Login(UserInputModel userInput)
+        {
+            var userSession =  _loginUser.Login(userInput.UserName, userInput.Password);
+            return new UserSessionModel(userSession.GuidString, userSession.ExpireDateTime);
         }
     }
 }

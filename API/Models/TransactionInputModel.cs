@@ -5,8 +5,8 @@ namespace API.Models
 {
     public class TransactionInputModel
     {
-        [JsonPropertyName("userName")]
-        public string UserName { get; set; }
+        [JsonPropertyName("sessionId")]
+        public string SessionId { get; set; }
         
         [JsonPropertyName("symbol")]
         public string Symbol { get; set; }
