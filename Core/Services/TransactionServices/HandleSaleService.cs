@@ -10,7 +10,7 @@ namespace Core.Services.TransactionServices
 {
     public interface IHandleSaleService
     {
-        Transaction Sell(string sessionId, double amount, string symbol, bool sellAll = false);
+        Transaction Sell(string sessionId, double shareAmount, string symbol, bool sellAll = false);
     }
 
     public class HandleSaleService : IHandleSaleService
@@ -31,7 +31,7 @@ namespace Core.Services.TransactionServices
             _path = Path.GetFullPath(ToString());
         }
 
-        public Transaction Sell(string sessionId, double amount, string symbol, bool sellAll = false)
+        public Transaction Sell(string sessionId, double shareAmount, string symbol, bool sellAll = false)
         {
             var user = _checkExpiration.CheckUserSession(sessionId);
 
@@ -46,17 +46,17 @@ namespace Core.Services.TransactionServices
             if (holding == null)
                 throw new NonExistingHoldingException(_path, "Sell()");
             
-            var amountSold = amount;
+            var shareAmountSold = shareAmount;
 
             if (sellAll)
             {
-                amountSold = holding.SellAll(iexData.LatestPrice);
+                shareAmountSold = holding.SellAll(iexData.LatestPrice);
                 user.Holdings.Remove(holding);
             }
             
             else
             {
-                var overdrawn = holding.Sell(amount / iexData.LatestPrice);
+                var overdrawn = holding.Sell(shareAmount);
                 if (overdrawn)
                     throw new OverDrawnHoldingException(_path, "Sell()");
             }
@@ -64,7 +64,7 @@ namespace Core.Services.TransactionServices
             var transaction = new Transaction()
             {
                 Type = "sell",
-                Amount = amountSold,
+                Amount = shareAmountSold * iexData.LatestPrice,
                 SellAll = sellAll,
                 TransactionDate = DateTime.Now,
                 TransactionPrice = iexData.LatestPrice,
@@ -74,7 +74,7 @@ namespace Core.Services.TransactionServices
             
             user.Transactions.Add(transaction);
             user.AllocatedFunds = _setAllocatedFundsService.SetAllocatedFunds(user);
-            user.Balance += amountSold;
+            user.Balance += shareAmountSold * iexData.LatestPrice;
 
             return transaction;
         }

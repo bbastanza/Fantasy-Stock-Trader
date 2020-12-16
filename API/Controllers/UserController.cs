@@ -35,14 +35,14 @@ namespace API.Controllers
         public UserModel GetUser(SessionInputModel session)
         {
             return new UserModel(_getUserDataService
-                .GetUserData(session.Id));
+                .GetUserData(session.SessionId));
         }
 
         [HttpPost]
         [Route("transactions")]
         public IList<TransactionModel> GetUserTransactions(SessionInputModel session)
         {
-            var transactions = _getUserDataService.GetUserTransactions(session.Id);
+            var transactions = _getUserDataService.GetUserTransactions(session.SessionId);
             
             return transactions.Select(transaction => new TransactionModel(transaction)).ToList();
         }

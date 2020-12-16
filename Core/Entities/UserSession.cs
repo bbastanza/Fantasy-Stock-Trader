@@ -1,4 +1,5 @@
 using System;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Entities
 {
@@ -12,6 +13,7 @@ namespace Core.Entities
         public virtual DateTime InitDateTime { get; set; }
         public virtual DateTime ExpireDateTime { get; set; }
         public virtual User User { get; set; }
-        
+
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

@@ -4,7 +4,7 @@ namespace API.Models
 {
     public class SessionInputModel
     {
-        [JsonPropertyName("id")] 
-        public string Id { get; set; }
+        [JsonPropertyName("sessionId")] 
+        public string SessionId { get; set; }
     }
 }

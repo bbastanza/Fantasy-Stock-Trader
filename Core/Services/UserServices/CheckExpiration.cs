@@ -32,7 +32,7 @@ namespace Core.Services.UserServices
             if (userSession == null)
                 throw new NonExistingSessionException(_path, "CheckUserSession()");
 
-            if (userSession.ExpireDateTime > DateTime.Now)
+            if (userSession.ExpireDateTime < DateTime.Now)
                 throw new ExpiredSessionException(_path, "CheckUserSession()");
 
             return userSession.User;

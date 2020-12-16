@@ -19,7 +19,8 @@ namespace Core.Entities
         {
             var sharedToSell = TotalShares;
             TotalShares = 0;
-            return sharedToSell * currentPrice;
+            return sharedToSell;
+            
         }
 
         public virtual bool Sell(double sellShareAmount)

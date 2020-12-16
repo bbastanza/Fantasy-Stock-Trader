@@ -21,21 +21,21 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("sell")]
-        public UserModel Sell(TransactionInputModel transactionInput)
+        public UserModel Sell(SaleInputModel saleInput)
         {
             var transaction = _handleSaleService
-                .Sell(transactionInput.SessionId, transactionInput.Amount, transactionInput.Symbol,
-                    transactionInput.SellAll);
+                .Sell(saleInput.SessionId, saleInput.ShareAmount, saleInput.Symbol,
+                    saleInput.SellAll);
 
             return new UserModel(transaction.User);
         }
 
         [HttpPost]
         [Route("purchase")]
-        public UserModel Purchase(TransactionInputModel transactionInput)
+        public UserModel Purchase(PurchaseInputModel purchaseInput)
         {
             var transaction = _handlePurchaseService
-                .Purchase(transactionInput.SessionId, transactionInput.Amount, transactionInput.Symbol);
+                .Purchase(purchaseInput.SessionId, purchaseInput.Amount, purchaseInput.Symbol);
 
             return new UserModel(transaction.User);
         }

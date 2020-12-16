@@ -8,7 +8,8 @@ import Arrow2 from "../Images/arrow2.png";
 export default function DreamTraderNavbar() {
     const history = useHistory();
     function logout(){
-        console.log("logout"}
+        console.log("logout")
+    }
 
     function viewTransactions(){
         history.push("/transactions");

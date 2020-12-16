@@ -36,6 +36,7 @@ namespace Core.Services.TransactionServices
 
         public Transaction Purchase(string sessionId, double amount, string symbol)
         {
+            Console.WriteLine(sessionId);
             var user = _checkExpiration.CheckUserSession(sessionId);
 
             if (user == null)
