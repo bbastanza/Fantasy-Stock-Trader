@@ -73,7 +73,7 @@ export default function Purchase({ availableFunds }) {
                             Buy with confidence (because it's not real money!)
                         </h6>
 
-                        <Button variant="warning" type="submit" className="dt-button btn-lg">
+                        <Button variant="warning" type="submit" className="dream-btn">
                             Buy Now!
                         </Button>
                     </Form>

@@ -27,7 +27,12 @@ export default function Splash() {
                             backgroundColor: "rgba(255, 255, 255, .05)", 
                             borderRadius: 10,
                             marginBottom: 20}}>
-                    <h1 className="title">dream trader<img style={{height: 40}}src={Arrow} alt="arrow"/></h1>
+                    <h1 className="title">
+                        dream
+                        <br/>
+                        trader
+                        <img style={{height: 40}}src={Arrow} alt="arrow"/>
+                    </h1>
                     <h5 style={{fontFamily: "monospace", color: "seashell"}}>
                         Welcome to dream trader! This is your place to test the market without having to invest real
                         money. Get started making your fantasy fortune today!

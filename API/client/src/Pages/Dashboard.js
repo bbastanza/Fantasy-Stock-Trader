@@ -1,6 +1,7 @@
 import React from "react";
 import UserHolding from "../IndividualComponents/UserHolding";
 import { Link } from "react-router-dom";
+import DashImage from "../Images/dashboard.png";
 
 export default function Dashboard({ allocatedFunds }) {
     const mockData = {
@@ -12,11 +13,24 @@ export default function Dashboard({ allocatedFunds }) {
 
     return (
         <div className="portfolio-page">
-            <h1 className="title">Dashboard</h1>
+            <div
+                style={{
+                    backgroundImage: `url(${DashImage})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    backgroundPositionY: 100,
+                    backgroundSize: 420
+                }}
+            >
+                <h1 className="title">Dashboard</h1>
                 <Link to="purchase">
-                    <button className="btn btn-lg btn-warning">Purchase Stocks</button>
+                    <button className="btn btn-lg btn-primary" style={{ margin: 40}}>
+                        Purchase Stocks
+                    </button>
                 </Link>
-            <div className="user-holding-container">
+            </div>
+
+            <div className="user-holding-container dream-shadow">
                 <UserHolding holdingData={mockData} allocatedFunds={allocatedFunds} />
                 <UserHolding holdingData={mockData} allocatedFunds={allocatedFunds} />
                 <UserHolding holdingData={mockData} allocatedFunds={allocatedFunds} />

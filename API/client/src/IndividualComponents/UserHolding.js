@@ -5,7 +5,7 @@ export default function UserHolding({ holdingData, allocatedFunds }) {
     return (
         <div className="holding-container">
             <div className="user-holding row" style={{ justifyContent: "center" }}>
-                <div className="col-3">
+                <div className="col-md-3 col-sm-12">
                     <h1>{holdingData.asset}</h1>
                     <Link to={{
                         pathname: "/sell",
@@ -13,10 +13,10 @@ export default function UserHolding({ holdingData, allocatedFunds }) {
                             holdingData: holdingData
                         }
                     }}>
-                        <button className="btn btn-danger">Sell</button>
+                        <button className="btn btn-info dream-btn">Sell</button>
                     </Link>
                 </div>
-                <table className="table table-warning col-8">
+                <table className="table table-warning col-md-8 col-sm-12">
                     <thead>
                         <tr>
                             <th>Abbr.</th>

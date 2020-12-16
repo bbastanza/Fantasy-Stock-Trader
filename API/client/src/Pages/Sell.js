@@ -34,7 +34,7 @@ export default function Sell(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!validInput || unavailableShares > 0) return;
+        if ((saleAmount <= 0 && !sellAll) || unavailableShares > 0) return;
 
         if (sellAll) console.log(`Sold all ${holdingData.asset}`);
         else console.log(`Sold ${saleAmount} ${holdingData.asset}`);
@@ -83,7 +83,7 @@ export default function Sell(props) {
                             </Col>
                         </Form.Group>
                     ) : null}
-                    <Button type="submit">Sell Shares</Button>
+                    <Button type="submit" className="dream-btn">Sell Shares</Button>
                 </Form>
                 {unavailableShares > 0 ? (
                     <div className="error-in-form">
