@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function UserHolding({ holdingData, allocatedFunds }) {
     return (
         <div className="holding-container">
-            <div className="user-holding row" style={{ justifyContent: "center" }}>
+            <div className="user-holding dream-shadow row" style={{ justifyContent: "center" }}>
                 <div className="col-md-3 col-sm-12">
                     <h1>{holdingData.asset}</h1>
                     <Link to={{

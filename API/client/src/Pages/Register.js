@@ -84,7 +84,7 @@ export default function Register() {
                                     </Col>
                                 </Form.Group>
 
-                                <Button variant="warning" type="submit" className="btn-shadow" style={{ margin: 15 }}>
+                                <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
                                     Register
                                 </Button>
 

@@ -20,11 +20,10 @@ export default function Splash() {
             <div
                 className="row"
                 style={{ margin: "10% auto", alignItems: "center", display: "flex", textAlign: "center" }}>
-                <div className="col-lg-6 col-md-12 dream-shadow" 
+                <div className="col-lg-6 col-md-12 user-holding-container dream-shadow" 
                      style={{ 
                             textAlign: "center", 
                             padding: 50, 
-                            backgroundColor: "rgba(255, 255, 255, .05)", 
                             borderRadius: 10,
                             marginBottom: 20}}>
                     <h1 className="title">
@@ -39,13 +38,13 @@ export default function Splash() {
                     </h5>
                     <div>
                         <Link to="/Register">
-                            <button className="btn btn-warning btn-lg btn-shadow" 
+                            <button className="btn btn-info btn-lg dream-btn" 
                                     style={{ margin: 20 }}>
                                 Register
                             </button>
                         </Link>
                         <Link to="/Login">
-                            <button className="btn btn-warning btn-lg btn-shadow" 
+                            <button className="btn btn-info btn-lg dream-btn" 
                                     style={{ margin: 20 }}>
                                 Login
                             </button>

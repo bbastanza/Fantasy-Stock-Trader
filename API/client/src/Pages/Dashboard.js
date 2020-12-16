@@ -24,7 +24,7 @@ export default function Dashboard({ allocatedFunds }) {
             >
                 <h1 className="title">Dashboard</h1>
                 <Link to="purchase">
-                    <button className="btn btn-lg btn-primary" style={{ margin: 40}}>
+                    <button className="btn btn-lg btn-info dream-btn" style={{ margin: 40}}>
                         Purchase Stocks
                     </button>
                 </Link>

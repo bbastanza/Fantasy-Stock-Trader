@@ -39,8 +39,7 @@ export default function Sell(props) {
         if (sellAll) console.log(`Sold all ${holdingData.asset}`);
         else console.log(`Sold ${saleAmount} ${holdingData.asset}`);
 
-        history.push("/dashboard")
-
+        history.push("/dashboard");
     }
 
     function toggleSellAll() {
@@ -53,9 +52,11 @@ export default function Sell(props) {
             <div className="login-container dream-shadow">
                 <div className="purchase-form"></div>
                 <h1 className="title">sell</h1>
-                <h2>{holdingData.asset}</h2>
-                <h2>Total Shares: {holdingData.shares}</h2>
-                <h2>Current Value: ${holdingData.value}</h2>
+                <div className="available-funds">
+                    <h2>{holdingData.asset}</h2>
+                    <h2>Total Shares: {holdingData.shares}</h2>
+                    <h2>Current Value: ${holdingData.value}</h2>
+                </div>
                 <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
                     <Form.Group>
                         <Form.Check
@@ -83,7 +84,9 @@ export default function Sell(props) {
                             </Col>
                         </Form.Group>
                     ) : null}
-                    <Button type="submit" className="dream-btn">Sell Shares</Button>
+                    <Button type="submit" className="btn-info dream-btn">
+                        Sell Shares
+                    </Button>
                 </Form>
                 {unavailableShares > 0 ? (
                     <div className="error-in-form">

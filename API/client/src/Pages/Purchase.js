@@ -44,7 +44,7 @@ export default function Purchase({ availableFunds }) {
                     <h1 className="title">purchase</h1>
                     <h2 className="available-funds">Available Funds: {availableFunds}</h2>
                     <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
-                        <Form.Group controlId="exampleForm.ControlSelect1" onChange={e => setStock(e.target.value)}>
+                        <Form.Group onChange={e => setStock(e.target.value)}>
                             <Form.Label className="purchase-form-label">Stock</Form.Label>
                             <Form.Control as="select">
                                 <option>Brookfield Property REIT Inc. (BPYU)</option>
@@ -73,7 +73,7 @@ export default function Purchase({ availableFunds }) {
                             Buy with confidence (because it's not real money!)
                         </h6>
 
-                        <Button variant="warning" type="submit" className="dream-btn">
+                        <Button variant="info" type="submit" className="dream-btn">
                             Buy Now!
                         </Button>
                     </Form>

@@ -54,7 +54,7 @@ export default function Login() {
                                         <Form.Control type="password" placeholder="Password" />
                                     </Col>
                                 </Form.Group>{" "}
-                                <Button variant="warning" type="submit" className="btn-shadow" style={{ margin: 15 }}>
+                                <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
                                     Log In
                                 </Button>
                                 <h6 className="text-muted" style={{ padding: "20px 0 5px" }}>
