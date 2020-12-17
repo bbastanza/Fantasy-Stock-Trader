@@ -1,63 +1,81 @@
+using System;
+using System.IO;
+using System.Linq;
 using Core.Entities;
-using Core.Mappings;
-using Core.Services.DbServices;
 using Core.Services.IexServices;
+using Core.Services.UserServices;
+using Infrastructure.Exceptions;
 
 namespace Core.Services.TransactionServices
 {
     public interface IHandleSaleService
     {
-        Transaction SellTransaction(double amount, string userName, string symbol, bool sellAll = false);
+        Transaction Sell(string sessionId, double shareAmount, string symbol, bool sellAll = false);
     }
 
     public class HandleSaleService : IHandleSaleService
     {
         private readonly IIexFetchService _iexFetchService;
-        private readonly ISellShareService _sellShareService;
-        private readonly ITransactionInputMap _transactionInputMap;
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
-        private readonly IStockListService _stockListService;
-        private readonly IDbHandleSale _dbHandleSale;
-        private readonly IDbUpdateUser _updateUser;
+        private readonly ICheckExpiration _checkExpiration;
+        private readonly string _path;
 
         public HandleSaleService(
             IIexFetchService iexFetchService,
-            ISellShareService sellShareService,
-            ITransactionInputMap transactionInputMap, 
             ISetAllocatedFundsService setAllocatedFundsService,
-            IStockListService stockListService,
-            IDbHandleSale dbHandleSale,
-            IDbUpdateUser updateUser)
+            ICheckExpiration checkExpiration)
         {
             _iexFetchService = iexFetchService;
-            _sellShareService = sellShareService;
-            _transactionInputMap = transactionInputMap;
             _setAllocatedFundsService = setAllocatedFundsService;
-            _stockListService = stockListService;
-            _dbHandleSale = dbHandleSale;
-            _updateUser = updateUser;
+            _checkExpiration = checkExpiration;
+            _path = Path.GetFullPath(ToString());
         }
 
-        public Transaction SellTransaction(double amount, string userName, string symbol, bool sellAll = false)
+        public Transaction Sell(string sessionId, double shareAmount, string symbol, bool sellAll = false)
         {
-            var transactionType = "sale";
-            
+            var user = _checkExpiration.CheckUserSession(sessionId);
+
+            if (user == null)
+                throw new NonExistingUserException(_path, "Sell()");
+
             var iexData = _iexFetchService.GetStockBySymbol(symbol);
+
+            var holding = user.Holdings
+                .FirstOrDefault(x => x.Symbol == symbol);
+
+            if (holding == null)
+                throw new NonExistingHoldingException(_path, "Sell()");
             
-            var transaction = _transactionInputMap.MapInputTransaction(transactionType, amount, userName, iexData, sellAll);
+            var shareAmountSold = shareAmount;
+
+            if (sellAll)
+            {
+                shareAmountSold = holding.SellAll(iexData.LatestPrice);
+                user.Holdings.Remove(holding);
+            }
             
-            transaction.User = _sellShareService.SellShares(transaction, sellAll);
+            else
+            {
+                var overdrawn = holding.Sell(shareAmount);
+                if (overdrawn)
+                    throw new OverDrawnHoldingException(_path, "Sell()");
+            }
             
-            transaction.User.AllocatedFunds =
-                _setAllocatedFundsService.SetAllocatedFunds(
-                    _stockListService.GetStockModelList(transaction.User),
-                    transaction.User.Holdings
-                );
+            var transaction = new Transaction()
+            {
+                Type = "sell",
+                Amount = shareAmountSold * iexData.LatestPrice,
+                SellAll = sellAll,
+                TransactionDate = DateTime.Now,
+                TransactionPrice = iexData.LatestPrice,
+                User = user,
+                Holding = holding
+            };
             
-            _dbHandleSale.DbSale(transaction);
-            
-            _updateUser.Update(transaction.User);
-            
+            user.Transactions.Add(transaction);
+            user.AllocatedFunds = _setAllocatedFundsService.SetAllocatedFunds(user);
+            user.Balance += shareAmountSold * iexData.LatestPrice;
+
             return transaction;
         }
     }

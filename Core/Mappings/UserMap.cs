@@ -13,9 +13,18 @@ namespace Core.Mappings
             Map(x => x.Email).Column("email");
             Map(x => x.CreatedAt).Column("created_at");
             Map(x => x.Balance).Column("balance");
-            // HasMany(x => x.Holdings)
-            //     .Cascade.All()
-            //     .Table("Holdings");
+            HasMany(x => x.Transactions)
+                .KeyColumn("user_id")
+                .Inverse()
+                .Cascade.All();
+            HasMany(x => x.Sessions)
+                .KeyColumn("user_id")
+                .Inverse()
+                .Cascade.All();
+            HasMany(x => x.Holdings)
+                .KeyColumn("user_id")
+                .Inverse()
+                .Cascade.All();
             Table("user_table");
         }
     }

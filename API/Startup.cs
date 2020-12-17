@@ -19,7 +19,12 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+            
             services.AddSpaStaticFiles(config => { config.RootPath = "client/build"; });
             InterfaceConfig.Configure(services);
         }
@@ -40,6 +45,8 @@ namespace API
             app.UseSpaStaticFiles();
 
             app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UseMiddleware<DbConnectionMiddleware>();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
 

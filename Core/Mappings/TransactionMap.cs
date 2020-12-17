@@ -8,13 +8,9 @@ namespace Core.Mappings
         public TransactionMap()
         {
             Id(x => x.Id).GeneratedBy.Increment().Column("id");
+            References(x => x.User).Column("user_id");
+            References(x => x.Holding).Column("holding_id");
             Map(x => x.Type).Column("type");
-            Component(x => x.User,
-                userId => userId
-                    .Map(x => x.Id).Column("user_id"));
-            Component(x => x.Holding,
-                holdingId => holdingId
-                        .Map(x => x.Id).Column("holding_id"));
             Map(x => x.Amount).Column("amount");
             Map(x => x.SellAll).Column("sell_all");
             Map(x => x.TransactionPrice).Column("transaction_price");

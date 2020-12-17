@@ -1,7 +1,9 @@
 using System.IO;
+using System.Linq;
 using Core.Entities;
 using Core.Services.DbServices;
 using Infrastructure.Exceptions;
+using NHibernate;
 
 namespace Core.Services.UserServices
 {
@@ -12,14 +14,12 @@ namespace Core.Services.UserServices
 
     public class AddUserService : IAddUserService
     {
-        private readonly IDbQueryService _dbQueryService;
-        private readonly IDbAddUserService _dbAddUserService;
         private readonly string _path;
+        private readonly ISession _session;
 
-        public AddUserService(IDbQueryService dbQueryService, IDbAddUserService dbAddUserService)
+        public AddUserService(INHibernateSession inHibernateSession)
         {
-            _dbQueryService = dbQueryService;
-            _dbAddUserService = dbAddUserService;
+            _session = inHibernateSession.GetSession();
             _path = Path.GetFullPath(ToString());
         } 
         
@@ -28,14 +28,16 @@ namespace Core.Services.UserServices
             if (userName == null || password == null || email == null)
                 throw new InvalidInputException(_path, "AddUser()");
 
-            if (!_dbQueryService.CheckExistingUser(userName))
+            var user = _session.Query<User>().FirstOrDefault(x => x.UserName == userName);
+
+            if (user != null)
                 throw new ExistingUserException(_path, "AddUser()");
-            
+                
             var newUser = new User(userName, password, email);
-            
-            _dbAddUserService.AddUser(newUser);
-            
+
+            _session.Save(newUser);
             return newUser;
+            
         }
     }
 }

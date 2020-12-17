@@ -5,17 +5,17 @@ namespace API.Models
 {
     public class DreamTraderExceptionModel
     {
-        public string Type { get; }
-        public string Path { get; }
-        public string Message { get; }
-        
         public DreamTraderExceptionModel(DreamTraderException ex)
         {
             Type = ex.GetType().ToString();
             Path = $"{ex.Path}.{ex.Method}";
             Message = $"{ex.Message}";
         }
-
+        
+        public string Type { get; set; }
+        public string Path { get; set; }
+        public string Message { get; set; }
+        
         public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

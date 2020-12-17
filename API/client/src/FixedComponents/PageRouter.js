@@ -1,19 +1,24 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import Portfolio from "./../Pages/Portfolio";
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import Dashboard from "../Pages/Dashboard";
+import DreamTraderNavbar from "./../FixedComponents/DreamTraderNavbar"
 import Purchase from "./../Pages/Purchase";
 import Login from "./../Pages/Login";
 import Register from "./../Pages/Register";
+import Splash from "./../Pages/Splash";
+import Sell from "./../Pages/Sell"
 
 export default function PageRouter({ availableFunds, allocatedFunds }) {
+
     return (
         <Router>
+            <DreamTraderNavbar/>
             <Switch>
                 <Route path="/purchase">
                     <Purchase availableFunds={availableFunds} />
                 </Route>
-                <Route path="/portfolio">
-                    <Portfolio allocatedFunds={allocatedFunds} />
+                <Route path="/dashboard">
+                    <Dashboard Funds={allocatedFunds} />
                 </Route>
                 <Route path="/login">
                     <Login />
@@ -21,8 +26,9 @@ export default function PageRouter({ availableFunds, allocatedFunds }) {
                 <Route path="/register">
                     <Register />
                 </Route>
+                <Route path="/sell" render={props => <Sell {...props} />}/>
                 <Route path="/">
-                    <Redirect to="/login" />
+                    <Splash />
                 </Route>
             </Switch>
         </Router>

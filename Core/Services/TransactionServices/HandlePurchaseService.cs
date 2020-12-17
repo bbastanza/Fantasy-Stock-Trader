@@ -1,68 +1,80 @@
 using System;
 using System.IO;
+using System.Linq;
 using Core.Entities;
-using Core.Mappings;
 using Core.Services.DbServices;
 using Core.Services.IexServices;
+using Core.Services.UserServices;
 using Infrastructure.Exceptions;
+using NHibernate;
 
 namespace Core.Services.TransactionServices
 {
     public interface IHandlePurchaseService
     {
-        Transaction PurchaseTransaction(double amount, string symbol, string userName);
+        Transaction Purchase(string sessionId, double amount, string symbol);
     }
 
     public class HandlePurchaseService : IHandlePurchaseService
     {
         private readonly IIexFetchService _iexFetchService;
-        private readonly IPurchaseSharesService _purchaseSharesService;
-        private readonly ITransactionInputMap _transactionInputMap;
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
-        private readonly IStockListService _stockListService;
-        private readonly IDbHandlePurchase _dbHandlePurchase;
-        private readonly IDbUpdateUser _dbUpdateUser;
+        private readonly ICheckExpiration _checkExpiration;
+        private readonly string _path;
 
         public HandlePurchaseService(
-            IIexFetchService iexFetchService, 
-            IPurchaseSharesService purchaseSharesService,
-            ITransactionInputMap transactionInputMap, 
+            IIexFetchService iexFetchService,
             ISetAllocatedFundsService setAllocatedFundsService,
-            IStockListService stockListService,
-            IDbHandlePurchase dbHandlePurchase,
-            IDbUpdateUser dbUpdateUser)
+            ICheckExpiration checkExpiration)
         {
             _iexFetchService = iexFetchService;
-            _purchaseSharesService = purchaseSharesService;
-            _transactionInputMap = transactionInputMap;
             _setAllocatedFundsService = setAllocatedFundsService;
-            _stockListService = stockListService;
-            _dbHandlePurchase = dbHandlePurchase;
-            _dbUpdateUser = dbUpdateUser;
+            _checkExpiration = checkExpiration;
+            _path = Path.GetFullPath(ToString());
         }
 
-        public Transaction PurchaseTransaction(double amount, string userName, string symbol)
+
+        public Transaction Purchase(string sessionId, double amount, string symbol)
         {
-            var transactionType = "purchase";
-            
+            Console.WriteLine(sessionId);
+            var user = _checkExpiration.CheckUserSession(sessionId);
+
+            if (user == null)
+                throw new NonExistingUserException(_path, "PurchaseTransaction()");
+
             var iexData = _iexFetchService.GetStockBySymbol(symbol);
+
+            var holding = user.Holdings
+                .FirstOrDefault(x => x.Symbol == symbol);
+
+            if (holding == null)
+            {
+                holding = new Holding()
+                {
+                    Symbol = iexData.Symbol,
+                    CompanyName = iexData.CompanyName,
+                    User = user,
+                };
+                user.Holdings.Add(holding);
+            }
+
+            holding.Purchase(amount / iexData.LatestPrice);
+
+            var transaction = new Transaction()
+            {
+                Type = "purchase",
+                Amount = amount,
+                SellAll = false,
+                TransactionDate = DateTime.Now,
+                TransactionPrice = iexData.LatestPrice,
+                User = user,
+                Holding = holding
+            };
             
-            var transaction = _transactionInputMap.MapInputTransaction(transactionType, amount, userName, iexData);
-            
-            transaction.User = _purchaseSharesService.PurchaseShares(transaction);
-            
-            transaction.User.AllocatedFunds =
-                _setAllocatedFundsService.SetAllocatedFunds(
-                    _stockListService.GetStockModelList(transaction.User),
-                    transaction.User.Holdings
-                );
-            
-            transaction.Holding.UserId = transaction.User.Id;
-            
-            _dbHandlePurchase.DbPurchase(transaction);
-            
-            _dbUpdateUser.Update(transaction.User);
-            
+            user.Transactions.Add(transaction);
+            user.AllocatedFunds = _setAllocatedFundsService.SetAllocatedFunds(user);
+            user.Balance -= amount;
+
             return transaction;
         }
     }

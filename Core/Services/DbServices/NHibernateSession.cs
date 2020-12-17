@@ -6,17 +6,18 @@ using NHibernate;
 
 namespace Core.Services.DbServices
 {
-    public interface INHibernateSessionService
+    public interface INHibernateSession
     {
         ISession GetSession();
         void CloseSession();
     }
 
-    public class NHibernateSessionService : INHibernateSessionService
+    public class NHibernateSession : INHibernateSession
     {
         private static readonly ISessionFactory _sessionFactory;
+        private ISession _session;
 
-        static NHibernateSessionService()
+        static NHibernateSession()
         {
             _sessionFactory = Fluently.Configure()
                 .Database(PostgreSQLConfiguration.PostgreSQL82
@@ -34,7 +35,7 @@ namespace Core.Services.DbServices
 
         public ISession GetSession()
         {
-            return _sessionFactory.OpenSession();
+            return _session ?? (_session = _sessionFactory.OpenSession());
         }
 
         public void CloseSession()
@@ -44,4 +45,3 @@ namespace Core.Services.DbServices
     }
 }
 
-// User ID=postgres;Password=password;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;}
