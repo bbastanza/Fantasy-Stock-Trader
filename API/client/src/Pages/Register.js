@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {addUser} from "./../helpers/axios"
+import { addUser } from "./../helpers/axios";
 import { useHistory } from "react-router-dom";
 import Modal from "./../FixedComponents/Modal";
 import Form from "react-bootstrap/Form";
@@ -13,6 +13,7 @@ import LogoutBtn from "./../IndividualComponents/LogoutBtn";
 export default function Register() {
     const history = useHistory();
     const [email, setEmail] = useState("");
+    const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [matchPassword, setMatchPassword] = useState(true);
@@ -25,8 +26,8 @@ export default function Register() {
         loginContext.setIsLoggedIn(true);
         sessionStorage.setItem("isLoggedIn", JSON.stringify(true));
 
-        const responseData = await addUser({userName: "sammy", password: password, email: "sammy@email.com"})
-        console.log(responseData)
+        const responseData = await addUser({ userName: userName, password: password, email: email});
+        console.log(responseData);
         history.push("/dashboard");
     }
 
@@ -50,19 +51,35 @@ export default function Register() {
                         <div className="dream-shadow login-container">
                             <h1 className="title">register</h1>
                             <Form onSubmit={e => handleSubmit(e)}>
-                                <Form.Group as={Row} controlId="formBasicEmail">
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="3">
+                                        Username
+                                    </Form.Label>
+                                    <Col sm="9">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Enter Username"
+                                            onChange={e => setUsername(e.target.value)}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group as={Row}>
                                     <Form.Label column sm="3">
                                         Email address
                                     </Form.Label>
                                     <Col sm="9">
-                                        <Form.Control type="email" placeholder="Enter email" />
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="Enter email"
+                                            onChange={e => setEmail(e.target.value)}
+                                        />
                                     </Col>
                                 </Form.Group>
                                 <p className="text-muted" style={{ fontSize: 12 }}>
                                     We'll never share your email with anyone else.
                                 </p>
 
-                                <Form.Group as={Row} controlId="formPlaintextPassword">
+                                <Form.Group as={Row}>
                                     <Form.Label column sm="3">
                                         Password
                                     </Form.Label>
@@ -77,7 +94,7 @@ export default function Register() {
                                     </Col>
                                 </Form.Group>
 
-                                <Form.Group as={Row} controlId="formPlaintextConfirmPassword">
+                                <Form.Group as={Row}>
                                     <Form.Label column sm="3">
                                         Confirm Password
                                     </Form.Label>

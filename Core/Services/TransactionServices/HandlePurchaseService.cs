@@ -33,7 +33,6 @@ namespace Core.Services.TransactionServices
             _path = Path.GetFullPath(ToString());
         }
 
-
         public Transaction Purchase(string sessionId, double amount, string symbol)
         {
             Console.WriteLine(sessionId);

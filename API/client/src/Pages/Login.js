@@ -1,77 +1,92 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Modal from "./../FixedComponents/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import LogoutBtn from "./../IndividualComponents/LogoutBtn";
-import { Link } from "react-router-dom";
 import { LoginContext } from "./../contexts/LoginContext";
+import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import {loginUser} from "./../helpers/axios"
+import { loginUser } from "./../helpers/axios";
+import DotAnimation from "./../IndividualComponents/DotAnimation"
 
 export default function Login() {
-    const loginContext = useContext(LoginContext);
     const history = useHistory();
+    const [userName, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [loginError, setLoginError] = useState(false);
+    const loginContext = useContext(LoginContext);
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        loginContext.setIsLoggedIn(true);
-        sessionStorage.setItem("isLoggedIn", JSON.stringify(true));
-        // send request to backend
-        const data = loginUser({userName: "Brian", password: "password"})
+        setLoginError(false)
+        setIsLoading(true);
+
+        const data = await loginUser({ userName: userName, password: password });
+
         console.log(data)
-        // if successful push to portfolio
-        // else display message in login page
-        history.push("/dashboard");
+        if (data.sessionId) {
+            loginContext.setIsLoggedIn(true)
+            localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
+            localStorage.setItem("expires", JSON.stringify(data.expireTime))
+            localStorage.setItem("currentUser", JSON.stringify(userName))
+
+            history.push("/dashboard");
+        }
+        else{
+            setLoginError(true)
+            setIsLoading(false)
+        }
+
     }
 
-    function logOut() {
-        loginContext.setIsLoggedIn(false);
-        sessionStorage.setItem("isLoggedIn", JSON.stringify(false));
-    }
+    function logOut() {}
 
     return (
-        <LoginContext.Consumer>
-            {context => {
-                console.log(context);
-                return !context.isLoggedIn ? (
-                    <Modal>
-                        <div className="dream-shadow login-container">
-                            <h1 className="title">login</h1>
-                            <Form onSubmit={e => handleSubmit(e)}>
-                                <Form.Group as={Row} controlId="formBasicEmail">
-                                    <Form.Label column sm="3">
-                                        Email address
-                                    </Form.Label>
-                                    <Col sm="9">
-                                        <Form.Control type="email" placeholder="Enter email" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} controlId="formPlaintextPassword">
-                                    <Form.Label column sm="3">
-                                        Password
-                                    </Form.Label>
-                                    <Col sm="9">
-                                        <Form.Control type="password" placeholder="Password" />
-                                    </Col>
-                                </Form.Group>{" "}
-                                <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
-                                    Log In
-                                </Button>
-                                <h6 className="text-muted" style={{ padding: "20px 0 5px" }}>
-                                    No Account? Register Now!
-                                </h6>
-                                <Link to="/register">
-                                    <Button variant="secondary">Register</Button>
-                                </Link>
-                            </Form>
-                        </div>
-                    </Modal>
-                ) : (
-                    <LogoutBtn logOut={logOut} />
-                );
-            }}
-        </LoginContext.Consumer>
+        <Modal>
+            <div className="dream-shadow login-container">
+                <h1 className="title">login</h1>
+                <Form onSubmit={e => handleSubmit(e)}>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3">
+                            Username
+                        </Form.Label>
+                        <Col sm="9">
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter Username"
+                                onChange={e => setUsername(e.target.value)}
+                            />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3">
+                            Password
+                        </Form.Label>
+                        <Col sm="9">
+                            <Form.Control
+                                type="password"
+                                placeholder="Password"
+                                onChange={e => setPassword(e.target.value)}
+                            />
+                        </Col>
+                    </Form.Group>{" "}
+                    {!isLoading ? (
+                        <>
+                            <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
+                                Log In
+                            </Button>
+                            <h6 className="text-muted" style={{ padding: "20px 0 5px" }}>
+                                No Account? Register Now!
+                            </h6>
+                            <Link to="/register">
+                                <Button variant="secondary">Register</Button>
+                            </Link>
+                        </>
+                    ) : <DotAnimation />}
+                </Form>
+            </div>
+        </Modal>
     );
 }

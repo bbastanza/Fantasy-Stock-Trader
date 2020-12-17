@@ -5,11 +5,12 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useHistory } from "react-router-dom";
+import {initializeSale} from "./../helpers/axios"
 
 export default function Sell(props) {
     const history = useHistory();
     const [unavailableShares, setUnavailableShares] = useState(0);
-    const [saleAmount, setSaleAmount] = useState(0);
+    const [shareAmount, setShareAmount] = useState(0);
     const [validInput, setValidInput] = useState(true);
     const [holdingData, setHoldingData] = useState("");
     const [sellAll, setSellAll] = useState(false);
@@ -21,7 +22,7 @@ export default function Sell(props) {
 
         if (shares > holdingData.shares) setUnavailableShares(shares - holdingData.shares);
         else {
-            setSaleAmount(shares);
+            setShareAmount(shares);
             setUnavailableShares(0);
         }
     }
@@ -30,14 +31,19 @@ export default function Sell(props) {
         if (props.location.state.holdingData) {
             setHoldingData(props.location.state.holdingData);
         }
-    });
+        else history.push("/dashboard")
+    }, []);
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        if ((saleAmount <= 0 && !sellAll) || unavailableShares > 0) return;
+        if ((shareAmount <= 0 && !sellAll) || unavailableShares > 0) return;
 
-        if (sellAll) console.log(`Sold all ${holdingData.asset}`);
-        else console.log(`Sold ${saleAmount} ${holdingData.asset}`);
+        const variable = await initializeSale({
+            symbol: holdingData.symbol,
+            shareAmount: shareAmount,
+            sellAll: sellAll
+        })
+        console.log(variable)
 
         history.push("/dashboard");
     }
@@ -53,21 +59,11 @@ export default function Sell(props) {
                 <div className="purchase-form"></div>
                 <h1 className="title">sell</h1>
                 <div className="available-funds">
-                    <h2>{holdingData.asset}</h2>
-                    <h2>Total Shares: {holdingData.shares}</h2>
-                    <h2>Current Value: ${holdingData.value}</h2>
+                    <h2>{holdingData.companyName}</h2>
+                    <h2>Total Shares: {parseFloat(holdingData.totalShares).toFixed(4)}</h2>
+                    <h2>Current Value: ${parseFloat(holdingData.value).toFixed(2)}</h2>
                 </div>
                 <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
-                    <Form.Group>
-                        <Form.Check
-                            inline
-                            id="sellAll"
-                            type="checkbox"
-                            onChange={toggleSellAll}
-                            label={"Sell All " + holdingData.abbr}
-                            checked={sellAll}
-                        />
-                    </Form.Group>
                     {!sellAll ? (
                         <Form.Group as={Row} controlId="formBasicEmail">
                             <Form.Label column sm="3">
@@ -81,11 +77,24 @@ export default function Sell(props) {
                                     placeholder="Shares To Sell"
                                     style={unavailableShares > 0 || !validInput ? unavailableStyle : null}
                                 />
-                            </Col>
+                            </Col>  
                         </Form.Group>
                     ) : null}
+                    <Form.Group>
+                        <Form.Check
+                            inline
+                            id="sellAll"
+                            type="checkbox"
+                            onChange={toggleSellAll}
+                            label={"Sell All " + holdingData.symbol}
+                            checked={sellAll}
+                        />
+                    </Form.Group>
                     <Button type="submit" className="btn-info dream-btn">
                         Sell Shares
+                    </Button>
+                    <Button className="btn-secondary dream-btn"onClick={()=> history.push("/dashboard")}>
+                        Cancel
                     </Button>
                 </Form>
                 {unavailableShares > 0 ? (

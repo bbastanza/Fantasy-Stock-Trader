@@ -8,18 +8,16 @@ import Register from "./../Pages/Register";
 import Splash from "./../Pages/Splash";
 import Sell from "./../Pages/Sell"
 
-export default function PageRouter({ availableFunds, allocatedFunds }) {
+export default function PageRouter() {
 
     return (
         <Router>
             <DreamTraderNavbar/>
             <Switch>
                 <Route path="/purchase">
-                    <Purchase availableFunds={availableFunds} />
+                    <Purchase />
                 </Route>
-                <Route path="/dashboard">
-                    <Dashboard Funds={allocatedFunds} />
-                </Route>
+                <Route path="/dashboard" render={props => <Dashboard {...props} />} />
                 <Route path="/login">
                     <Login />
                 </Route>

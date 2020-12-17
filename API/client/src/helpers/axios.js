@@ -11,7 +11,6 @@ export async function loginUser(userInput) {
     } catch (error) {
         responseData = error.response.data;
     }
-    console.log(responseData);
     return responseData;
 }
 
@@ -36,7 +35,7 @@ export async function deleteUser(userInput) {
         const request = await axios.delete("/user/delete", {
             userName: userInput.userName,
             password: userInput.password,
-            sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+            sessionId: JSON.parse(localStorage.getItem("sessionId")),
         });
         responseData = request.data;
     } catch (error) {
@@ -48,8 +47,8 @@ export async function deleteUser(userInput) {
 export async function getUserData() {
     let responseData;
     try {
-        const request = await axios.get("/user/get", {
-            sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+        const request = await axios.post("/user/get", {
+            sessionId: JSON.parse(localStorage.getItem("sessionId")),
         });
         responseData = request.data;
     } catch (error) {
@@ -62,7 +61,7 @@ export async function getUserTransactions() {
     let responseData;
     try {
         const request = await axios.get("/user/transactions", {
-            sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+            sessionId: JSON.parse(localStorage.getItem("sessionId")),
         });
         responseData = request.data;
     } catch (error) {
@@ -75,11 +74,12 @@ export async function initializeSale(saleData) {
     let responseData;
     try {
         const request = await axios.post(`/transaction/sell`, {
-            sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+            sessionId: JSON.parse(localStorage.getItem("sessionId")),
             symbol: saleData.symbol,
             shareAmount: saleData.shareAmount,
             sellAll: saleData.sellAll,
         });
+        responseData = request.data
     } catch (error) {
         responseData = error.response.data;
     }
@@ -90,11 +90,11 @@ export async function initializePurchase(purchaseData) {
     let responseData;
     try {
         const request = await axios.post(`/transaction/purchase`, {
-                sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+                sessionId: JSON.parse(localStorage.getItem("sessionId")),
                 symbol: purchaseData.symbol,
                 amount: purchaseData.amount,
-                sellAll: purchaseData.sellAll,
         });
+        responseData = request.data
     } catch (error) {
         responseData = error.response.data;
     }
