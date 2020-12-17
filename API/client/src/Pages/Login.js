@@ -7,7 +7,8 @@ import Button from "react-bootstrap/Button";
 import LogoutBtn from "./../IndividualComponents/LogoutBtn";
 import { Link } from "react-router-dom";
 import { LoginContext } from "./../contexts/LoginContext";
-import { Route , Redirect, useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import {loginUser} from "./../helpers/axios"
 
 export default function Login() {
     const loginContext = useContext(LoginContext);
@@ -18,11 +19,12 @@ export default function Login() {
         loginContext.setIsLoggedIn(true);
         sessionStorage.setItem("isLoggedIn", JSON.stringify(true));
         // send request to backend
+        const data = loginUser({userName: "Brian", password: "password"})
+        console.log(data)
         // if successful push to portfolio
         // else display message in login page
-        history.push("/dashboard")
+        history.push("/dashboard");
     }
-
 
     function logOut() {
         loginContext.setIsLoggedIn(false);

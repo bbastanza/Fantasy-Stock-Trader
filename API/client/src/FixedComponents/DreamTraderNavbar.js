@@ -1,4 +1,5 @@
 import React from "react";
+import {useHistory} from "react-router-dom"
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -7,12 +8,14 @@ import Arrow2 from "../Images/arrow2.png";
 
 export default function DreamTraderNavbar() {
     const history = useHistory();
+
     function logout(){
         console.log("logout")
     }
 
     function viewTransactions(){
-        history.push("/transactions");
+        console.log("go to transactions")
+        history.push("/login");
     } 
 
     return (
@@ -28,8 +31,8 @@ export default function DreamTraderNavbar() {
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="mr-auto" />
                             <NavDropdown title={context.isLoggedIn ? "Brian" : "LogIn"} id="basic-nav-dropdown">
-                                <NavDropdown.Item onClick={()=> console.log("Log out")}>Log Out</NavDropdown.Item>
-                                <NavDropdown.Item onClick={()=> console.log("Go to transaction page")}>View Transactions</NavDropdown.Item>
+                                <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
+                                <NavDropdown.Item onClick={viewTransactions}>View Transactions</NavDropdown.Item>
                             </NavDropdown>
                             <Nav>
                                 <Nav.Link href={context.isLoggedIn ? "/dashboard" : "/login"}>Dashboard</Nav.Link>

@@ -1,106 +1,113 @@
-const getHeaders = token => {
-    const dreamTraderHeaders = {
-        "content-type": "text/json",
-        "bearer-token": token,
-    };
-    return dreamTraderHeaders;
-};
+import axios from "axios";
 
-async function addUser(userInput) {
-    let responseData
+export async function loginUser(userInput) {
+    let responseData;
     try {
-        const request = await axios.post("/user/add", {
-            headers: getHeaders(),
-            params: {
-                userName: userInput.userName,
-                password: userInput.password,
-                email: userInput.email,
-            },
+        const request = await axios.post("/user/login", {
+            userName: userInput.userName,
+            password: userInput.password,
         });
         responseData = request.data;
+    } catch (error) {
+        responseData = error.response.data;
     }
-    catch {
+    console.log(responseData);
+    return responseData;
+}
+
+export async function addUser(userInput) {
+    let responseData;
+    try {
+        const request = await axios.post("/user/add", {
+            userName: userInput.userName,
+            password: userInput.password,
+            email: userInput.email,
+        });
         responseData = request.data;
+    } catch (error) {
+        responseData = error.response.data;
     }
     return responseData;
 }
 
-async function deleteUser(userInput, token){
-    let responseData
-    try{
+export async function deleteUser(userInput) {
+    let responseData;
+    try {
         const request = await axios.delete("/user/delete", {
-            headers: getHeaders(token),
-            params: {
-                userName: userInput.userName,
-                password: userInput.password,
-            }
-        })
-        responseData = request.data
-    }
-    catch {
+            userName: userInput.userName,
+            password: userInput.password,
+            sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+        });
         responseData = request.data;
+    } catch (error) {
+        responseData = error.response.data;
     }
     return responseData;
-} 
+}
 
-async function getUserData(token){
+export async function getUserData() {
     let responseData;
-    try{
+    try {
         const request = await axios.get("/user/get", {
-            headers: getHeaders(token)
-        })
-        responseData = request.data
-    }
-    catch{
-        responseData = request.data
-    }
-    return responseData;
-}
-
-async function getUserTransactions(token){
-    let responseData;
-    try{
-        const request = await axios.get("/user/transactions", {
-            headers: getHeaders(token)
-        })
-        responseData = request.data
-    }
-    catch{
-        responseData = request.data
-    }
-    return responseData;
-}
-
-async function initializeTransaction(token, transactionData, type){
-    let responseData;
-    try{
-        const request = await axios.post(`/transaction/${type}`, {
-            headers: getHeaders(token),
-            params: {
-                symbol: transactionData.symbol,
-                amount: transactionData.amount,
-                sellAll: transactionData.sellAll
-            }
-        })
-    }
-    catch{
+            sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+        });
         responseData = request.data;
-    }
-    return responseData
-}
-
-async function getStockData(token, symbol){
-    let responseData;
-    try{
-        const request = await axios.get(`/stockData/${symbol}`, {
-            headers: getHeaders(token)
-        })
-        responseData = request.data
-    }
-    catch{
-        responseData = request.data
+    } catch (error) {
+        responseData = error.response.data;
     }
     return responseData;
 }
 
-export {addUser, deleteUser, getUserData, getUserTransactions, initializeTransaction, getStockData}
+export async function getUserTransactions() {
+    let responseData;
+    try {
+        const request = await axios.get("/user/transactions", {
+            sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+        });
+        responseData = request.data;
+    } catch (error) {
+        responseData = error.response.data;
+    }
+    return responseData;
+}
+
+export async function initializeSale(saleData) {
+    let responseData;
+    try {
+        const request = await axios.post(`/transaction/sell`, {
+            sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+            symbol: saleData.symbol,
+            shareAmount: saleData.shareAmount,
+            sellAll: saleData.sellAll,
+        });
+    } catch (error) {
+        responseData = error.response.data;
+    }
+    return responseData;
+}
+
+export async function initializePurchase(purchaseData) {
+    let responseData;
+    try {
+        const request = await axios.post(`/transaction/purchase`, {
+                sessionId: JSON.parse(sessionStorage.getItem("sessionId")),
+                symbol: purchaseData.symbol,
+                amount: purchaseData.amount,
+                sellAll: purchaseData.sellAll,
+        });
+    } catch (error) {
+        responseData = error.response.data;
+    }
+    return responseData;
+}
+
+export async function getStockData(symbol) {
+    let responseData;
+    try {
+        const request = await axios.get(`/stockData/${symbol}`);
+        responseData = request.data;
+    } catch (error) {
+        responseData = error.response.data;
+    }
+    return responseData;
+}

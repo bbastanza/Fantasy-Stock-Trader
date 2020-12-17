@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import DreamTraderNavbar from "./FixedComponents/DreamTraderNavbar";
 import Footer from "./FixedComponents/Footer";
 import axios from "axios";
 import "./App.css";
@@ -36,7 +35,6 @@ function App() {
     return (
         <div className="App">
             <LoginContextProvider>
-                <DreamTraderNavbar />
                 <PageRouter
                     availableFunds={availableFunds}
                     allocatedFunds={allocatedFunds}
