@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import Footer from "./FixedComponents/Footer";
-import axios from "axios";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import LoginContextProvider from "./contexts/LoginContext";

@@ -11,12 +11,14 @@ export default function Dashboard() {
     const [holdings, setHoldings] = useState([]);
     const loginContext = useContext(LoginContext);
 
-    useEffect(async () => {
-        loginContext.setIsLoggedIn(true);
-        const data = await getUserData();
-        setUserData(data);
-        setHoldings(data.holdings);
-    }, []);
+    useEffect(() => {
+        (async function () {
+            loginContext.setIsLoggedIn(true);
+            const data = await getUserData();
+            setUserData(data);
+            setHoldings(data.holdings);
+        })();
+    }, [loginContext]);
 
     function beautifyNumber(balance) {
         return parseFloat(balance)

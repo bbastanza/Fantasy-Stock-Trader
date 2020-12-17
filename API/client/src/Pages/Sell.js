@@ -32,7 +32,7 @@ export default function Sell(props) {
             setHoldingData(props.location.state.holdingData);
         }
         else history.push("/dashboard")
-    }, []);
+    }, [history, props.location.state.holdingData]);
 
     async function handleSubmit(e) {
         e.preventDefault();
