@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useHistory } from "react-router-dom";
-import {initializeSale} from "./../helpers/axios"
+import { initializeSale } from "./../helpers/axios";
 
 export default function Sell(props) {
     const history = useHistory();
@@ -30,27 +30,20 @@ export default function Sell(props) {
     useEffect(() => {
         if (props.location.state.holdingData) {
             setHoldingData(props.location.state.holdingData);
-        }
-        else history.push("/dashboard")
+        } else history.push("/dashboard");
     }, [history, props.location.state.holdingData]);
 
     async function handleSubmit(e) {
         e.preventDefault();
         if ((shareAmount <= 0 && !sellAll) || unavailableShares > 0) return;
 
-        const variable = await initializeSale({
+        const data = await initializeSale({
             symbol: holdingData.symbol,
             shareAmount: shareAmount,
-            sellAll: sellAll
-        })
-        console.log(variable)
+            sellAll: sellAll,
+        });
 
         history.push("/dashboard");
-    }
-
-    function toggleSellAll() {
-        setSellAll(!sellAll);
-        console.log(sellAll);
     }
 
     return (
@@ -77,7 +70,7 @@ export default function Sell(props) {
                                     placeholder="Shares To Sell"
                                     style={unavailableShares > 0 || !validInput ? unavailableStyle : null}
                                 />
-                            </Col>  
+                            </Col>
                         </Form.Group>
                     ) : null}
                     <Form.Group>
@@ -85,7 +78,7 @@ export default function Sell(props) {
                             inline
                             id="sellAll"
                             type="checkbox"
-                            onChange={toggleSellAll}
+                            onChange={() => setSellAll(!sellAll)}
                             label={"Sell All " + holdingData.symbol}
                             checked={sellAll}
                         />
@@ -93,7 +86,7 @@ export default function Sell(props) {
                     <Button type="submit" className="btn-info dream-btn">
                         Sell Shares
                     </Button>
-                    <Button className="btn-secondary dream-btn"onClick={()=> history.push("/dashboard")}>
+                    <Button className="btn-secondary dream-btn" onClick={() => history.push("/dashboard")}>
                         Cancel
                     </Button>
                 </Form>

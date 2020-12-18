@@ -14,8 +14,7 @@ export default function DreamTraderNavbar() {
     }
 
     function viewTransactions() {
-        console.log("go to transactions");
-        history.push("/login");
+        history.push("/transactions");
     }
 
     return (

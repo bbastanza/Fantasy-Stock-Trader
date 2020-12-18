@@ -60,7 +60,7 @@ export async function getUserData() {
 export async function getUserTransactions() {
     let responseData;
     try {
-        const request = await axios.get("/user/transactions", {
+        const request = await axios.post("/user/transactions", {
             sessionId: JSON.parse(localStorage.getItem("sessionId")),
         });
         responseData = request.data;

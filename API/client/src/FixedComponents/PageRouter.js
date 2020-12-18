@@ -7,6 +7,7 @@ import Login from "./../Pages/Login";
 import Register from "./../Pages/Register";
 import Splash from "./../Pages/Splash";
 import Sell from "./../Pages/Sell"
+import Transactions from "./../Pages/Transactions"
 
 export default function PageRouter() {
 
@@ -17,6 +18,7 @@ export default function PageRouter() {
                 <Route path="/purchase">
                     <Purchase />
                 </Route>
+                <Route path="/transactions" render={() => <Transactions/>}/>
                 <Route path="/dashboard" render={props => <Dashboard {...props} />} />
                 <Route path="/login">
                     <Login />
