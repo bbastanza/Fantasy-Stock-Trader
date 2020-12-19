@@ -34,8 +34,7 @@ namespace API.Controllers
         [Route("getUserData")]
         public UserModel GetUser(SessionInputModel session)
         {
-            return new UserModel(_getUserDataService
-                .GetUserData(session.SessionId));
+            return new UserModel(_getUserDataService.GetUserData(session.SessionId));
         }
 
         [HttpPost]
@@ -43,7 +42,6 @@ namespace API.Controllers
         public IList<TransactionModel> GetUserTransactions(SessionInputModel session)
         {
             var transactions = _getUserDataService.GetUserTransactions(session.SessionId);
-            
             return transactions.Select(transaction => new TransactionModel(transaction)).ToList();
         }
 
