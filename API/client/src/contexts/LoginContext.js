@@ -1,4 +1,4 @@
-import React, { createContext, useState, useRef, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 const LoginContext = createContext();
 const LoginUpdateContext = createContext();
@@ -12,12 +12,18 @@ export function useUpdateLogin() {
 }
 
 export default function LoginContextProvider({ children }) {
-    // const [loggedIn, setLoggedIn] = useState(false);
-    let loggedIn = useRef(false)
+    const [loggedIn, setLoggedIn] = useState(false);
 
-    function setLoggedIn(bool){
-        loggedIn.current = bool
-    }
+   useEffect(() => {
+       (() => {
+           if (!JSON.parse(localStorage.getItem("sessionId")))
+                return;
+            const expireString = JSON.parse(localStorage.getItem("expires"))
+            const expireDateTime = new Date(expireString).getTime();
+            if (expireDateTime > new Date().getTime()) setLoggedIn(true)
+       })();
+   }, []) 
+
 
     
 

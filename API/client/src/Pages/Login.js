@@ -7,8 +7,8 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { loginUser } from "../helpers/userApiCalls";
-import DotAnimation from "./../IndividualComponents/DotAnimation"
-import {useLogin, useUpdateLogin} from "./../contexts/LoginContext"
+import DotAnimation from "./../IndividualComponents/DotAnimation";
+import { useUpdateLogin } from "./../contexts/LoginContext";
 
 export default function Login() {
     const history = useHistory();
@@ -20,25 +20,23 @@ export default function Login() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        setLoginError(false)
+        setLoginError(false);
         setIsLoading(true);
 
         const data = await loginUser({ userName: userName, password: password });
 
         if (data.sessionId) {
-            (() => updateLogin(true))();
+            updateLogin(true);
             localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
-            localStorage.setItem("expires", JSON.stringify(data.expireTime))
-            localStorage.setItem("currentUser", JSON.stringify(userName))
+            localStorage.setItem("expires", JSON.stringify(data.expireTime));
+            localStorage.setItem("currentUser", JSON.stringify(userName));
 
             history.push("/dashboard");
+        } else {
+            // TODO handle error
+            setLoginError(true);
+            setIsLoading(false);
         }
-        else{
-        // TODO handle error
-            setLoginError(true)
-            setIsLoading(false)
-        }
-
     }
 
     return (
@@ -82,7 +80,9 @@ export default function Login() {
                                 <Button variant="secondary">Register</Button>
                             </Link>
                         </>
-                    ) : <DotAnimation />}
+                    ) : (
+                        <DotAnimation />
+                    )}
                 </Form>
             </div>
         </Modal>

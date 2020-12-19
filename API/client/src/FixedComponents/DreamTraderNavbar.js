@@ -1,5 +1,5 @@
-import React from "react";
-import { useLogin, useUpdateLogin } from "./../contexts/LoginContext";
+import React, { useEffect, useState } from "react";
+import { useUpdateLogin, useLogin } from "./../contexts/LoginContext";
 import { useHistory } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -7,14 +7,24 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Arrow2 from "../Images/arrow2.png";
 
 export default function DreamTraderNavbar() {
+    const [currentUser, setCurrentUser] = useState("Dream Trader");
     const history = useHistory();
     const loggedIn = useLogin();
     const updateLogin = useUpdateLogin();
-    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    useEffect(() => {
+        function setUser(){
+            setCurrentUser(JSON.parse(localStorage.getItem("currentUser")));
+        };
+        window.addEventListener("storage", setUser)
+        return () => {
+            window.removeEventListener("storage", setUser)
+        }
+    }, []);
 
     function logout() {
-        updateLogin(false);
         localStorage.clear();
+        updateLogin(false);
         history.push("/splash");
     }
 
@@ -24,7 +34,7 @@ export default function DreamTraderNavbar() {
 
     return (
         <>
-            {loggedIn.current ? (
+            {loggedIn ? (
                 <Navbar collapseOnSelect expand="lg" bg="warning" variant="light">
                     <Navbar.Brand href="/" style={{ fontFamily: "Dream", color: "#313131" }}>
                         dream trader
@@ -38,7 +48,7 @@ export default function DreamTraderNavbar() {
                             <NavDropdown.Item onClick={viewTransactions}>View Transactions</NavDropdown.Item>
                         </NavDropdown>
                         <Nav>
-                            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                            <Nav.Link href={loggedIn ? "/dashboard" : "/splash"}>Dashboard</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

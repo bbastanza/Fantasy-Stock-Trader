@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from "react"
+import React from "react";
 
-export default function Pagination({transactionCount, changePage}){
-    const [buttonCount, setButtonCount] = useState(1)
+export default function Pagination({ transactionsPerPage, totalPages, changePage }) {
+    const pageNumbers = [];
 
-    useEffect(() => {
-        let count = 0;
-        for (let i = 0; i < trancationCount; i + 5){
-            count++
-        }
-        setButtonCount(count)
-    }, [])
+    for (let i = 1; i <= Math.ceil(totalPages / transactionsPerPage); i++) {
+        pageNumbers.push(i);
+    }
 
-    return(
+    return (
         <>
-            {buttonCount > 1 ?
-             for (let i = 0; i <= buttonCount; i++){
-                return <button onClick={() => changePage(i)}>{i}</button>
-             } : null}
+            {totalPages > 6 ? (
+                <div style={{ backgroundColor: "#ffdc91", 
+                              width: totalPages * 12, 
+                              margin: "auto", 
+                              borderRadius: 7 }}>
+                    {pageNumbers.map(number => (
+                        <button key={number} className="btn btn-info m-1" onClick={() => changePage(number)}>
+                            {number}
+                        </button>
+                    ))}
+                </div>
+            ) : null}
         </>
-    )
+    );
 }

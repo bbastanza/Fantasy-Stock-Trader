@@ -2,33 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { getUserTransactions } from "./../helpers/userApiCalls";
-import UserTransaction from "./../IndividualComponents/UserTransaction";
 import CircleAnimation from "./../IndividualComponents/CircleAnimation";
+import UserTransaction from "./../IndividualComponents/UserTransaction";
+import Pagination from "./../IndividualComponents/Pagination";
 
 export default function Transactions() {
     const history = useHistory();
     const [transactions, setTransactions] = useState([]);
-    const [pageTransactions, setPageTransaction] = useState([])
-    const [pageNumber, setPageNumber] = useState(0)
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const transactionsPerPage = 5;
+
+    const lastTransactionIndex = currentPage * transactionsPerPage;
+    const firstTransactionIndex = lastTransactionIndex - transactionsPerPage;
+    const currentTransactions = transactions.slice(firstTransactionIndex, lastTransactionIndex);
+    console.log(currentTransactions);
 
     useEffect(() => {
         (async () => {
             const transactionResponse = await getUserTransactions();
             setTransactions(transactionResponse.reverse());
-            console.log(transactionResponse);
+            setIsLoading(false);
         })();
         // TODO add error handling
     }, []);
-
-    useEffect(() => {
-        (() => {
-            const transactionsPerPage = [];
-            for (let i = (5 * pageNumber - 5);i <= (i + 5); i++){
-                transactions.push(transactions[i])
-            }
-            setPageTrasactions(transactionsPerPage)
-        })();
-    }, [pageNumber])
 
     const containerStyle = {
         width: "70%",
@@ -40,21 +37,32 @@ export default function Transactions() {
     return (
         <div style={containerStyle}>
             <h1 className="title">transactions</h1>
-            {transactions.length > 0 ? (
+            {!isLoading ? (
                 <div>
-                  <Pagination
-                        transactionCount={transactions.length}
-                        changePage={setPageNumber}/>
-                    {transactions.map(transaction => {
-                        return <UserTransaction transactionData={transaction} key={transaction.date} />;
+                    <Pagination
+                        transactionsPerPage={transactionsPerPage}
+                        totalPages={transactions.length}
+                        changePage={setCurrentPage}
+                    />
+                    {currentTransactions.map(transaction => {
+                        return <UserTransaction key={transaction.date} transactionData={transaction} />;
                     })}
                     <Button
                         onClick={() => history.push("/dashboard")}
                         className="btn-info dream-btn"
-                        style={{ margin: 20, marginBottom: 80 }}
+                        style={{ margin: 20 }}
                     >
                         Back to Dashboard
                     </Button>
+                    {currentTransactions.length > 2 ? (
+                        <div style={{ marginBottom: 60 }}>
+                            <Pagination
+                                transactionsPerPage={transactionsPerPage}
+                                totalPages={transactions.length}
+                                changePage={setCurrentPage}
+                            />
+                        </div>
+                    ) : null}
                 </div>
             ) : (
                 <CircleAnimation />

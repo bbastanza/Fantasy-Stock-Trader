@@ -1,6 +1,7 @@
 import React from "react";
 import SwiftSlider from "react-swift-slider";
 import { Link } from "react-router-dom";
+import {useLogin, useUpdateLogin} from "./../contexts/LoginContext"
 import stock1 from "../Images/1stock.jpg";
 import stock2 from "../Images/2stock.jpg";
 import stock3 from "../Images/3stock.jpg";
@@ -8,12 +9,19 @@ import stock4 from "../Images/4stock.jpg";
 import Arrow from "../Images/arrow3.png"
 
 export default function Splash() {
+    const loggedIn = useLogin();
+    const updateLogin = useUpdateLogin();
     const imgData = [
         { id: 1, src: stock1 },
         { id: 2, src: stock2 },
         { id: 3, src: stock3 },
         { id: 4, src: stock4 },
     ];
+
+    function logout() {
+        localStorage.clear();
+        updateLogin(false);
+    }
 
     return (
         <div style={{margin: 40}}>
@@ -36,6 +44,7 @@ export default function Splash() {
                         Welcome to dream trader! This is your place to test the market without having to invest real
                         money. Get started making your fantasy fortune today!
                     </h5>
+                    {!loggedIn ?
                     <div>
                         <Link to="/Register">
                             <button className="btn btn-info btn-lg dream-btn" 
@@ -50,6 +59,9 @@ export default function Splash() {
                             </button>
                         </Link>
                     </div>
+                   : <button className="btn btn-secondary btn-lg dream-btn" 
+                             style={{margin: 20}}
+                             onClick={logout}>Logout</button>}
                 </div>
                 <div className="col-lg-6 col-md-12" 
                      style={{ padding: "0 20px 0 50px", alignSelf: "center" }}>
