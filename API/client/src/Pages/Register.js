@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { addUser } from "../helpers/userApiCalls";
 import { useHistory } from "react-router-dom";
-import { useUpdateLogin } from "./../contexts/LoginContext";
+import { useUpdateLogin, useUpdateUser } from "./../contexts/LoginContext";
 import { Link } from "react-router-dom";
 import Modal from "./../FixedComponents/Modal";
 import Form from "react-bootstrap/Form";
@@ -12,6 +12,7 @@ import DotAnimation from "./../IndividualComponents/DotAnimation";
 
 export default function Register() {
     const updateLogin = useUpdateLogin();
+    const updateUser = useUpdateUser();
     const history = useHistory();
     const [email, setEmail] = useState("");
     const [userName, setUsername] = useState("");
@@ -29,6 +30,7 @@ export default function Register() {
         const data = await addUser({ userName: userName, password: password, email: email });
         if (data.sessionId) {
             updateLogin(true);
+            updateUser(userName)
             localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
             localStorage.setItem("expires", JSON.stringify(data.expireTime));
             localStorage.setItem("currentUser", JSON.stringify(userName));

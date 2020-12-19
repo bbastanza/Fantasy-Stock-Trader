@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { loginUser } from "../helpers/userApiCalls";
 import DotAnimation from "./../IndividualComponents/DotAnimation";
-import { useUpdateLogin } from "./../contexts/LoginContext";
+import { useUpdateLogin, useUpdateUser } from "./../contexts/LoginContext";
 
 export default function Login() {
     const history = useHistory();
@@ -17,6 +17,8 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
     const [loginError, setLoginError] = useState(false);
     const updateLogin = useUpdateLogin();
+    const updateUser = useUpdateUser();
+
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -27,6 +29,7 @@ export default function Login() {
 
         if (data.sessionId) {
             updateLogin(true);
+            updateUser(userName)
             localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
             localStorage.setItem("expires", JSON.stringify(data.expireTime));
             localStorage.setItem("currentUser", JSON.stringify(userName));

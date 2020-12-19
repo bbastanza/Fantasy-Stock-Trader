@@ -30,13 +30,14 @@ export default function Transactions() {
     const containerStyle = {
         width: "70%",
         justifyContent: "center",
-        margin: "auto",
+        margin: "auto auto 60px",
         minWidth: 300,
     };
 
     return (
         <div style={containerStyle}>
             <h1 className="title">transactions</h1>
+            {!isLoading && transactions.length < 1 ? <h2>No transaction yet. Let's buy some stocks!</h2> : null}
             {!isLoading ? (
                 <div>
                     <Pagination
@@ -54,8 +55,8 @@ export default function Transactions() {
                     >
                         Back to Dashboard
                     </Button>
-                    {currentTransactions.length > 2 ? (
-                        <div style={{ marginBottom: 60 }}>
+                    {currentTransactions.length > 3 ? (
+                        <div>
                             <Pagination
                                 transactionsPerPage={transactionsPerPage}
                                 totalPages={transactions.length}

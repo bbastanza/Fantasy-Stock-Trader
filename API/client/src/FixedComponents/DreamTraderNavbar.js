@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useUpdateLogin, useLogin } from "./../contexts/LoginContext";
+import { useUpdateLogin, useLogin, useCurrentUser, useUpdateUser } from "./../contexts/LoginContext";
 import { useHistory } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -7,23 +7,15 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Arrow2 from "../Images/arrow2.png";
 
 export default function DreamTraderNavbar() {
-    const [currentUser, setCurrentUser] = useState("Dream Trader");
     const history = useHistory();
     const loggedIn = useLogin();
     const updateLogin = useUpdateLogin();
-
-    useEffect(() => {
-        function setUser(){
-            setCurrentUser(JSON.parse(localStorage.getItem("currentUser")));
-        };
-        window.addEventListener("storage", setUser)
-        return () => {
-            window.removeEventListener("storage", setUser)
-        }
-    }, []);
+    const currentUser = useCurrentUser();
+    const updateUser = useUpdateUser();
 
     function logout() {
         localStorage.clear();
+        updateUser("")
         updateLogin(false);
         history.push("/splash");
     }
