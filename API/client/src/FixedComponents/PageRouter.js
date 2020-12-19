@@ -15,21 +15,13 @@ export default function PageRouter() {
         <Router>
             <DreamTraderNavbar/>
             <Switch>
-                <Route path="/purchase">
-                    <Purchase />
-                </Route>
-                <Route path="/transactions" render={() => <Transactions/>}/>
-                <Route path="/dashboard" render={props => <Dashboard {...props} />} />
-                <Route path="/login">
-                    <Login />
-                </Route>
-                <Route path="/register">
-                    <Register />
-                </Route>
+                <Route path="/purchase" render={props => <Purchase {...props}/>}/>
                 <Route path="/sell" render={props => <Sell {...props} />}/>
-                <Route path="/">
-                    <Splash />
-                </Route>
+                <Route path="/dashboard" render={props => <Dashboard {...props} />} />
+                <Route path="/transactions" render={() => <Transactions/>}/>
+                <Route path="/login" render={() => <Login/>}/>
+                <Route path="/register" render={() => <Register/>}/>
+                <Route path="/" render={() => <Splash/>}/>
             </Switch>
         </Router>
     );

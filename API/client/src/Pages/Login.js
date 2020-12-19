@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Modal from "./../FixedComponents/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { LoginContext } from "./../contexts/LoginContext";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { loginUser } from "./../helpers/axios";
+import { loginUser } from "../helpers/userApiCalls";
 import DotAnimation from "./../IndividualComponents/DotAnimation"
+import {useLogin, useUpdateLogin} from "./../contexts/LoginContext"
 
 export default function Login() {
     const history = useHistory();
@@ -16,7 +16,7 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [loginError, setLoginError] = useState(false);
-    const loginContext = useContext(LoginContext);
+    const updateLogin = useUpdateLogin();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -25,9 +25,8 @@ export default function Login() {
 
         const data = await loginUser({ userName: userName, password: password });
 
-        console.log(data)
         if (data.sessionId) {
-            loginContext.setIsLoggedIn(true)
+            (() => updateLogin(true))();
             localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
             localStorage.setItem("expires", JSON.stringify(data.expireTime))
             localStorage.setItem("currentUser", JSON.stringify(userName))
@@ -35,13 +34,12 @@ export default function Login() {
             history.push("/dashboard");
         }
         else{
+        // TODO handle error
             setLoginError(true)
             setIsLoading(false)
         }
 
     }
-
-    function logOut() {}
 
     return (
         <Modal>

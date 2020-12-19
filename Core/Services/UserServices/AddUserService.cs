@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using Core.Entities;
@@ -9,7 +10,7 @@ namespace Core.Services.UserServices
 {
     public interface IAddUserService
     {
-        User AddUser(string userName, string password, string email);
+        UserSession AddUser(string userName, string password, string email);
     }
 
     public class AddUserService : IAddUserService
@@ -23,7 +24,7 @@ namespace Core.Services.UserServices
             _path = Path.GetFullPath(ToString());
         } 
         
-        public User AddUser(string userName, string password, string email)
+        public UserSession AddUser(string userName, string password, string email)
         {
             if (userName == null || password == null || email == null)
                 throw new InvalidInputException(_path, "AddUser()");
@@ -36,7 +37,18 @@ namespace Core.Services.UserServices
             var newUser = new User(userName, password, email);
 
             _session.Save(newUser);
-            return newUser;
+
+            var userSession = new UserSession()
+            {
+                SessionId = Guid.NewGuid().ToString(),
+                InitDateTime = DateTime.Now,
+                ExpireDateTime = DateTime.Now.AddDays(1),
+                User = newUser
+            };
+            
+            _session.Save(userSession);
+            
+            return userSession;
             
         }
     }

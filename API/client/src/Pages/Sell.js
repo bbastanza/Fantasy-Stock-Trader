@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useHistory } from "react-router-dom";
-import { initializeSale } from "./../helpers/axios";
+import { initializeSale } from "../helpers/transactionApiCalls";
 
 export default function Sell(props) {
     const history = useHistory();
@@ -44,6 +44,7 @@ export default function Sell(props) {
         });
 
         history.push("/dashboard");
+        // TODO handle error
     }
 
     return (

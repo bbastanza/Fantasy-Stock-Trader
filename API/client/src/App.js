@@ -9,8 +9,7 @@ function App() {
     return (
         <div className="App">
             <LoginContextProvider>
-                <PageRouter
-                />
+                <PageRouter />
             </LoginContextProvider>
             <Footer />
         </div>

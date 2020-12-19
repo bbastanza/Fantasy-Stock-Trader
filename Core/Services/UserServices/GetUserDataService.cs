@@ -37,7 +37,7 @@ namespace Core.Services.UserServices
         public User GetUserData(string sessionId)
         {
             var user = _checkExpiration.CheckUserSession(sessionId);
-            
+ 
             if (user == null)
                 throw new NonExistingUserException(_path, "GetUserData()");
             

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import Modal from "./../FixedComponents/Modal";
 import { Button } from "react-bootstrap";
-import { getUserTransactions } from "./../helpers/axios";
+import { getUserTransactions } from "./../helpers/userApiCalls";
 import UserTransaction from "./../IndividualComponents/UserTransaction";
 import CircleAnimation from "./../IndividualComponents/CircleAnimation";
 
@@ -15,9 +14,8 @@ export default function Transactions() {
             const transactionResponse = await getUserTransactions();
             setTransactions(transactionResponse.reverse());
             console.log(transactionResponse);
-
-            console.log("hi");
         })();
+        // TODO add error handling
     }, []);
 
     const containerStyle = {
@@ -26,6 +24,13 @@ export default function Transactions() {
         margin: "auto",
         minWidth: 300,
     };
+
+    function changePage(pageNumber){
+        // TODO pagination component
+        // ? How do I render a portion of the array
+        // ? maybe using a loop where you set i to a divisable of 5 number the condition to i+5 ???
+    }
+
     return (
         <div style={containerStyle}>
             <h1 className="title">transactions</h1>
@@ -36,7 +41,7 @@ export default function Transactions() {
                     })}
                     <Button
                         onClick={() => history.push("/dashboard")}
-                        className="btn-info"
+                        className="btn-info dream-btn"
                         style={{ margin: 20, marginBottom: 80 }}
                     >
                         Back to Dashboard

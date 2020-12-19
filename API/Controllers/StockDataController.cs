@@ -18,9 +18,5 @@ namespace API.Controllers
         [HttpGet]
         [Route("{stock}")]
         public IexStock GetStockData(string stock) => _iexFetchService.GetStockBySymbol(stock);
-
-        [HttpGet]
-        [Route("getAvailable")]
-        public string GetAvailableStocks() => "got available stocks";
     }
 }

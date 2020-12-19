@@ -31,7 +31,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Route("get")]
+        [Route("getUserData")]
         public UserModel GetUser(SessionInputModel session)
         {
             return new UserModel(_getUserDataService
@@ -49,10 +49,10 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("add")]
-        public UserModel AddUser(UserInputModel newUser)
+        public UserSessionModel AddUser(UserInputModel newUser)
         {
-            return new UserModel(_addUserService
-                .AddUser(newUser.UserName, newUser.Password, newUser.Email));
+            var userSession = _addUserService.AddUser(newUser.UserName, newUser.Password, newUser.Email);
+            return new UserSessionModel(userSession.SessionId, userSession.ExpireDateTime);
         }
 
         [HttpDelete]

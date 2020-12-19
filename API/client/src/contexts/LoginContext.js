@@ -1,20 +1,31 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useRef, useContext } from "react";
 
-export const LoginContext = createContext();
+const LoginContext = createContext();
+const LoginUpdateContext = createContext();
 
-export default function LoginContextProvider(props) {
-    const [isLoggedIn, setIsLoggedIn] = useState(
-        !JSON.parse(sessionStorage.getItem("sessionId")) ? false : true
-    );
+export function useLogin() {
+    return useContext(LoginContext);
+}
+
+export function useUpdateLogin() {
+    return useContext(LoginUpdateContext);
+}
+
+export default function LoginContextProvider({ children }) {
+    // const [loggedIn, setLoggedIn] = useState(false);
+    let loggedIn = useRef(false)
+
+    function setLoggedIn(bool){
+        loggedIn.current = bool
+    }
+
+    
 
     return (
-        <LoginContext.Provider
-            value={{
-                isLoggedIn: isLoggedIn,
-                setIsLoggedIn: setIsLoggedIn,
-            }}
-        >
-            {props.children}
+        <LoginContext.Provider value={loggedIn}>
+            <LoginUpdateContext.Provider value={setLoggedIn}>
+                {children}
+            </LoginUpdateContext.Provider>
         </LoginContext.Provider>
     );
 }

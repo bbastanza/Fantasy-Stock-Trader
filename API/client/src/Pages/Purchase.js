@@ -1,19 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import Modal from "./../FixedComponents/Modal"
+import Modal from "./../FixedComponents/Modal";
+import DotAnimation from "./../IndividualComponents/DotAnimation";
+import { beautifyNumber } from "./../helpers/beautifyFunds";
+import { getStockData, initializePurchase } from "../helpers/transactionApiCalls";
 import { useHistory } from "react-router-dom";
 
-export default function Purchase({ availableFunds }) {
+export default function Purchase(props) {
     const history = useHistory();
     const [unavailableFunds, setUnavailableFunds] = useState(0);
+    const [availableFunds, setAvailableFunds] = useState(0);
     const [purchaseAmount, setPurchaseAmount] = useState(0);
     const [validInput, setValidInput] = useState(true);
-    const [stock, setStock] = useState("Brookfield Property REIT Inc. (BPYU)");
+    const [isLoading, setIsLoading] = useState(false);
+    /*  */const [stockData, setStockData] = useState();
     const unavailableStyle = { backgroundColor: "#ffb3b9" };
     const numberRegex = /^[0-9]*$/;
+
+    useEffect(() => {
+        if (props.location.state.availableFunds) {
+            setAvailableFunds(props.location.state.availableFunds);
+        } else history.push("/dashboard");
+    }, [history, props.location.state.availableFunds]);
 
     function checkFunds(e) {
         const amount = e.target.value;
@@ -27,14 +38,30 @@ export default function Purchase({ availableFunds }) {
         }
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+        setIsLoading(true);
         if (!validInput || unavailableFunds > 0 || purchaseAmount <= 0) {
-            console.log("no purchase");
             return;
         }
-        console.log(`purchased ${stock} in the amount of $${purchaseAmount}`);
-        history.push("/dashboard")
+        const purchaseData = await initializePurchase({
+            symbol: stockData.symbol,
+            amount: purchaseAmount,
+        });
+
+        if (purchaseData) history.push("/dashboard");
+        else setIsLoading(false);
+        // TODO handle error
+    }
+
+    async function searchStock(value) {
+        setStockData(null);
+        if (value.length > 1) {
+            const stockData = await getStockData(value);
+            if (stockData) {
+                setStockData(stockData);
+            }
+        }
     }
 
     return (
@@ -42,41 +69,50 @@ export default function Purchase({ availableFunds }) {
             <div className="login-container dream-shadow">
                 <div className="purchase-form">
                     <h1 className="title">purchase</h1>
-                    <h2 className="available-funds">Available Funds: {availableFunds}</h2>
-                    <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
-                        <Form.Group onChange={e => setStock(e.target.value)}>
-                            <Form.Label className="purchase-form-label">Stock</Form.Label>
-                            <Form.Control as="select">
-                                <option>Brookfield Property REIT Inc. (BPYU)</option>
-                                <option>Brighthouse Financial Inc. (BHF)</option>
-                                <option>NRG Energy Inc. (NRG)</option>
-                                <option>Ardagh Group SA (ARD)</option>
-                                <option>NortonLifeLock Inc. (NLOK)</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label className="purchase-form-label">Amount</Form.Label>
-                            <InputGroup onChange={e => checkFunds(e)}>
-                                <InputGroup.Prepend>
-                                    <InputGroup.Text>$</InputGroup.Text>
-                                </InputGroup.Prepend>
-                                <FormControl
-                                    style={unavailableFunds > 0 || !validInput ? unavailableStyle : null}
-                                    aria-label="Amount (to the nearest dollar)"
-                                />
-                                <InputGroup.Append>
-                                    <InputGroup.Text>.00</InputGroup.Text>
-                                </InputGroup.Append>
-                            </InputGroup>
-                        </Form.Group>
-                        <h6 className="text-secondary" style={{ padding: "20px 0 5px" }}>
-                            Buy with confidence (because it's not real money!)
-                        </h6>
+                    <h2 className="available-funds">Available Funds: {beautifyNumber(availableFunds)}</h2>
+                    {!isLoading ? (
+                        <>
+                            {stockData ? (
+                                <>
+                                    <h3>{stockData.companyName}</h3>
+                                    <h3>${parseFloat(stockData.latestPrice).toFixed(2)}</h3>
+                                </>
+                            ) : null}
+                            <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
+                                <Form.Group >
+                                    <Form.Label className="purchase-form-label">Stock</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        onChange={e => searchStock(e.target.value)}
+                                    ></Form.Control>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label className="purchase-form-label">Amount</Form.Label>
+                                    <InputGroup onChange={e => checkFunds(e)}>
+                                        <InputGroup.Prepend>
+                                            <InputGroup.Text>$</InputGroup.Text>
+                                        </InputGroup.Prepend>
+                                        <FormControl
+                                            style={unavailableFunds > 0 || !validInput ? unavailableStyle : null}
+                                            aria-label="Amount (to the nearest dollar)"
+                                        />
+                                        <InputGroup.Append>
+                                            <InputGroup.Text>.00</InputGroup.Text>
+                                        </InputGroup.Append>
+                                    </InputGroup>
+                                </Form.Group>
+                                <h6 className="text-secondary" style={{ padding: "20px 0 5px" }}>
+                                    Buy with confidence (because it's not real money!)
+                                </h6>
 
-                        <Button variant="info" type="submit" className="dream-btn">
-                            Buy Now!
-                        </Button>
-                    </Form>
+                                <Button variant="info" type="submit" className="dream-btn">
+                                    Buy Now!
+                                </Button>
+                            </Form>
+                        </>
+                    ) : (
+                        <DotAnimation />
+                    )}
                 </div>
                 {unavailableFunds > 0 || !validInput ? (
                     <div className="error-in-form">

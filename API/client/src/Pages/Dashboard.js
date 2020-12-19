@@ -1,31 +1,22 @@
-import React, { useEffect, useState, useContext } from "react";
-import { getUserData } from "./../helpers/axios";
-import { LoginContext } from "./../contexts/LoginContext";
+import React, { useEffect, useState} from "react";
+import { getUserData } from "../helpers/userApiCalls";
 import { Link } from "react-router-dom";
 import UserHolding from "../IndividualComponents/UserHolding";
 import DashImage from "../Images/dashboard.png";
 import CircleAnimation from "./../IndividualComponents/CircleAnimation";
+import {beautifyNumber} from "./../helpers/beautifyFunds"
 
 export default function Dashboard() {
     const [userData, setUserData] = useState();
     const [holdings, setHoldings] = useState([]);
-    const loginContext = useContext(LoginContext);
 
     useEffect(() => {
         (async function () {
-            loginContext.setIsLoggedIn(true);
             const data = await getUserData();
             setUserData(data);
             setHoldings(data.holdings);
         })();
-    }, [loginContext]);
-
-    function beautifyNumber(balance) {
-        return parseFloat(balance)
-            .toFixed(2)
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
+    }, []);
 
     return (
         <div className="portfolio-page">
@@ -41,7 +32,14 @@ export default function Dashboard() {
                             backgroundSize: 420,
                         }}
                     >
-                        <Link to="purchase">
+                        <Link
+                            to={{
+                                pathname: "/purchase",
+                                state: {
+                                    availableFunds: userData.balance,
+                                },
+                            }}
+                        >
                             <button className="btn btn-lg btn-info dream-btn" style={{ margin: 40 }}>
                                 Purchase Stocks
                             </button>
@@ -57,7 +55,7 @@ export default function Dashboard() {
                                   return holding.totalShares > 0 ? (
                                       <UserHolding
                                           holdingData={holding}
-                                          key={Math.random() * new Date().now}
+                                          key={holding.totalShares * Math.random()}
                                           allocatedFunds={userData.allocatedFunds}
                                       />
                                   ) : null;
