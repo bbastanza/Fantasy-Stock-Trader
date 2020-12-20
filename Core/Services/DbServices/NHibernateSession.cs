@@ -15,6 +15,7 @@ namespace Core.Services.DbServices
 
     public class NHibernateSession : INHibernateSession
     {
+        // TODO AddSingleton<> for config
         private static readonly ISessionFactory _sessionFactory;
         private ISession _session;
 

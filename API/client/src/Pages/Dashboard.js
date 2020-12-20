@@ -14,7 +14,7 @@ export default function Dashboard() {
         (async function () {
             const data = await getUserData();
             setUserData(data);
-            setHoldings(data.holdings);
+            setHoldings(data.holdings.reverse());
         })();
     }, []);
 

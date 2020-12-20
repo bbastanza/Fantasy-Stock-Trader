@@ -1,9 +1,11 @@
 import React from "react";
+import { beautifyNumber } from "./../helpers/beautifyFunds";
 
 export default function UserTransaction({ transactionData }) {
     const transactionDate = new Date(transactionData.date).toLocaleDateString("en-US");
     const transactionTime = new Date(transactionData.date).toLocaleTimeString("en-US");
 
+    console.log(transactionData)
     const containerStyle = {
         backgroundColor: "#ffeeba",
         borderRadius: 10,
@@ -32,20 +34,23 @@ export default function UserTransaction({ transactionData }) {
                     style={{ backgroundColor: "#ffdc91", width: "auto", padding: 10, height: "auto", borderRadius: 10 }}
                 >
                     <h2 style={{ padding: 10, width: 200 }}>{transactionData.companyName}</h2>
+                    <hr />
+                    <h4>
+                        {transactionData.type === "sell" ? "Sale" : "Purchase"}
+                    </h4>
+                    <hr />
+                    <h4>
+                        ${beautifyNumber(transactionData.amount)}
+                    </h4>
                 </div>
                 <div className="col-lg-6 col-sm-12">
-
                     <h4>
                         <span style={spanStyle}>Symbol: </span>
                         {transactionData.symbol}
                     </h4>
                     <hr />
                     <h4>
-                        <span style={spanStyle}>Type:</span> {transactionData.type === "sell" ? "Sale" : "Purchase"}
-                    </h4>
-                    <hr />
-                    <h4>
-                        <span style={spanStyle}>Price:</span> ${transactionData.transactionPrice}
+                        <span style={spanStyle}>Price:</span> ${beautifyNumber(transactionData.transactionPrice)}
                     </h4>
                     <hr />
                     <h4>
