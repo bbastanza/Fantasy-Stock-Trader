@@ -35,7 +35,7 @@ export default function Register() {
             localStorage.setItem("expires", JSON.stringify(data.expireTime));
             localStorage.setItem("currentUser", JSON.stringify(userName));
 
-            history.push("/dashboard");
+            history.push("/welcome");
         } else {
             // TODO handle error
             setLoginError(true);

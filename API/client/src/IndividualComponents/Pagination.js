@@ -9,7 +9,7 @@ export default function Pagination({ transactionsPerPage, totalPages, changePage
 
     return (
         <>
-            {totalPages > 6 ? (
+            {totalPages > transactionsPerPage ? (
                 <div className="dream-btn"
                      style={{ backgroundColor: "#2a3e49", 
                               width: totalPages * 16, 

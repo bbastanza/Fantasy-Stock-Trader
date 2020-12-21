@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useUpdateLogin, useLogin, useCurrentUser, useUpdateUser } from "./../contexts/LoginContext";
 import { useHistory } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
@@ -15,7 +15,7 @@ export default function DreamTraderNavbar() {
 
     function logout() {
         localStorage.clear();
-        updateUser("")
+        updateUser("");
         updateLogin(false);
         history.push("/splash");
     }
