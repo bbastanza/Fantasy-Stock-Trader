@@ -5,16 +5,12 @@ namespace API.Models
 {
     public class DefaultExceptionModel
     {
-        public DefaultExceptionModel(Exception ex)
+        public DefaultExceptionModel()
         {
-            Type = ex.GetType().ToString();
-            Message = $"{ex.Message}";
-            StackTrace = ex.StackTrace;
+            FriendlyMessage = "An unknow error has occured. We appologize for the inconvienience. Please try again.";
         }
 
-        public string Type { get; set; }
-        public string Message { get; set; }
-        public string StackTrace { get; set; }
+        public string FriendlyMessage { get; set; }
         
         public override string ToString() => JsonSerializer.Serialize(this);
     }

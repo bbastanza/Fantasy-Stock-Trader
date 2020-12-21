@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { beautifyNumber } from "./../helpers/beautifyFunds";
+import { getStockData, initializePurchase } from "../helpers/transactionApiCalls";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Modal from "./../FixedComponents/Modal";
 import DotAnimation from "./../IndividualComponents/DotAnimation";
-import { beautifyNumber } from "./../helpers/beautifyFunds";
-import { getStockData, initializePurchase } from "../helpers/transactionApiCalls";
-import { useHistory } from "react-router-dom";
 
 export default function Purchase(props) {
     const history = useHistory();
@@ -16,7 +16,7 @@ export default function Purchase(props) {
     const [purchaseAmount, setPurchaseAmount] = useState(0);
     const [validInput, setValidInput] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    /*  */const [stockData, setStockData] = useState();
+    const [stockData, setStockData] = useState();
     const unavailableStyle = { backgroundColor: "#ffb3b9" };
     const numberRegex = /^[0-9]*$/;
 

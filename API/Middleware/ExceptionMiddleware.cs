@@ -28,13 +28,15 @@ namespace API.MiddleWare
                 context.Response.StatusCode = 409;
                 context.Response.Headers.Add("content-type", "application/json");
                 await context.Response.WriteAsync(new DreamTraderExceptionModel(ex).ToString());
+                // TODO log excepetion
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.GetType()}\n{ex.Message}\n");
                 context.Response.StatusCode = 500;
                 context.Response.Headers.Add("content-type", "application/json");
-                await context.Response.WriteAsync(new DefaultExceptionModel(ex).ToString());
+                await context.Response.WriteAsync(new DefaultExceptionModel().ToString());
+                // TODO log excepetion
             }
         }
     }

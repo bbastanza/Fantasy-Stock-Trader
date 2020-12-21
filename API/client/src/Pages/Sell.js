@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { initializeSale } from "../helpers/transactionApiCalls";
 import Modal from "./../FixedComponents/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { useHistory } from "react-router-dom";
-import { initializeSale } from "../helpers/transactionApiCalls";
 
 export default function Sell(props) {
     const history = useHistory();

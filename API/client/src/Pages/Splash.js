@@ -1,7 +1,7 @@
 import React from "react";
-import SwiftSlider from "react-swift-slider";
 import { Link } from "react-router-dom";
 import {useLogin, useUpdateLogin, useUpdateUser} from "./../contexts/LoginContext"
+import SwiftSlider from "react-swift-slider";
 import stock1 from "../Images/1stock.jpg";
 import stock2 from "../Images/2stock.jpg";
 import stock3 from "../Images/3stock.jpg";

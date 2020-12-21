@@ -1,10 +1,10 @@
 import React, { useEffect, useState} from "react";
-import { getUserData } from "../helpers/userApiCalls";
 import { Link } from "react-router-dom";
+import { getUserData } from "../helpers/userApiCalls";
+import {beautifyNumber} from "./../helpers/beautifyFunds"
 import UserHolding from "../IndividualComponents/UserHolding";
 import DashImage from "../Images/dashboard.png";
 import CircleAnimation from "./../IndividualComponents/CircleAnimation";
-import {beautifyNumber} from "./../helpers/beautifyFunds"
 
 export default function Dashboard() {
     const [userData, setUserData] = useState();

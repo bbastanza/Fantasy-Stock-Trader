@@ -1,14 +1,14 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { loginUser } from "../helpers/userApiCalls";
+import { useUpdateLogin, useUpdateUser } from "./../contexts/LoginContext";
 import Modal from "./../FixedComponents/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { loginUser } from "../helpers/userApiCalls";
 import DotAnimation from "./../IndividualComponents/DotAnimation";
-import { useUpdateLogin, useUpdateUser } from "./../contexts/LoginContext";
 
 export default function Login() {
     const history = useHistory();

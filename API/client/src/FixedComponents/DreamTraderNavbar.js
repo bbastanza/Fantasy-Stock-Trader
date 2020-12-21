@@ -1,6 +1,6 @@
 import React from "react";
-import { useUpdateLogin, useLogin, useCurrentUser, useUpdateUser } from "./../contexts/LoginContext";
 import { useHistory } from "react-router-dom";
+import { useUpdateLogin, useLogin, useCurrentUser, useUpdateUser } from "./../contexts/LoginContext";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";

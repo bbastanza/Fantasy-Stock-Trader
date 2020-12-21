@@ -7,14 +7,10 @@ namespace API.Models
     {
         public DreamTraderExceptionModel(DreamTraderException ex)
         {
-            Type = ex.GetType().ToString();
-            Path = $"{ex.Path}.{ex.Method}";
-            Message = $"{ex.Message}";
+            FriendlyMessage = $"{ex.FriendlyMessage}";
         }
         
-        public string Type { get; set; }
-        public string Path { get; set; }
-        public string Message { get; set; }
+        public string FriendlyMessage { get; set; }
         
         public override string ToString() => JsonSerializer.Serialize(this);
     }

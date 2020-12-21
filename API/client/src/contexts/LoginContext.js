@@ -39,9 +39,9 @@ export default function LoginContextProvider({ children }) {
         <LoginContext.Provider value={loggedIn}>
             <LoginUpdateContext.Provider value={setLoggedIn}>
                 <CurrentUserContext.Provider value={currentUser}>
-                <UpdateUserContext.Provider value={setCurrentUser}>
-                    {children}
-                </UpdateUserContext.Provider>
+                    <UpdateUserContext.Provider value={setCurrentUser}>
+                        {children}
+                    </UpdateUserContext.Provider>
                 </CurrentUserContext.Provider>
             </LoginUpdateContext.Provider>
         </LoginContext.Provider>
