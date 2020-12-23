@@ -19,7 +19,6 @@ export default function Login() {
     const updateLogin = useUpdateLogin();
     const updateUser = useUpdateUser();
 
-
     async function handleSubmit(e) {
         e.preventDefault();
         setLoginError("");
@@ -29,14 +28,14 @@ export default function Login() {
 
         if (data.sessionId) {
             updateLogin(true);
-            updateUser(userName)
+            updateUser(userName);
             localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
             localStorage.setItem("expires", JSON.stringify(data.expireTime));
             localStorage.setItem("currentUser", JSON.stringify(userName));
 
             history.push("/dashboard");
         } else {
-            setErrorMessage(data.friendlyMessage)
+            setErrorMessage(data.friendlyMessage);
         }
         setIsLoading(false);
     }
@@ -45,51 +44,50 @@ export default function Login() {
         <Modal>
             <div className="dream-shadow login-container">
                 <h1 className="title">login</h1>
-                {!isLoading ? (
                 <>
-                    <Form onSubmit={e => handleSubmit(e)}>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="3">
-                                Username
-                            </Form.Label>
-                            <Col sm="9">
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Enter Username"
-                                    onChange={e => setUsername(e.target.value)}
-                                />
-                            </Col>
-                        </Form.Group>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="3">
-                                Password
-                            </Form.Label>
-                            <Col sm="9">
-                                <Form.Control   
-                                    type="password"
-                                    placeholder="Password"
-                                    onChange={e => setPassword(e.target.value)}
-                                />
-                            </Col>
-                        </Form.Group>{" "}
-                        {errorMessage !== ""
-                            ? <p>{errorMessage}</p>
-                            : null}
-                        <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
-                            Log In
-                        </Button>
-                        <h6 className="text-muted" style={{ padding: "20px 0 5px" }}>
-                            No Account? Register Now!
-                        </h6>
-                        <Link to="/register">
-                            <Button variant="secondary">Register</Button>
-                        </Link>
-                    </Form>
+                    {!isLoading ? (
+                        <>
+                            <Form onSubmit={e => handleSubmit(e)}>
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="3">
+                                        Username
+                                    </Form.Label>
+                                    <Col sm="9">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Enter Username"
+                                            onChange={e => setUsername(e.target.value)}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="3">
+                                        Password
+                                    </Form.Label>
+                                    <Col sm="9">
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Password"
+                                            onChange={e => setPassword(e.target.value)}
+                                        />
+                                    </Col>
+                                </Form.Group>{" "}
+                                {errorMessage !== "" ? <p>{errorMessage}</p> : null}
+                                <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
+                                    Log In
+                                </Button>
+                                <h6 className="text-muted" style={{ padding: "20px 0 5px" }}>
+                                    No Account? Register Now!
+                                </h6>
+                                <Link to="/register">
+                                    <Button variant="secondary">Register</Button>
+                                </Link>
+                            </Form>
+                        </>
                     ) : (
                         <DotAnimation />
-                    )
-                    </>
-                 }
+                    )}
+                </>
             </div>
         </Modal>
     );
