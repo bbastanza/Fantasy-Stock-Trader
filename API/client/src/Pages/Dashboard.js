@@ -1,7 +1,7 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserData } from "../helpers/userApiCalls";
-import {beautifyNumber} from "./../helpers/beautifyFunds"
+import { beautifyNumber } from "./../helpers/beautifyFunds"
 import UserHolding from "../IndividualComponents/UserHolding";
 import DashImage from "../Images/dashboard.png";
 import CircleAnimation from "./../IndividualComponents/CircleAnimation";
@@ -9,20 +9,26 @@ import CircleAnimation from "./../IndividualComponents/CircleAnimation";
 export default function Dashboard() {
     const [userData, setUserData] = useState();
     const [holdings, setHoldings] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         (async function () {
+            setErrorMessage("")
             const data = await getUserData();
-            setUserData(data);
-            setHoldings(data.holdings.reverse());
+            if (!data.friendlyMessage){
+                setUserData(data);
+                setHoldings(data.holdings.reverse());
+            } else setErrorMessage(data.friendlyMessage)
         })();
     }, []);
 
     return (
         <div className="portfolio-page">
             <h1 className="title">Dashboard</h1>
+            {errorMessage !== ""
+                ? <p>{errorMessage}</p>
+                : null}
             {userData ? (
-                <>
                     <div
                         style={{
                             backgroundImage: `url(${DashImage})`,
@@ -62,7 +68,6 @@ export default function Dashboard() {
                               })
                             : null}{" "}
                     </div>
-                </>
             ) : (
                 <CircleAnimation />
             )}

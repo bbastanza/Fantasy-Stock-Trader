@@ -10,6 +10,7 @@ export default function Transactions() {
     const history = useHistory();
     const [transactions, setTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const transactionsPerPage = 5;
 
@@ -21,10 +22,16 @@ export default function Transactions() {
     useEffect(() => {
         (async () => {
             const transactionResponse = await getUserTransactions();
-            setTransactions(transactionResponse.reverse());
+            setErrorMessage("");
+
+            if (transactionResponse.friendlyMessage) {
+                setErrorMessage(transactionResonse.friendlyMessage);
+            } else {
+                setTransactions(transactionResponse.reverse());
+            }
+
             setIsLoading(false);
         })();
-        // TODO add error handling
     }, []);
 
     const containerStyle = {
@@ -37,36 +44,43 @@ export default function Transactions() {
     return (
         <div style={containerStyle}>
             <h1 className="title">transactions</h1>
-            {!isLoading && transactions.length < 1 ? <h2>No transaction yet. Let's buy some stocks!</h2> : null}
-            {!isLoading ? (
-                <div>
-                    <Pagination
-                        transactionsPerPage={transactionsPerPage}
-                        totalPages={transactions.length}
-                        changePage={setCurrentPage}
-                    />
-                    {currentTransactions.map(transaction => {
-                        return <UserTransaction key={transaction.date} transactionData={transaction} />;
-                    })}
-                    <Button
-                        onClick={() => history.push("/dashboard")}
-                        className="btn-info dream-btn"
-                        style={{ margin: 20 }}
-                    >
-                        Back to Dashboard
-                    </Button>
-                    {currentTransactions.length > 3 ? (
+            {errorMessage !== "" ? (
+                <>
+                    {!isLoading && transactions.length < 1 ? <h2>No transaction yet. Let's buy some stocks!</h2> : null}
+                    {!isLoading ? (
                         <div>
                             <Pagination
                                 transactionsPerPage={transactionsPerPage}
                                 totalPages={transactions.length}
                                 changePage={setCurrentPage}
                             />
+                            {currentTransactions.map(transaction => {
+                                return <UserTransaction key={transaction.date} transactionData={transaction} />;
+                            })}
+                            {errorMessage !== "" ? <p>{errorMessage}</p> : null}
+                            <Button
+                                onClick={() => history.push("/dashboard")}
+                                className="btn-info dream-btn"
+                                style={{ margin: 20 }}
+                            >
+                                Back to Dashboard
+                            </Button>
+                            {currentTransactions.length > 2 ? (
+                                <div>
+                                    <Pagination
+                                        transactionsPerPage={transactionsPerPage}
+                                        totalPages={transactions.length}
+                                        changePage={setCurrentPage}
+                                    />
+                                </div>
+                            ) : null}
                         </div>
-                    ) : null}
-                </div>
+                    ) : (
+                        <CircleAnimation />
+                    )}
+                </>
             ) : (
-                <CircleAnimation />
+                <p>{errorMessage}</p>
             )}
         </div>
     );

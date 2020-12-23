@@ -17,7 +17,7 @@ export default function Purchase(props) {
     const [validInput, setValidInput] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [stockData, setStockData] = useState();
-    const unavailableStyle = { backgroundColor: "#ffb3b9" };
+    const [errorMessage, setErrorMessage] = useState();
     const numberRegex = /^[0-9]*$/;
 
     useEffect(() => {
@@ -40,18 +40,19 @@ export default function Purchase(props) {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        setErrorMessage("");
         setIsLoading(true);
-        if (!validInput || unavailableFunds > 0 || purchaseAmount <= 0) {
-            return;
-        }
+
+        if (!validInput || unavailableFunds > 0 || purchaseAmount <= 0) return;
+        
         const purchaseData = await initializePurchase({
             symbol: stockData.symbol,
             amount: purchaseAmount,
         });
 
-        if (purchaseData) history.push("/dashboard");
-        else setIsLoading(false);
-        // TODO handle error
+        if (!purchaseData.friendlyMessage) history.push("/dashboard");
+        else setErrorMessage(purchaseDatas.friendlyMessage)
+        setIsLoading(false);
     }
 
     async function searchStock(value) {
@@ -64,6 +65,8 @@ export default function Purchase(props) {
         }
     }
 
+    const unavailableStyle = { backgroundColor: "#ffb3b9" };
+
     return (
         <Modal>
             <div className="login-container dream-shadow">
@@ -75,7 +78,7 @@ export default function Purchase(props) {
                             {stockData ? (
                                 <>
                                     <h3>{stockData.companyName}</h3>
-                                    <h3>${parseFloat(stockData.latestPrice).toFixed(2)}</h3>
+                                    <h3>${beautifyNumber(stockData.latestPrice)}</h3>
                                 </>
                             ) : null}
                             <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
@@ -86,6 +89,7 @@ export default function Purchase(props) {
                                         onChange={e => searchStock(e.target.value)}
                                     ></Form.Control>
                                 </Form.Group>
+
                                 <Form.Group>
                                     <Form.Label className="purchase-form-label">Amount</Form.Label>
                                     <InputGroup onChange={e => checkFunds(e)}>
@@ -101,9 +105,14 @@ export default function Purchase(props) {
                                         </InputGroup.Append>
                                     </InputGroup>
                                 </Form.Group>
+
                                 <h6 className="text-secondary" style={{ padding: "20px 0 5px" }}>
                                     Buy with confidence (because it's not real money!)
                                 </h6>
+
+                                {errorMessage !== ""
+                                    ? <p>{errorMessage}</p>
+                                    : null}
 
                                 <Button variant="info" type="submit" className="dream-btn">
                                     Buy Now!

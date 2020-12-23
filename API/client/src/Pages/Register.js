@@ -20,7 +20,7 @@ export default function Register() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [matchPassword, setMatchPassword] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const [loginError, setLoginError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(false);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -37,10 +37,9 @@ export default function Register() {
 
             history.push("/welcome");
         } else {
-            // TODO handle error
-            setLoginError(true);
-            setIsLoading(false);
+            setErrorMessage(data.friendlyMessage);
         }
+        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -116,6 +115,9 @@ export default function Register() {
                                         />
                                     </Col>
                                 </Form.Group>
+                                {errorMessage !== ""
+                                    ? <p>{errorMessage}</p>
+                                    : null}
 
                                 <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
                                     Register

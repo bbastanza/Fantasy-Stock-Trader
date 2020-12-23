@@ -14,6 +14,7 @@ export default function Sell(props) {
     const [validInput, setValidInput] = useState(true);
     const [holdingData, setHoldingData] = useState("");
     const [sellAll, setSellAll] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("")                        
     const unavailableStyle = { backgroundColor: "#ffb3b9" };
     const numberRegex = /^[0-9.]*$/;
 
@@ -35,6 +36,7 @@ export default function Sell(props) {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        setErrorMessage("")
         if ((shareAmount <= 0 && !sellAll) || unavailableShares > 0) return;
 
         const data = await initializeSale({
@@ -43,8 +45,9 @@ export default function Sell(props) {
             sellAll: sellAll,
         });
 
-        history.push("/dashboard");
-        // TODO handle error
+        data.friendlyMessage
+            ? setErrorMessage(data.friendlyMessage)
+            : history.push("/dashboard");
     }
 
     return (
