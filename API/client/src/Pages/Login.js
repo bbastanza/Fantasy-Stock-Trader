@@ -21,7 +21,7 @@ export default function Login() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        setLoginError("");
+        setErrorMessage("");
         setIsLoading(true);
 
         const data = await loginUser({ userName: userName, password: password });

@@ -51,7 +51,7 @@ export default function Purchase(props) {
         });
 
         if (!purchaseData.friendlyMessage) history.push("/dashboard");
-        else setErrorMessage(purchaseDatas.friendlyMessage)
+        else setErrorMessage(purchaseData.friendlyMessage)
         setIsLoading(false);
     }
 

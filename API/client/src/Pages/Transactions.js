@@ -25,7 +25,7 @@ export default function Transactions() {
             setErrorMessage("");
 
             if (transactionResponse.friendlyMessage) {
-                setErrorMessage(transactionResonse.friendlyMessage);
+                setErrorMessage(transactionResponse.friendlyMessage);
             } else {
                 setTransactions(transactionResponse.reverse());
             }
@@ -44,7 +44,7 @@ export default function Transactions() {
     return (
         <div style={containerStyle}>
             <h1 className="title">transactions</h1>
-            {errorMessage !== "" ? (
+            {errorMessage === "" ? (
                 <>
                     {!isLoading && transactions.length < 1 ? <h2>No transaction yet. Let's buy some stocks!</h2> : null}
                     {!isLoading ? (

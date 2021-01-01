@@ -7,10 +7,10 @@ namespace API.Models
     {
         public DreamTraderExceptionModel(DreamTraderException ex)
         {
-            FriendlyMessage = $"{ex.FriendlyMessage}";
+            ClientMessage = $"{ex.ClientMessage}";
         }
         
-        public string FriendlyMessage { get; set; }
+        public string ClientMessage { get; set; }
         
         public override string ToString() => JsonSerializer.Serialize(this);
     }

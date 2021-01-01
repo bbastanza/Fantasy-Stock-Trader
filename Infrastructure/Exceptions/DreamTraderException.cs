@@ -6,12 +6,14 @@ namespace Infrastructure.Exceptions
     {
         public string Path { get; }
         public string Method { get; }
+        public string ClientMessage { get; set; }
 
-        internal DreamTraderException(string path, string method, string message)
+        internal DreamTraderException(string path, string method, string message, string clientMessage)
             : base(message)
         {
             Path = path;
             Method = method;
+            ClientMessage = clientMessage;
         }
     }
 }

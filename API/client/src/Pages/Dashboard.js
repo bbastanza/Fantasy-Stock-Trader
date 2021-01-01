@@ -29,6 +29,7 @@ export default function Dashboard() {
                 ? <p>{errorMessage}</p>
                 : null}
             {userData ? (
+                <>
                     <div
                         style={{
                             backgroundImage: `url(${DashImage})`,
@@ -68,6 +69,7 @@ export default function Dashboard() {
                               })
                             : null}{" "}
                     </div>
+                </>
             ) : (
                 <CircleAnimation />
             )}
