@@ -65,14 +65,14 @@
 .error-in-form {
     margin: 20px auto;
     padding: 10px;
-    color: #ac3d46;
-    background-color: #2f4247;
+    color: #be3944;
+    background-color: #192529;
     border-radius: 7px;
     max-width: 400px;
 }
 
 .available-funds {
-    margin: 20px auto;
+    margin: 20px auto 40px;
     padding: 10px;
     background-color: #2f4247;
     border-radius: 7px;

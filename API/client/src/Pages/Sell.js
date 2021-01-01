@@ -14,14 +14,13 @@ export default function Sell(props) {
     const [validInput, setValidInput] = useState(true);
     const [holdingData, setHoldingData] = useState("");
     const [sellAll, setSellAll] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("")                        
-    const unavailableStyle = { backgroundColor: "#ffb3b9" };
+    const [errorMessage, setErrorMessage] = useState("");
+    const unavailableStyle = { backgroundColor: "#ffb3b9"};
     const numberRegex = /^[0-9.]*$/;
 
     function checkShares(shares) {
         !numberRegex.test(shares) ? setValidInput(false) : setValidInput(true);
-
-        if (shares > holdingData.shares) setUnavailableShares(shares - holdingData.shares);
+        if (shares > holdingData.totalShares) setUnavailableShares(shares - holdingData.totalShares);
         else {
             setShareAmount(shares);
             setUnavailableShares(0);
@@ -34,10 +33,24 @@ export default function Sell(props) {
         } else history.push("/dashboard");
     }, [history, props.location.state.holdingData]);
 
+    useEffect(() => {
+        if (!!sellAll) {
+            setShareAmount(0)
+            setUnavailableShares(0)
+            setErrorMessage("")
+        }
+    }, [sellAll])
+
     async function handleSubmit(e) {
         e.preventDefault();
-        setErrorMessage("")
-        if ((shareAmount <= 0 && !sellAll) || unavailableShares > 0) return;
+        setErrorMessage("");
+
+        if (unavailableShares > 0) return;
+
+        if (shareAmount <= 0 && !sellAll) {
+            setErrorMessage("Please choose an amount to sell.");
+            return;
+        }
 
         const data = await initializeSale({
             symbol: holdingData.symbol,
@@ -45,9 +58,7 @@ export default function Sell(props) {
             sellAll: sellAll,
         });
 
-        data.friendlyMessage
-            ? setErrorMessage(data.friendlyMessage)
-            : history.push("/dashboard");
+        !!data.ClientMessage ? setErrorMessage(data.ClientMessage) : history.push("/dashboard");
     }
 
     return (
@@ -60,7 +71,7 @@ export default function Sell(props) {
                     <h2>Total Shares: {parseFloat(holdingData.totalShares).toFixed(4)}</h2>
                     <h2>Current Value: ${parseFloat(holdingData.value).toFixed(2)}</h2>
                 </div>
-                <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
+                <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center", fontSize: 20 }}>
                     {!sellAll ? (
                         <Form.Group as={Row} controlId="formBasicEmail">
                             <Form.Label column sm="3">
@@ -87,6 +98,9 @@ export default function Sell(props) {
                             checked={sellAll}
                         />
                     </Form.Group>
+
+                    {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
+
                     <Button type="submit" className="btn-info dream-btn">
                         Sell Shares
                     </Button>

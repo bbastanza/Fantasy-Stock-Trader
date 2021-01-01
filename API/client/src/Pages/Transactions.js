@@ -17,7 +17,6 @@ export default function Transactions() {
     const lastTransactionIndex = currentPage * transactionsPerPage;
     const firstTransactionIndex = lastTransactionIndex - transactionsPerPage;
     const currentTransactions = transactions.slice(firstTransactionIndex, lastTransactionIndex);
-    console.log(currentTransactions);
 
     useEffect(() => {
         (async () => {

@@ -16,8 +16,8 @@ export default function Purchase(props) {
     const [purchaseAmount, setPurchaseAmount] = useState(0);
     const [validInput, setValidInput] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const [stockData, setStockData] = useState();
-    const [errorMessage, setErrorMessage] = useState();
+    const [stockData, setStockData] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
     const numberRegex = /^[0-9]*$/;
 
     useEffect(() => {
@@ -43,16 +43,23 @@ export default function Purchase(props) {
         setErrorMessage("");
         setIsLoading(true);
 
-        if (!validInput || unavailableFunds > 0 || purchaseAmount <= 0) return;
-        
-        const purchaseData = await initializePurchase({
-            symbol: stockData.symbol,
-            amount: purchaseAmount,
-        });
+        if (!validInput || unavailableFunds > 0 || purchaseAmount <= 0) {
+            setErrorMessage("Please fill out all fields.");
+            setIsLoading(false);
+            return;
+        }
 
-        if (!purchaseData.friendlyMessage) history.push("/dashboard");
-        else setErrorMessage(purchaseData.friendlyMessage)
-        setIsLoading(false);
+        if (!!stockData) {
+            const purchaseData = await initializePurchase({
+                symbol: stockData.symbol,
+                amount: purchaseAmount,
+            });
+            if (!purchaseData.ClientMessage) history.push("/dashboard");
+            else setErrorMessage(purchaseData.ClientMessage);
+        } else {
+            setErrorMessage("Please choose a valid stock to purchase.");
+            setIsLoading(false);
+        }
     }
 
     async function searchStock(value) {
@@ -75,14 +82,14 @@ export default function Purchase(props) {
                     <h2 className="available-funds">Available Funds: {beautifyNumber(availableFunds)}</h2>
                     {!isLoading ? (
                         <>
-                            {stockData ? (
+                            {!!stockData && !isNaN(stockData.latestPrice) ? (
                                 <>
                                     <h3>{stockData.companyName}</h3>
                                     <h3>${beautifyNumber(stockData.latestPrice)}</h3>
                                 </>
                             ) : null}
                             <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
-                                <Form.Group >
+                                <Form.Group>
                                     <Form.Label className="purchase-form-label">Stock</Form.Label>
                                     <Form.Control
                                         type="text"
@@ -106,16 +113,21 @@ export default function Purchase(props) {
                                     </InputGroup>
                                 </Form.Group>
 
+                                {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
+
                                 <h6 className="text-secondary" style={{ padding: "20px 0 5px" }}>
                                     Buy with confidence (because it's not real money!)
                                 </h6>
 
-                                {errorMessage !== ""
-                                    ? <p>{errorMessage}</p>
-                                    : null}
-
                                 <Button variant="info" type="submit" className="dream-btn">
                                     Buy Now!
+                                </Button>
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => history.push("/dashboard")}
+                                    className="dream-btn"
+                                >
+                                    Cancel
                                 </Button>
                             </Form>
                         </>

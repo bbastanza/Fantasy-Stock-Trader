@@ -5,7 +5,6 @@ export default function UserTransaction({ transactionData }) {
     const transactionDate = new Date(transactionData.date).toLocaleDateString("en-US");
     const transactionTime = new Date(transactionData.date).toLocaleTimeString("en-US");
 
-    console.log(transactionData)
     const containerStyle = {
         backgroundColor: "#ffeeba",
         borderRadius: 10,

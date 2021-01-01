@@ -26,7 +26,7 @@ namespace Core.Services.UserServices
         
         public UserSession AddUser(string userName, string password, string email)
         {
-            if (userName == null || password == null || email == null)
+            if (userName == "" || password == "" || email == "")
                 throw new InvalidInputException(_path, "AddUser()");
 
             var user = _session.Query<User>().FirstOrDefault(x => x.UserName == userName);

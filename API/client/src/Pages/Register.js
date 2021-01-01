@@ -25,19 +25,28 @@ export default function Register() {
     async function handleSubmit(e) {
         e.preventDefault();
         setIsLoading(true);
-        if (!matchPassword) return;
+        if (!matchPassword) {
+            setIsLoading(false)
+            return;
+        }
+
+        if (email.length === 0 || password.length === 0 || email.length === 0) {
+            setErrorMessage("Please fill our all fields.");
+            setIsLoading(false);
+            return;
+        }
 
         const data = await addUser({ userName: userName, password: password, email: email });
         if (data.sessionId) {
             updateLogin(true);
-            updateUser(userName)
+            updateUser(userName);
             localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
             localStorage.setItem("expires", JSON.stringify(data.expireTime));
             localStorage.setItem("currentUser", JSON.stringify(userName));
 
             history.push("/welcome");
         } else {
-            setErrorMessage(data.friendlyMessage);
+            setErrorMessage(data.ClientMessage);
         }
         setIsLoading(false);
     }
@@ -63,6 +72,7 @@ export default function Register() {
                                     </Form.Label>
                                     <Col sm="9">
                                         <Form.Control
+                                            required={true}
                                             type="text"
                                             placeholder="Enter Username"
                                             onChange={e => setUsername(e.target.value)}
@@ -115,9 +125,8 @@ export default function Register() {
                                         />
                                     </Col>
                                 </Form.Group>
-                                {errorMessage !== ""
-                                    ? <p>{errorMessage}</p>
-                                    : null}
+
+                                {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
 
                                 <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
                                     Register

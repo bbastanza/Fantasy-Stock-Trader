@@ -15,7 +15,7 @@ export default function Login() {
     const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const updateLogin = useUpdateLogin();
     const updateUser = useUpdateUser();
 
@@ -26,7 +26,7 @@ export default function Login() {
 
         const data = await loginUser({ userName: userName, password: password });
 
-        if (data.sessionId) {
+        if (!!data.sessionId) {
             updateLogin(true);
             updateUser(userName);
             localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
@@ -35,9 +35,9 @@ export default function Login() {
 
             history.push("/dashboard");
         } else {
-            setErrorMessage(data.friendlyMessage);
+            setErrorMessage(data.ClientMessage);
+            setIsLoading(false);
         }
-        setIsLoading(false);
     }
 
     return (
@@ -72,7 +72,7 @@ export default function Login() {
                                         />
                                     </Col>
                                 </Form.Group>{" "}
-                                {errorMessage !== "" ? <p>{errorMessage}</p> : null}
+                                {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
                                 <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
                                     Log In
                                 </Button>
