@@ -28,7 +28,6 @@ export default function Transactions() {
             } else {
                 setTransactions(transactionResponse.reverse());
             }
-
             setIsLoading(false);
         })();
     }, []);
@@ -43,9 +42,9 @@ export default function Transactions() {
     return (
         <div style={containerStyle}>
             <h1 className="title">transactions</h1>
-            {errorMessage === "" ? (
+            {!!errorMessage ? (
                 <>
-                    {!isLoading && transactions.length < 1 ? <h2>No transaction yet. Let's buy some stocks!</h2> : null}
+                    {!isLoading && transactions.length > 1 ? <h2>No transaction yet. Let's buy some stocks!</h2> : null}
                     {!isLoading ? (
                         <div>
                             <Pagination
@@ -56,7 +55,7 @@ export default function Transactions() {
                             {currentTransactions.map(transaction => {
                                 return <UserTransaction key={transaction.date} transactionData={transaction} />;
                             })}
-                            {errorMessage !== "" ? <p>{errorMessage}</p> : null}
+                            {!!errorMessage ? <p>{errorMessage}</p> : null}
                             <Button
                                 onClick={() => history.push("/dashboard")}
                                 className="btn-info dream-btn"

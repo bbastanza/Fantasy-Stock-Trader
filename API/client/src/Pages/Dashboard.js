@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserData } from "../helpers/userApiCalls";
-import { beautifyNumber } from "./../helpers/beautifyFunds"
+import { beautifyNumber } from "./../helpers/beautifyFunds";
 import UserHolding from "../IndividualComponents/UserHolding";
 import DashImage from "../Images/dashboard.png";
 import CircleAnimation from "./../IndividualComponents/CircleAnimation";
@@ -13,21 +13,19 @@ export default function Dashboard() {
 
     useEffect(() => {
         (async function () {
-            setErrorMessage("")
+            setErrorMessage("");
             const data = await getUserData();
-            if (!data.friendlyMessage){
+            if (!data.ClientMessage) {
                 setUserData(data);
                 setHoldings(data.holdings.reverse());
-            } else setErrorMessage(data.friendlyMessage)
+            } else setErrorMessage(data.ClientMessage);
         })();
     }, []);
 
     return (
         <div className="portfolio-page">
             <h1 className="title">Dashboard</h1>
-            {errorMessage !== ""
-                ? <p>{errorMessage}</p>
-                : null}
+            {!!errorMessage ? <p>{errorMessage}</p> : null}
             {userData ? (
                 <>
                     <div
@@ -57,7 +55,7 @@ export default function Dashboard() {
                         {userData.allocatedFunds > 0 ? (
                             <h1>Allocated Funds: ${beautifyNumber(userData.allocatedFunds)}</h1>
                         ) : null}
-                        {holdings
+                        {!!holdings
                             ? holdings.map(holding => {
                                   return holding.totalShares > 0 ? (
                                       <UserHolding

@@ -28,9 +28,12 @@ export default function LoginContextProvider({ children }) {
     useEffect(() => {
         (() => {
             if (!JSON.parse(localStorage.getItem("sessionId"))) return;
-            const expireString = JSON.parse(localStorage.getItem("expires"));
-            const expireDateTime = new Date(expireString).getTime();
-            if (expireDateTime > new Date().getTime()) setLoggedIn(true);
+
+            const expiresAtString = JSON.parse(localStorage.getItem("expires"));
+            const expiresAtDateTime = new Date(expiresAtString).getTime();
+
+            if (expiresAtDateTime > new Date().getTime()) setLoggedIn(true);
+
             setCurrentUser(JSON.parse(localStorage.getItem("currentUser")))
         })();
     }, []);

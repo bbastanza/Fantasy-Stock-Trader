@@ -20,7 +20,7 @@ export default function Purchase(props) {
     const [isSearching, setIsSearching] = useState(false);
     const [stockData, setStockData] = useState(null);
     const [canSearch, setCanSearch] = useState(false);
-    const searchRef = useRef("");
+    const searchTermRef = useRef("");
     const timeoutRef = useRef(null);
     const numberRegex = /^[0-9]*$/;
     const unavailableStyle = { backgroundColor: "#ffb3b9" };
@@ -35,19 +35,18 @@ export default function Purchase(props) {
         setStockData(null);
         if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
 
-        if (canSearch) {
+        const canCallApi = canSearch && !!searchTermRef.current;
+        if (canCallApi) {
             (async function () {
                 setErrorMessage("");
                 setIsSearching(true);
-                if (searchRef.current.length > 1) {
-                    const stockData = await getStockData(searchRef.current);
-                    if (!stockData.ClientMessage) {
-                        stockData.companyName.length > 0
-                            ? setStockData(stockData)
-                            : setErrorMessage("The stock you are looking for is invalid. Try again.");
-                    } else {
-                        setErrorMessage(stockData.ClientMessage);
-                    }
+                const stockData = await getStockData(searchTermRef.current);
+                if (!stockData.ClientMessage) {
+                    stockData.companyName.length > 0
+                        ? setStockData(stockData)
+                        : setErrorMessage("The stock you are looking for is invalid. Try again.");
+                } else {
+                    setErrorMessage(stockData.ClientMessage);
                 }
                 setIsSearching(false);
             })();
@@ -56,7 +55,7 @@ export default function Purchase(props) {
         timeoutRef.current = setTimeout(() => {
             timeoutRef.current = null;
             setCanSearch(true);
-        },1000);
+        }, 1000);
     }, [canSearch]);
 
     function checkFunds(amount) {
@@ -87,6 +86,9 @@ export default function Purchase(props) {
         }
     }
 
+    const hasValidStockData = !!stockData && !isNaN(stockData.latestPrice) && stockData.companyName.length > 0;
+    const canSubmit = !!stockData && purchaseAmount > 0 && validInput && unavailableFunds === 0;
+
     return (
         <Modal>
             <div className="login-container dream-shadow">
@@ -102,7 +104,7 @@ export default function Purchase(props) {
                                     <Form.Control
                                         type="text"
                                         onChange={e => {
-                                            searchRef.current = e.target.value;
+                                            searchTermRef.current = e.target.value;
                                             setCanSearch(false);
                                         }}
                                     ></Form.Control>
@@ -130,14 +132,14 @@ export default function Purchase(props) {
                                 {isSearching ? <DotAnimation /> : null}
                                 {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
 
-                                {!!stockData && !isNaN(stockData.latestPrice) && stockData.companyName.length > 0 ? (
+                                {hasValidStockData ? (
                                     <div className="available-funds">
                                         <h3>{stockData.companyName}</h3>
                                         <h3>${beautifyNumber(stockData.latestPrice)}</h3>
                                     </div>
                                 ) : null}
 
-                                {!!stockData && purchaseAmount > 0 && validInput && unavailableFunds === 0 ? (
+                                {canSubmit ? (
                                     <Button variant="info" type="submit" className="dream-btn">
                                         Buy Now!
                                     </Button>

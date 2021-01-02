@@ -72,7 +72,7 @@ export default function Login() {
                                         />
                                     </Col>
                                 </Form.Group>{" "}
-                                {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
+                                {!!errorMessage ? <p>{errorMessage}</p> : null}
                                 <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
                                     Log In
                                 </Button>

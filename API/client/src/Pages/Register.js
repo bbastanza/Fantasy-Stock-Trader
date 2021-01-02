@@ -18,19 +18,20 @@ export default function Register() {
     const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [matchPassword, setMatchPassword] = useState(true);
+    const [matchingPassword, setMatchingPassword] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
 
     async function handleSubmit(e) {
         e.preventDefault();
         setIsLoading(true);
-        if (!matchPassword) {
-            setIsLoading(false)
+        if (!matchingPassword) {
+            setIsLoading(false);
             return;
         }
 
-        if (email.length === 0 || password.length === 0 || email.length === 0) {
+        const validInput = !!email || !!password || !!userName;
+        if (!validInput) {
             setErrorMessage("Please fill our all fields.");
             setIsLoading(false);
             return;
@@ -52,8 +53,10 @@ export default function Register() {
     }
 
     useEffect(() => {
-        if (password !== confirmPassword && password.length <= confirmPassword.length) setMatchPassword(false);
-        else setMatchPassword(true);
+        const matchingInput = password === confirmPassword;
+        const invalidLength = password.length <= confirmPassword.length;
+        if (!matchingInput && invalidLength) setMatchingPassword(false);
+        else setMatchingPassword(true);
     }, [password, confirmPassword]);
 
     const nonMatchingStyle = { backgroundColor: "#ffb3b9" };
@@ -116,7 +119,7 @@ export default function Register() {
                                     </Form.Label>
                                     <Col sm="9">
                                         <Form.Control
-                                            style={!matchPassword ? nonMatchingStyle : null}
+                                            style={!matchingPassword ? nonMatchingStyle : null}
                                             type="password"
                                             placeholder="Confirm Password"
                                             onChange={e => {
@@ -126,7 +129,7 @@ export default function Register() {
                                     </Col>
                                 </Form.Group>
 
-                                {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
+                                {!!errorMessage ? <p>{errorMessage}</p> : null}
 
                                 <Button variant="info" type="submit" className="btn-shadow" style={{ margin: 15 }}>
                                     Register
@@ -140,7 +143,7 @@ export default function Register() {
                                     <Button variant="secondary">Log In</Button>
                                 </Link>
                             </Form>
-                            {!matchPassword ? (
+                            {!matchingPassword ? (
                                 <div className="error-in-form">
                                     <h3>Passwords do not match.</h3>
                                 </div>
