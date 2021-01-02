@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -31,13 +32,20 @@ namespace Core.Services.IexServices
         public IexStock GetStockBySymbol(string stockName)
         {
             if (stockName == null)
-                throw new InvalidInputException(_path, "GetStockBySymbol()");
+                throw new InvalidStockException(_path, "GetStockBySymbol()");
 
             var url =
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
 
-            var stockResponse = GetDataFromIex(url);
-            return JsonSerializer.Deserialize<IexStock>(stockResponse.Result);
+            try
+            {
+                var stockResponse = GetDataFromIex(url);
+                return JsonSerializer.Deserialize<IexStock>(stockResponse.Result);
+            }
+            catch 
+            {
+                throw new InvalidStockException(_path, "GetStockBySymbol");
+            }
         }
 
         public void UpdateHolding(Holding holding)

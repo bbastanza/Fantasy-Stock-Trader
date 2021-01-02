@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { beautifyNumber } from "./../helpers/beautifyFunds";
 import { getStockData, initializePurchase } from "../helpers/transactionApiCalls";
@@ -11,14 +11,19 @@ import DotAnimation from "./../IndividualComponents/DotAnimation";
 
 export default function Purchase(props) {
     const history = useHistory();
+    const [errorMessage, setErrorMessage] = useState("");
     const [unavailableFunds, setUnavailableFunds] = useState(0);
     const [availableFunds, setAvailableFunds] = useState(0);
     const [purchaseAmount, setPurchaseAmount] = useState(0);
     const [validInput, setValidInput] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);
     const [stockData, setStockData] = useState(null);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [canSearch, setCanSearch] = useState(false);
+    const searchRef = useRef("");
+    const timeoutRef = useRef(null);
     const numberRegex = /^[0-9]*$/;
+    const unavailableStyle = { backgroundColor: "#ffb3b9" };
 
     useEffect(() => {
         if (props.location.state.availableFunds) {
@@ -26,9 +31,35 @@ export default function Purchase(props) {
         } else history.push("/dashboard");
     }, [history, props.location.state.availableFunds]);
 
-    function checkFunds(e) {
-        const amount = e.target.value;
+    useEffect(() => {
+        setStockData(null);
+        if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
 
+        if (canSearch) {
+            (async function () {
+                setErrorMessage("");
+                setIsSearching(true);
+                if (searchRef.current.length > 1) {
+                    const stockData = await getStockData(searchRef.current);
+                    if (!stockData.ClientMessage) {
+                        stockData.companyName.length > 0
+                            ? setStockData(stockData)
+                            : setErrorMessage("The stock you are looking for is invalid. Try again.");
+                    } else {
+                        setErrorMessage(stockData.ClientMessage);
+                    }
+                }
+                setIsSearching(false);
+            })();
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            timeoutRef.current = null;
+            setCanSearch(true);
+        },1000);
+    }, [canSearch]);
+
+    function checkFunds(amount) {
         !numberRegex.test(amount) ? setValidInput(false) : setValidInput(true);
 
         if (amount > availableFunds) setUnavailableFunds(amount - availableFunds);
@@ -43,63 +74,43 @@ export default function Purchase(props) {
         setErrorMessage("");
         setIsLoading(true);
 
-        if (!validInput || unavailableFunds > 0 || purchaseAmount <= 0) {
-            setErrorMessage("Please fill out all fields.");
-            setIsLoading(false);
-            return;
-        }
-
         if (!!stockData) {
             const purchaseData = await initializePurchase({
                 symbol: stockData.symbol,
                 amount: purchaseAmount,
             });
             if (!purchaseData.ClientMessage) history.push("/dashboard");
-            else setErrorMessage(purchaseData.ClientMessage);
-        } else {
-            setErrorMessage("Please choose a valid stock to purchase.");
-            setIsLoading(false);
-        }
-    }
-
-    async function searchStock(value) {
-        setStockData(null);
-        if (value.length > 1) {
-            const stockData = await getStockData(value);
-            if (stockData) {
-                setStockData(stockData);
+            else {
+                setErrorMessage(purchaseData.ClientMessage);
+                setIsLoading(false);
             }
         }
     }
-
-    const unavailableStyle = { backgroundColor: "#ffb3b9" };
 
     return (
         <Modal>
             <div className="login-container dream-shadow">
                 <div className="purchase-form">
                     <h1 className="title">purchase</h1>
-                    <h2 className="available-funds">Available Funds: {beautifyNumber(availableFunds)}</h2>
+                    <h2 className="available-funds">Available Funds: ${beautifyNumber(availableFunds)}</h2>
                     {!isLoading ? (
                         <>
-                            {!!stockData && !isNaN(stockData.latestPrice) ? (
-                                <>
-                                    <h3>{stockData.companyName}</h3>
-                                    <h3>${beautifyNumber(stockData.latestPrice)}</h3>
-                                </>
-                            ) : null}
                             <Form onSubmit={handleSubmit} style={{ justifyContent: "center", textAlign: "center" }}>
                                 <Form.Group>
                                     <Form.Label className="purchase-form-label">Stock</Form.Label>
+                                    <h6 className="text-secondary">Type stock abbreviation to search for a stock.</h6>
                                     <Form.Control
                                         type="text"
-                                        onChange={e => searchStock(e.target.value)}
+                                        onChange={e => {
+                                            searchRef.current = e.target.value;
+                                            setCanSearch(false);
+                                        }}
                                     ></Form.Control>
                                 </Form.Group>
 
                                 <Form.Group>
                                     <Form.Label className="purchase-form-label">Amount</Form.Label>
-                                    <InputGroup onChange={e => checkFunds(e)}>
+                                    <InputGroup onChange={e => checkFunds(e.target.value)}>
                                         <InputGroup.Prepend>
                                             <InputGroup.Text>$</InputGroup.Text>
                                         </InputGroup.Prepend>
@@ -112,16 +123,26 @@ export default function Purchase(props) {
                                         </InputGroup.Append>
                                     </InputGroup>
                                 </Form.Group>
-
-                                {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
-
                                 <h6 className="text-secondary" style={{ padding: "20px 0 5px" }}>
                                     Buy with confidence (because it's not real money!)
                                 </h6>
 
-                                <Button variant="info" type="submit" className="dream-btn">
-                                    Buy Now!
-                                </Button>
+                                {isSearching ? <DotAnimation /> : null}
+                                {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
+
+                                {!!stockData && !isNaN(stockData.latestPrice) && stockData.companyName.length > 0 ? (
+                                    <div className="available-funds">
+                                        <h3>{stockData.companyName}</h3>
+                                        <h3>${beautifyNumber(stockData.latestPrice)}</h3>
+                                    </div>
+                                ) : null}
+
+                                {!!stockData && purchaseAmount > 0 && validInput && unavailableFunds === 0 ? (
+                                    <Button variant="info" type="submit" className="dream-btn">
+                                        Buy Now!
+                                    </Button>
+                                ) : null}
+
                                 <Button
                                     variant="secondary"
                                     onClick={() => history.push("/dashboard")}
@@ -135,6 +156,7 @@ export default function Purchase(props) {
                         <DotAnimation />
                     )}
                 </div>
+
                 {unavailableFunds > 0 || !validInput ? (
                     <div className="error-in-form">
                         {unavailableFunds > 0 ? (
