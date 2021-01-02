@@ -29,9 +29,6 @@ namespace Core.Services.IexServices
 
         public IexStock GetStockBySymbol(string stockName)
         {
-            if (stockName == null)
-                throw new InvalidStockException(_path, "GetStockBySymbol()");
-
             var url =
                 $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
 

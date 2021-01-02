@@ -2,7 +2,6 @@ using System.IO;
 using System.Linq;
 using Core.Entities;
 using Core.Services.DbServices;
-using Infrastructure.Exceptions;
 using NHibernate;
 using NHibernate.Linq;
 
@@ -27,9 +26,6 @@ namespace Core.Services.UserServices
 
         public string DeleteUser(string userName, string password)
         {
-            if (userName == null || password == null)
-                throw new InvalidInputException(_path, "DeleteUser");
-
             _session.Query<User>()
                 .Where(user => user.UserName == userName).Delete();
 

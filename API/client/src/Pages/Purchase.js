@@ -113,6 +113,7 @@ export default function Purchase(props) {
 
                                 <Form.Group>
                                     <Form.Label className="purchase-form-label">Amount</Form.Label>
+                                    <h6 className="text-secondary">to the nearest dollar</h6>
                                     <InputGroup onChange={e => checkFunds(e.target.value)}>
                                         <InputGroup.Prepend>
                                             <InputGroup.Text>$</InputGroup.Text>

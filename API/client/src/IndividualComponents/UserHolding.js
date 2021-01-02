@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {beautifyNumber} from "./../helpers/beautifyNumber"
 
 export default function UserHolding({ holdingData, allocatedFunds }) {
     return (
@@ -29,7 +30,7 @@ export default function UserHolding({ holdingData, allocatedFunds }) {
                         <tr>
                             <td>{holdingData.symbol}</td>
                             <td>{parseFloat(holdingData.totalShares).toFixed(4)}</td>
-                            <td>{"$" + parseFloat(holdingData.value).toFixed(2)}</td>
+                            <td>{"$" + beautifyNumber(holdingData.value)}</td>
                             <td>{parseFloat((holdingData.value / allocatedFunds) * 100).toFixed(1) + "%"}</td>
                         </tr>
                     </tbody>
