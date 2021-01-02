@@ -11,10 +11,10 @@ export default function Transactions() {
     const [transactions, setTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPageNumber, setCurrentPageNumber] = useState(1);
     const transactionsPerPage = 5;
 
-    const lastTransactionIndex = currentPage * transactionsPerPage;
+    const lastTransactionIndex = currentPageNumber * transactionsPerPage;
     const firstTransactionIndex = lastTransactionIndex - transactionsPerPage;
     const currentTransactions = transactions.slice(firstTransactionIndex, lastTransactionIndex);
 
@@ -23,8 +23,8 @@ export default function Transactions() {
             const transactionResponse = await getUserTransactions();
             setErrorMessage("");
 
-            if (transactionResponse.friendlyMessage) {
-                setErrorMessage(transactionResponse.friendlyMessage);
+            if (transactionResponse.ClientMessage) {
+                setErrorMessage(transactionResponse.ClientMessage);
             } else {
                 setTransactions(transactionResponse.reverse());
             }
@@ -42,20 +42,19 @@ export default function Transactions() {
     return (
         <div style={containerStyle}>
             <h1 className="title">transactions</h1>
-            {!!errorMessage ? (
+            {!isLoading && transactions.length < 1 ? <h2>No transaction yet. Let's buy some stocks!</h2> : null}
+            {!errorMessage ? (
                 <>
-                    {!isLoading && transactions.length > 1 ? <h2>No transaction yet. Let's buy some stocks!</h2> : null}
                     {!isLoading ? (
                         <div>
                             <Pagination
                                 transactionsPerPage={transactionsPerPage}
                                 totalPages={transactions.length}
-                                changePage={setCurrentPage}
+                                changePage={setCurrentPageNumber}
                             />
                             {currentTransactions.map(transaction => {
                                 return <UserTransaction key={transaction.date} transactionData={transaction} />;
                             })}
-                            {!!errorMessage ? <p>{errorMessage}</p> : null}
                             <Button
                                 onClick={() => history.push("/dashboard")}
                                 className="btn-info dream-btn"
@@ -64,13 +63,11 @@ export default function Transactions() {
                                 Back to Dashboard
                             </Button>
                             {currentTransactions.length > 2 ? (
-                                <div>
-                                    <Pagination
-                                        transactionsPerPage={transactionsPerPage}
-                                        totalPages={transactions.length}
-                                        changePage={setCurrentPage}
-                                    />
-                                </div>
+                                <Pagination
+                                    transactionsPerPage={transactionsPerPage}
+                                    totalPages={transactions.length}
+                                    changePage={setCurrentPageNumber}
+                                />
                             ) : null}
                         </div>
                     ) : (
@@ -78,7 +75,16 @@ export default function Transactions() {
                     )}
                 </>
             ) : (
-                <p>{errorMessage}</p>
+                <>
+                    <p>{errorMessage}</p>
+                    <Button
+                        onClick={() => history.push("/dashboard")}
+                        className="btn-info dream-btn"
+                        style={{ margin: 20 }}
+                    >
+                        Back to Dashboard
+                    </Button>
+                </>
             )}
         </div>
     );

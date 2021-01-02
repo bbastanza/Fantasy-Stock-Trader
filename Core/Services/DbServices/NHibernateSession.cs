@@ -44,11 +44,6 @@ namespace Core.Services.DbServices
         {
             _sessionFactory.Close();
         }
-
-        private void ConfigureSessionFactory(IConfiguration configuration)
-        {
-            
-        }
     }
 }
 

@@ -2,11 +2,9 @@ using System;
 using System.IO;
 using System.Linq;
 using Core.Entities;
-using Core.Services.DbServices;
 using Core.Services.IexServices;
 using Core.Services.UserServices;
 using Infrastructure.Exceptions;
-using NHibernate;
 
 namespace Core.Services.TransactionServices
 {

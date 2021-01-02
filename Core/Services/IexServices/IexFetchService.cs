@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -6,7 +5,6 @@ using Core.Entities;
 using Infrastructure.Exceptions;
 using Microsoft.Extensions.Configuration;
 using JsonSerializer = System.Text.Json.JsonSerializer;
-
 
 namespace Core.Services.IexServices
 {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import { beautifyNumber } from "./../helpers/beautifyFunds";
+import { beautifyNumber } from "../helpers/beautifyNumber";
 import { getStockData, initializePurchase } from "../helpers/transactionApiCalls";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
@@ -88,6 +88,7 @@ export default function Purchase(props) {
 
     const hasValidStockData = !!stockData && !isNaN(stockData.latestPrice) && stockData.companyName.length > 0;
     const canSubmit = !!stockData && purchaseAmount > 0 && validInput && unavailableFunds === 0;
+    const errorInForm = unavailableFunds > 0 || !validInput;
 
     return (
         <Modal>
@@ -159,7 +160,7 @@ export default function Purchase(props) {
                     )}
                 </div>
 
-                {unavailableFunds > 0 || !validInput ? (
+                {errorInForm ? (
                     <div className="error-in-form">
                         {unavailableFunds > 0 ? (
                             <h3>

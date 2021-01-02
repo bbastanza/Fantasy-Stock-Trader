@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Core.Entities;
-using Core.Services.DbServices;
 using Core.Services.TransactionServices;
 using Infrastructure.Exceptions;
-using NHibernate;
 
 namespace Core.Services.UserServices
 {
@@ -21,16 +17,13 @@ namespace Core.Services.UserServices
         private readonly ISetAllocatedFundsService _setAllocatedFundsService;
         private readonly ICheckExpiration _checkExpiration;
         private readonly string _path;
-        private readonly ISession _session;
 
         public GetUserDataService(
             ISetAllocatedFundsService setAllocatedFundsService,
-            INHibernateSession inHibernateSession,
             ICheckExpiration checkExpiration)
         {
             _setAllocatedFundsService = setAllocatedFundsService;
             _checkExpiration = checkExpiration;
-            _session = inHibernateSession.GetSession();
             _path = Path.GetFullPath(ToString());
         }
 

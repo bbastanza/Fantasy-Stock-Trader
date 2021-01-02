@@ -1,4 +1,3 @@
-using System;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Models

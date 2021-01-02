@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserData } from "../helpers/userApiCalls";
-import { beautifyNumber } from "./../helpers/beautifyFunds";
+import { beautifyNumber } from "../helpers/beautifyNumber";
 import UserHolding from "../IndividualComponents/UserHolding";
 import DashImage from "../Images/dashboard.png";
 import CircleAnimation from "./../IndividualComponents/CircleAnimation";
@@ -26,7 +26,7 @@ export default function Dashboard() {
         <div className="portfolio-page">
             <h1 className="title">Dashboard</h1>
             {!!errorMessage ? <p>{errorMessage}</p> : null}
-            {userData ? (
+            {!!userData ? (
                 <>
                     <div
                         style={{

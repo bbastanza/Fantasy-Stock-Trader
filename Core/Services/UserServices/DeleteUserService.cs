@@ -28,7 +28,7 @@ namespace Core.Services.UserServices
         public string DeleteUser(string userName, string password)
         {
             if (userName == null || password == null)
-                throw new InvalidInputException(Path.GetFullPath(ToString()), "DeleteUser");
+                throw new InvalidInputException(_path, "DeleteUser");
 
             _session.Query<User>()
                 .Where(user => user.UserName == userName).Delete();

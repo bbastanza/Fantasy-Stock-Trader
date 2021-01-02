@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { beautifyNumber } from "../helpers/beautifyNumber";
 
 export default function Sell(props) {
     const history = useHistory();
@@ -22,6 +23,7 @@ export default function Sell(props) {
 
     function checkShares(shares) {
         !numberRegex.test(shares) ? setValidInput(false) : setValidInput(true);
+
         if (shares > holdingData.totalShares) setUnavailableShares(shares - holdingData.totalShares);
         else {
             setShareAmount(shares);
@@ -46,17 +48,6 @@ export default function Sell(props) {
         setIsLoading(true);
         setErrorMessage("");
 
-        if (unavailableShares > 0) {
-            setIsLoading(false);
-            return;
-        }
-
-        if (shareAmount <= 0 && !sellAll) {
-            setErrorMessage("Please choose an amount to sell.");
-            setIsLoading(false);
-            return;
-        }
-
         const data = await initializeSale({
             symbol: holdingData.symbol,
             shareAmount: shareAmount,
@@ -71,6 +62,8 @@ export default function Sell(props) {
         history.push("/dashboard");
     }
 
+    const canSubmit = (shareAmount > 0 || sellAll) && unavailableShares === 0 && validInput;
+
     return (
         <Modal>
             <div className="login-container dream-shadow">
@@ -79,7 +72,7 @@ export default function Sell(props) {
                 <div className="available-funds">
                     <h2>{holdingData.companyName}</h2>
                     <h2>Total Shares: {parseFloat(holdingData.totalShares).toFixed(4)}</h2>
-                    <h2>Current Value: ${parseFloat(holdingData.value).toFixed(2)}</h2>
+                    <h2>Current Value: ${beautifyNumber(holdingData.value)}</h2>
                 </div>
                 {!isLoading ? (
                     <>
@@ -114,11 +107,14 @@ export default function Sell(props) {
                                 />
                             </Form.Group>
 
-                            {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
+                            {!!errorMessage ? <p>{errorMessage}</p> : null}
 
-                            <Button type="submit" className="btn-info dream-btn">
-                                Sell Shares
-                            </Button>
+                            {canSubmit ? (
+                                <Button type="submit" className="btn-info dream-btn">
+                                    Sell Shares
+                                </Button>
+                            ) : null}
+
                             <Button className="btn-secondary dream-btn" onClick={() => history.push("/dashboard")}>
                                 Cancel
                             </Button>

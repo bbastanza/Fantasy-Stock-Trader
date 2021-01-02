@@ -24,6 +24,12 @@ export default function Login() {
         setErrorMessage("");
         setIsLoading(true);
 
+        const canSubmit = !!userName && !!password;
+        if (!canSubmit) {
+            setErrorMessage("Please fill our all fields.");
+            setIsLoading(false);
+            return;
+        }
         const data = await loginUser({ userName: userName, password: password });
 
         if (!!data.sessionId) {

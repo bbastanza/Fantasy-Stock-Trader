@@ -1,5 +1,5 @@
 import React from "react";
-import { beautifyNumber } from "./../helpers/beautifyFunds";
+import { beautifyNumber } from "./../helpers/beautifyNumber";
 
 export default function UserTransaction({ transactionData }) {
     const transactionDate = new Date(transactionData.date).toLocaleDateString("en-US");
