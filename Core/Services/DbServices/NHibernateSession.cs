@@ -17,7 +17,7 @@ namespace Core.Services.DbServices
     {
         // TODO AddSingleton<> for config
         private static readonly ISessionFactory _sessionFactory;
-        private static ISession _session;
+        private ISession _session;
 
         static NHibernateSession()
         {
@@ -43,6 +43,10 @@ namespace Core.Services.DbServices
         public void CloseSession()
         {
             _sessionFactory.Close();
+        }
+
+        private void ConfigureSessionFactory(IConfiguration configuration)
+        {
         }
     }
 }

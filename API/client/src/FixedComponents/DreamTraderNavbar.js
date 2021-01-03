@@ -17,7 +17,7 @@ export default function DreamTraderNavbar() {
         localStorage.clear();
         updateUser("");
         updateLogin(false);
-        history.push("/splash");
+        history.push("/");
     }
 
     function viewTransactions() {
