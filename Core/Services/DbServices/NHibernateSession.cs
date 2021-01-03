@@ -17,7 +17,7 @@ namespace Core.Services.DbServices
     {
         // TODO AddSingleton<> for config
         private static readonly ISessionFactory _sessionFactory;
-        private ISession _session;
+        private static ISession _session;
 
         static NHibernateSession()
         {
@@ -29,7 +29,7 @@ namespace Core.Services.DbServices
                         .Password("Emma1234")
                         .Database("stock_db")
                         .Port(5432)
-                    )) 
+                    ))
                 .Mappings(m => m.FluentMappings
                     .AddFromAssembly(Assembly.GetAssembly(typeof(HoldingMap))))
                 .BuildSessionFactory();
@@ -46,4 +46,3 @@ namespace Core.Services.DbServices
         }
     }
 }
-
