@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { useLogin } from "./../contexts/LoginContext";
 import DreamTraderNavbar from "./../FixedComponents/DreamTraderNavbar";
 import Welcome from "./../Pages/Welcome";
@@ -17,26 +17,17 @@ export default function PageRouter() {
         <Router>
             <DreamTraderNavbar />
             <Switch>
-                <Route
-                    path="/dashboard"
-                    render={props => (isLoggedIn ? <Dashboard /> : <Splash />)}
-                />
-                <Route
-                    path="/purchase"
-                    render={props => (isLoggedIn ? <Purchase {...props} /> : <Splash />)}
-                />
-                <Route 
-                    path="/sell" 
-                    render={props => (isLoggedIn ? <Sell {...props} /> : <Splash />)} 
-                />
-                <Route 
-                    path="/transactions" 
-                    render={() => (isLoggedIn ? <Transactions /> : <Splash />)} 
-                />
+                <Route path="/dashboard" render={props => (isLoggedIn ? <Dashboard /> : <Splash />)} />
+                <Route path="/purchase" render={props => (isLoggedIn ? <Purchase {...props} /> : <Splash />)} />
+                <Route path="/sell" render={props => (isLoggedIn ? <Sell {...props} /> : <Splash />)} />
+                <Route path="/transactions" render={() => (isLoggedIn ? <Transactions /> : <Splash />)} />
                 <Route path="/login" render={() => <Login />} />
                 <Route path="/register" render={() => <Register />} />
                 <Route path="/welcome" render={() => <Welcome />} />
-                <Route path="/" render={() => <Splash />} />
+                <Route exact path="/" render={() => <Splash />} />
+                <Route path="/">
+                    <Redirect to="/" />
+                </Route>
             </Switch>
         </Router>
     );
