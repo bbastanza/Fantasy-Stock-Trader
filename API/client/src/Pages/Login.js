@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { loginUser } from "../helpers/userApiCalls";
 import { useUpdateLogin, useUpdateUser } from "./../contexts/LoginContext";
+import { TweenMax, Power3 } from "gsap";
 import Modal from "./../FixedComponents/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -18,6 +19,15 @@ export default function Login() {
     const [errorMessage, setErrorMessage] = useState("");
     const updateLogin = useUpdateLogin();
     const updateUser = useUpdateUser();
+    let modalRef = useRef(null);
+
+    useEffect(() => {
+        TweenMax.to(modalRef, 0.8, {
+            opacity: 1,
+            y: -20,
+            ease: Power3.easeOut,
+        });
+    }, []);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -25,6 +35,7 @@ export default function Login() {
         setIsLoading(true);
 
         const canSubmit = !!userName && !!password;
+
         if (!canSubmit) {
             setErrorMessage("Please fill our all fields.");
             setIsLoading(false);
@@ -35,6 +46,7 @@ export default function Login() {
         if (!!data.sessionId) {
             updateLogin(true);
             updateUser(userName);
+
             localStorage.setItem("sessionId", JSON.stringify(data.sessionId));
             localStorage.setItem("expires", JSON.stringify(data.expireTime));
             localStorage.setItem("currentUser", JSON.stringify(userName));
@@ -48,7 +60,7 @@ export default function Login() {
 
     return (
         <Modal>
-            <div className="dream-shadow login-container">
+            <div ref={el => (modalRef = el)} style={{ opacity: 0 }} className="dream-shadow login-container">
                 <h1 className="title">login</h1>
                 <>
                     {!isLoading ? (

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { beautifyNumber } from "../helpers/beautifyNumber";
 import { getStockData, initializePurchase } from "../helpers/transactionApiCalls";
+import { TweenMax, Power3 } from "gsap";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -22,10 +23,17 @@ export default function Purchase(props) {
     const [canSearch, setCanSearch] = useState(false);
     const searchTermRef = useRef("");
     const timeoutRef = useRef(null);
+    let modalRef = useRef(null);
     const numberRegex = /^[0-9]*$/;
     const unavailableStyle = { backgroundColor: "#ffb3b9" };
 
     useEffect(() => {
+        TweenMax.to(modalRef, 0.8, {
+            opacity: 1,
+            y: -20,
+            ease: Power3.easeOut,
+        });
+
         if (props.location.state.availableFunds) {
             setAvailableFunds(props.location.state.availableFunds);
         } else history.push("/dashboard");
@@ -92,7 +100,7 @@ export default function Purchase(props) {
 
     return (
         <Modal>
-            <div className="login-container dream-shadow">
+            <div ref={el => (modalRef = el)} className="login-container dream-shadow">
                 <div className="purchase-form">
                     <h1 className="title">purchase</h1>
                     <h2 className="available-funds">Available Funds: ${beautifyNumber(availableFunds)}</h2>

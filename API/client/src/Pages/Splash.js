@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLogin, useUpdateLogin, useUpdateUser } from "./../contexts/LoginContext";
+import { TweenMax, Power3 } from "gsap";
 import SwiftSlider from "react-swift-slider";
 import stock1 from "../Images/1stock.jpg";
 import stock2 from "../Images/2stock.jpg";
@@ -9,6 +10,8 @@ import stock4 from "../Images/4stock.jpg";
 import Arrow from "../Images/arrow3.png";
 
 export default function Splash() {
+    let textRef = useRef(null);
+    let imageRef = useRef(null);
     const loggedIn = useLogin();
     const updateLogin = useUpdateLogin();
     const updateUser = useUpdateUser();
@@ -18,6 +21,17 @@ export default function Splash() {
         { id: 3, src: stock3 },
         { id: 4, src: stock4 },
     ];
+
+    useEffect(() => {
+        TweenMax.to(textRef, 3, {
+            opacity: 1,
+            ease: Power3.easeOut,
+        });
+        TweenMax.to(imageRef, 3, {
+            opacity: 1,
+            ease: Power3.easeOut,
+        });
+    }, []);
 
     function logout() {
         localStorage.clear();
@@ -32,12 +46,14 @@ export default function Splash() {
                 style={{ margin: "10% auto", alignItems: "center", display: "flex", textAlign: "center" }}
             >
                 <div
+                    ref={el => (textRef = el)}
                     className="col-lg-6 col-md-12 user-holding-container dream-shadow"
                     style={{
                         textAlign: "center",
                         padding: 50,
                         borderRadius: 10,
                         marginBottom: 20,
+                        opacity: 0,
                     }}
                 >
                     <h1 className="title">
@@ -69,7 +85,11 @@ export default function Splash() {
                         </button>
                     )}
                 </div>
-                <div className="col-lg-6 col-md-12" style={{ padding: "0 20px 0 50px", alignSelf: "center" }}>
+                <div
+                    ref={el => (imageRef = el)}
+                    className="col-lg-6 col-md-12"
+                    style={{ opacity: 0, padding: "0 20px 0 50px", alignSelf: "center" }}
+                >
                     <SwiftSlider
                         height={400}
                         interval={4000}

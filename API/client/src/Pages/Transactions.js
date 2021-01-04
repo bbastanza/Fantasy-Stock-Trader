@@ -28,6 +28,7 @@ export default function Transactions() {
             } else {
                 setTransactions(transactionResponse.reverse());
             }
+
             setIsLoading(false);
         })();
     }, []);

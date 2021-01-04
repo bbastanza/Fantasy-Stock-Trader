@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { initializeSale } from "../helpers/transactionApiCalls";
+import { TweenMax, Power3 } from "gsap";
 import Modal from "./../FixedComponents/Modal";
 import DotAnimation from "./../IndividualComponents/DotAnimation";
 import Form from "react-bootstrap/Form";
@@ -20,6 +21,7 @@ export default function Sell(props) {
     const [errorMessage, setErrorMessage] = useState("");
     const unavailableStyle = { backgroundColor: "#ffb3b9" };
     const numberRegex = /^[0-9.]*$/;
+    let modalRef = useRef(null);
 
     function checkShares(shares) {
         !numberRegex.test(shares) ? setValidInput(false) : setValidInput(true);
@@ -32,6 +34,12 @@ export default function Sell(props) {
     }
 
     useEffect(() => {
+        TweenMax.to(modalRef, 0.8, {
+            opacity: 1,
+            y: -20,
+            ease: Power3.easeOut,
+        });
+
         if (props.location.state.holdingData) {
             setHoldingData(props.location.state.holdingData);
         } else history.push("/dashboard");
@@ -66,7 +74,7 @@ export default function Sell(props) {
 
     return (
         <Modal>
-            <div className="login-container dream-shadow">
+            <div ref={el => (modalRef = el)} style={{ opacity: 0 }} className="login-container dream-shadow">
                 <div className="purchase-form"></div>
                 <h1 className="title">sell</h1>
                 <div className="available-funds">
