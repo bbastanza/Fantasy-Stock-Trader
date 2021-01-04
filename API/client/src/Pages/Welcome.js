@@ -20,7 +20,7 @@ export default function Welcome() {
     useEffect(() => {
         TweenMax.to(displayRef, .5, {
             opacity: 1,
-            y: 20,
+            y: 15,
             ease: Power3.easeOut,
         });
     }, [slideNumber]);

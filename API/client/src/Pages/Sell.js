@@ -34,7 +34,7 @@ export default function Sell(props) {
     }
 
     useEffect(() => {
-        TweenMax.to(modalRef, 0.8, {
+        TweenMax.to(modalRef, 1, {
             opacity: 1,
             y: -20,
             ease: Power3.easeOut,
