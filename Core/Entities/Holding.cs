@@ -1,6 +1,3 @@
-using System.IO;
-using Infrastructure.Exceptions;
-
 namespace Core.Entities
 {
     public class Holding : EntityBase
@@ -15,14 +12,14 @@ namespace Core.Entities
         public virtual double TotalShares { get; set; }
         public virtual User User { get; set; }
 
-        public virtual double SellAll(double currentPrice)
+        public virtual double SellAll()
         {
             var sharedToSell = TotalShares;
             TotalShares = 0;
             return sharedToSell;
         }
 
-        public virtual bool Sell(double sellShareAmount)
+        public virtual bool SellAndReturnIsOverdrawn(double sellShareAmount)
         {
             TotalShares -= sellShareAmount;
             return TotalShares < 0;

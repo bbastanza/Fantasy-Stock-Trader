@@ -18,10 +18,10 @@ namespace API.Models
             }
         }
         
-        public string UserName { get;  set; }
-        public double Balance { get; set; }
-        public double AllocatedFunds { get; set; }
-        public IList<HoldingModel> Holdings { get; set; } = new List<HoldingModel>(); 
+        public string UserName { get; }
+        public double Balance { get; }
+        public double AllocatedFunds { get; }
+        public IList<HoldingModel> Holdings { get; } = new List<HoldingModel>(); 
         
         public override string ToString() => JsonSerializer.Serialize(this);
     }
