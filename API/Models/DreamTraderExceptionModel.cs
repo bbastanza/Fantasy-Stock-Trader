@@ -10,7 +10,7 @@ namespace API.Models
             ClientMessage = $"{ex.ClientMessage}";
         }
         
-        public string ClientMessage { get; set; }
+        public string ClientMessage { get; }
         
         public override string ToString() => JsonSerializer.Serialize(this);
     }

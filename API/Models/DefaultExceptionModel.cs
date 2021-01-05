@@ -9,7 +9,7 @@ namespace API.Models
             ClientMessage = "An unknown error has occured. We apologize for the inconvenience. Please try again.";
         }
 
-        public string ClientMessage { get; set; }
+        public string ClientMessage { get; }
         
         public override string ToString() => JsonSerializer.Serialize(this);
     }

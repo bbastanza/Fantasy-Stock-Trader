@@ -50,13 +50,13 @@ namespace Core.Services.TransactionServices
 
             if (sellAll)
             {
-                shareAmountSold = holding.SellAll(iexData.LatestPrice);
+                shareAmountSold = holding.SellAll();
                 user.Holdings.Remove(holding);
             }
             
             else
             {
-                var overdrawn = holding.Sell(shareAmount);
+                var overdrawn = holding.SellAndReturnIsOverdrawn(shareAmount);
                 if (overdrawn)
                     throw new OverDrawnHoldingException(_path, "Sell()");
             }

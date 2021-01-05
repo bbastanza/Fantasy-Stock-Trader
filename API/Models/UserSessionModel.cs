@@ -4,8 +4,8 @@ namespace API.Models
 {
     public class UserSessionModel
     {
-        public string SessionId { get; set; }
-        public DateTime ExpireTime { get; set; }
+        public string SessionId { get; }
+        public DateTime ExpireTime { get; }
         
         public UserSessionModel(string sessionId, DateTime expireTime)
         {
