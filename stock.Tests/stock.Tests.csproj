@@ -15,16 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="APITests\ControllerTests\StockDataControllerTests" />
-      <Folder Include="APITests\ControllerTests\TransactionControllerTests" />
-      <Folder Include="APITests\ControllerTests\UserControllerTests" />
-      <Folder Include="CoreTests\ServicesTests\DbServicesTests" />
-      <Folder Include="CoreTests\ServicesTests\IexServicesTests" />
-      <Folder Include="CoreTests\ServicesTests\TransactionServicesTests" />
-      <Folder Include="CoreTests\ServicesTests\UserServicesTests" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\API\API.csproj" />
       <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 

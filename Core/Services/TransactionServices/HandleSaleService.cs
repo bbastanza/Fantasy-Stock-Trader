@@ -50,15 +50,8 @@ namespace Core.Services.TransactionServices
 
             if (sellAll)
             {
-                shareAmountSold = holding.SellAll();
+                shareAmountSold = holding.SellAllReturnShareAmount();
                 user.Holdings.Remove(holding);
-            }
-            
-            else
-            {
-                var overdrawn = holding.SellAndReturnIsOverdrawn(shareAmount);
-                if (overdrawn)
-                    throw new OverDrawnHoldingException(_path, "Sell()");
             }
             
             var transaction = new Transaction()

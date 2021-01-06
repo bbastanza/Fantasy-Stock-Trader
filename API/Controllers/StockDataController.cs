@@ -24,7 +24,7 @@ namespace API.Controllers
         public IexStock GetStockData(string stockSymbol)
         {
             if (stockSymbol == null)
-                throw new InvalidStockException(_path, "GetStockBySymbol()");
+                throw new InvalidSymbolException(_path, "GetStockBySymbol()");
 
             return _iexFetchService.GetStockBySymbol(stockSymbol);
         }

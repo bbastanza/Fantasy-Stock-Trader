@@ -39,7 +39,7 @@ namespace Core.Services.IexServices
             }
             catch 
             {
-                throw new InvalidStockException(_path, "GetStockBySymbol");
+                throw new InvalidSymbolException(_path, "GetStockBySymbol");
             }
         }
 
@@ -57,7 +57,7 @@ namespace Core.Services.IexServices
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadAsStringAsync();
 
-            throw new IexException(Path.GetFullPath(ToString()), "GetDataFromIex()");
+            throw new IexException(_path, "GetDataFromIex()");
         }
     }
 }

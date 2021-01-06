@@ -1,3 +1,6 @@
+using System.IO;
+using Infrastructure.Exceptions;
+
 namespace Core.Entities
 {
     public class Holding : EntityBase
@@ -12,17 +15,18 @@ namespace Core.Entities
         public virtual double TotalShares { get; set; }
         public virtual User User { get; set; }
 
-        public virtual double SellAll()
+        public virtual double SellAllReturnShareAmount()
         {
             var sharedToSell = TotalShares;
             TotalShares = 0;
             return sharedToSell;
         }
 
-        public virtual bool SellAndReturnIsOverdrawn(double sellShareAmount)
+        public virtual void Sell(double sellShareAmount)
         {
             TotalShares -= sellShareAmount;
-            return TotalShares < 0;
+            if (TotalShares < 0)
+                throw new OverDrawnHoldingException(Path.GetFullPath(ToString()), "Sell()");
         }
 
         public virtual void Purchase(double shareAmount)

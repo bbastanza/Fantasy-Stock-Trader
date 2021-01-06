@@ -1,4 +1,6 @@
+using System;
 using Core.Entities;
+using Infrastructure.Exceptions;
 using NUnit.Framework;
 
 namespace API.Tests.CoreTests.EntityTests
@@ -12,60 +14,51 @@ namespace API.Tests.CoreTests.EntityTests
         {
             _holding = new Holding()
             {
-                Symbol = "IBM", 
-                CompanyName = "International Business Machines", 
-                Value = 10, 
-                TotalShares = 1,
+                Symbol = "IBM",
+                CompanyName = "International Business Machines",
+                Value = 10,
+                TotalShares = 2,
                 User = new User()
             };
         }
 
         [Test]
-        public void SellAndReturnIsOverdrawn_ValidAmountToSell_ReturnFalse()
+        public void Sell_SaleAmountLessThanTotal_TotalSharesEqualsTotalSharesMinusInput()
         {
-            var result = _holding.SellAndReturnIsOverdrawn(1);
+            _holding.Sell(1.5);
 
-            Assert.IsFalse(result);
+            Assert.That(_holding.TotalShares, Is.EqualTo(.5));
         }
-        
+
         [Test]
-        public void SellAndReturnIsOverdrawn_InvalidAmountToSell_ReturnTrue()
+        public void Sell_SaleAmountGreaterThanTotal_ThrowsOverDrownHoldingException()
         {
-            var result = _holding.SellAndReturnIsOverdrawn(2);
-
-            Assert.IsTrue(result);
+            Assert.That(() => _holding.Sell(3), Throws.TypeOf<OverDrawnHoldingException>());
         }
-        
+
         [Test]
         public void Purchase_WhenCalled_TotalSharesEqualsTotalSharesPlusArgument()
         {
             _holding.Purchase(1);
 
-            Assert.AreEqual(2, _holding.TotalShares);
+            Assert.AreEqual(3, _holding.TotalShares);
         }
-        
+
         [Test]
         public void SetValue_WhenCalled_ValueEqualsTotalSharesTimesArgument()
         {
             _holding.SetValue(1);
 
-            Assert.AreEqual(1, _holding.Value);
+            Assert.AreEqual(2, _holding.Value);
         }
-        
-        [Test]
-        public void SellAll_WhenCalled_TotalShareEqualsZero()
-        {
-            _holding.SellAll();
 
+        [Test]
+        public void SellAllReturnShareAmount_WhenCalled_ReturnsPreviousTotalSharesAndNewTotalSharesEqualsZero()
+        {
+            var result = _holding.SellAllReturnShareAmount();
+
+            Assert.AreEqual(2, result);
             Assert.AreEqual(0, _holding.TotalShares);
-        }
-        
-        [Test]
-        public void SellAll_WhenCalled_ReturnTotalShares()
-        {
-            var result = _holding.SellAll();
-
-            Assert.AreEqual(1, result);
         }
     }
 }
