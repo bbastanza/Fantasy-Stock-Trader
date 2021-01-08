@@ -57,7 +57,7 @@ namespace API.Controllers
         [Route("add")]
         public UserSessionModel AddUser(UserInputModel newUser)
         {
-            if (newUser.UserName == "" || newUser.Password == "" || newUser.Email == "")
+            if (newUser.UserName == null || newUser.Password == null || newUser.Email == null)
                 throw new InvalidInputException(_path, "AddUser()");
 
             var userSession = _addUserService.AddUser(newUser.UserName, newUser.Password, newUser.Email);
@@ -68,7 +68,7 @@ namespace API.Controllers
         [Route("delete")]
         public string DeleteUser(UserInputModel userInput)
         {
-            if (userInput.UserName == "" || userInput.Password == "")
+            if (userInput.UserName == null || userInput.Password == null)
                 throw new InvalidInputException(_path, "DeleteUser()");
 
             return _deleteUserService.DeleteUser(userInput.UserName, userInput.Password);
@@ -78,7 +78,7 @@ namespace API.Controllers
         [Route("login")]
         public UserSessionModel Login(UserInputModel userInput)
         {
-            if (userInput.UserName == "" || userInput.Password == "")
+            if (userInput.UserName == null || userInput.Password == null)
                 throw new InvalidInputException(_path, "Login()");
 
             var userSession =  _loginUser.Login(userInput.UserName, userInput.Password);

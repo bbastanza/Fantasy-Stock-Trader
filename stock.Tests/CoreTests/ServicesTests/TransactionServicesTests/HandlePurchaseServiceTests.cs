@@ -20,7 +20,7 @@ namespace API.Tests.CoreTests.ServicesTests.TransactionServicesTests
         public void SetUp()
         {
             var user = new User("username", "password", "email");
-            
+
             var checkExpiration = new Mock<ICheckExpiration>();
             checkExpiration.Setup(x => x.CheckUserSession("1"))
                 .Returns(user);
@@ -35,7 +35,7 @@ namespace API.Tests.CoreTests.ServicesTests.TransactionServicesTests
             _setAllocatedFundsService = setAllocatedFundsService.Object;
             _iexFetchService = iexFetchService.Object;
             _checkExpiration = checkExpiration.Object;
-            
+
             _handlePurchaseService =
                 new HandlePurchaseService(
                     _iexFetchService,
@@ -54,14 +54,18 @@ namespace API.Tests.CoreTests.ServicesTests.TransactionServicesTests
         [Test]
         public void Purchase_WhenHoldingExists_ReturnsTransactionWithSameNumberOfHoldings()
         {
+            // Arrange
             var newUser = new User("username", "password", "email");
             newUser.Holdings.Add(new Holding() {Symbol = "FAKE", CompanyName = "Fake Stock", User = newUser});
+
             var checkExpiration = new Mock<ICheckExpiration>();
             checkExpiration.Setup(x => x.CheckUserSession("1"))
                 .Returns(newUser);
+
             var handlePurchaseService =
                 new HandlePurchaseService(_iexFetchService, _setAllocatedFundsService, checkExpiration.Object);
-            
+
+            // Act
             var result = handlePurchaseService.Purchase("1", 1, "FAKE");
 
             Assert.That(result.User.Holdings.Count, Is.EqualTo(1));
@@ -93,7 +97,7 @@ namespace API.Tests.CoreTests.ServicesTests.TransactionServicesTests
             Assert.That(result.User.Transactions.Count, Is.EqualTo(1));
         }
 
-        [Test] // new User.Balance == 100,000
+        [Test] // new User.Balance init at 100,000
         public void Purchase_WhenCalled_TransactionUserBalanceMinusAmount()
         {
             var result = _handlePurchaseService.Purchase("1", 99999, "FAKE");
