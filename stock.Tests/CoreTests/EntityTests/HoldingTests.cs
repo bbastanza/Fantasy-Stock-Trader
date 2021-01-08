@@ -14,8 +14,8 @@ namespace API.Tests.CoreTests.EntityTests
         {
             _holding = new Holding()
             {
-                Symbol = "IBM",
-                CompanyName = "International Business Machines",
+                Symbol = "FAKE",
+                CompanyName = "Fake Stock",
                 Value = 10,
                 TotalShares = 2,
                 User = new User()

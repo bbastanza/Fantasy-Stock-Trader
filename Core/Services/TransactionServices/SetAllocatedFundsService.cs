@@ -5,7 +5,7 @@ namespace Core.Services.TransactionServices
 {
     public interface ISetAllocatedFundsService
     {
-        double SetAllocatedFunds(User user);
+        void SetAllocatedFunds(User user);
     }
 
     public class SetAllocatedFundsService : ISetAllocatedFundsService
@@ -17,7 +17,7 @@ namespace Core.Services.TransactionServices
             _iexFetchService = iexFetchService;
         }
 
-        public double SetAllocatedFunds(User user)
+        public void SetAllocatedFunds(User user)
         {
             double totalHoldingsValue = 0;
 
@@ -27,7 +27,7 @@ namespace Core.Services.TransactionServices
                 totalHoldingsValue += holding.Value;
             }
 
-            return totalHoldingsValue;
+            user.AllocatedFunds = totalHoldingsValue;
         }
     }
 }

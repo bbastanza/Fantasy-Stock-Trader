@@ -34,7 +34,7 @@ namespace Core.Services.UserServices
             if (user == null)
                 throw new NonExistingUserException(_path, "GetUserData()");
             
-            user.AllocatedFunds = _setAllocatedFundsService.SetAllocatedFunds(user);
+            _setAllocatedFundsService.SetAllocatedFunds(user);
 
             return user;
         }

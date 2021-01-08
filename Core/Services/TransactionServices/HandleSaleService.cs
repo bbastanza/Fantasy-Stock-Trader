@@ -66,7 +66,7 @@ namespace Core.Services.TransactionServices
             };
             
             user.Transactions.Add(transaction);
-            user.AllocatedFunds = _setAllocatedFundsService.SetAllocatedFunds(user);
+            _setAllocatedFundsService.SetAllocatedFunds(user);
             user.Balance += shareAmountSold * iexData.LatestPrice;
 
             return transaction;
