@@ -53,11 +53,18 @@ namespace API.Tests.CoreTests.EntityTests
         }
 
         [Test]
-        public void SellAllReturnShareAmount_WhenCalled_ReturnsPreviousTotalSharesAndNewTotalSharesEqualsZero()
+        public void SellAllReturnShareAmount_WhenCalled_ReturnsTotalShares()
         {
             var result = _holding.SellAllReturnShareAmount();
 
             Assert.AreEqual(2, result);
+        }
+        
+        [Test]
+        public void SellAllReturnShareAmount_WhenCalled_TotalSharesSetToZero()
+        {
+            _holding.SellAllReturnShareAmount();
+
             Assert.AreEqual(0, _holding.TotalShares);
         }
     }

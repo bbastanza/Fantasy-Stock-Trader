@@ -12,7 +12,6 @@ namespace API.Tests.CoreTests.ServicesTests.IexServicesTests
         {
             var apiHelper = new ApiHelper();
             
-            Assert.That(apiHelper.ApiClient, Is.TypeOf<HttpClient>());
             Assert.That(apiHelper.ApiClient.DefaultRequestHeaders.ToString(), Does.Match("application/json"));
         }
     }

@@ -1,6 +1,4 @@
 using Core.Services.DbServices;
-using NHibernate;
-using NHibernate.Hql.Ast.ANTLR.Tree;
 using NUnit.Framework;
 
 namespace API.Tests.CoreTests.ServicesTests.DbServicesTests
@@ -23,14 +21,6 @@ namespace API.Tests.CoreTests.ServicesTests.DbServicesTests
 
             Assert.That(result, Is.TypeOf<NHibernate.Impl.SessionImpl>());
             Assert.That(result.IsOpen);
-        }
-
-        [Test]
-        public void CloseSession_WhenCalled_ClosesSession()
-        {
-            _session.CloseSession();
-            
-            // Assert.That(_session, Is.NotOpen);
         }
     }
 }
