@@ -10,7 +10,7 @@ namespace Core.Services.TransactionServices
 {
     public interface IHandlePurchaseService
     {
-        Transaction Purchase(string sessionId, double amount, string symbol);
+        void Purchase(string sessionId, double amount, string symbol);
     }
 
     public class HandlePurchaseService : IHandlePurchaseService
@@ -31,7 +31,7 @@ namespace Core.Services.TransactionServices
             _path = Path.GetFullPath(ToString());
         }
 
-        public Transaction Purchase(string sessionId, double amount, string symbol)
+        public void Purchase(string sessionId, double amount, string symbol)
         {
             var user = _checkExpiration.CheckUserSession(sessionId);
 
@@ -70,8 +70,6 @@ namespace Core.Services.TransactionServices
             user.Transactions.Add(transaction);
             _setAllocatedFundsService.SetAllocatedFunds(user);
             user.Balance -= amount;
-
-            return transaction;
         }
     }
 }

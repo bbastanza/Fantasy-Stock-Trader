@@ -10,18 +10,13 @@ namespace API.Tests.APITests.ControllerTests
     [TestFixture]
     public class StockDataControllerTests
     {
-        private Mock<IIexFetchService> _iexFetchService;
         private StockDataController _stockDataController;
 
         [SetUp]
         public void SetUp()
         {
-            _iexFetchService = new Mock<IIexFetchService>();
-            _iexFetchService
-                .Setup(x => x.GetStockBySymbol("FAKE"))
-                .Returns(new IexStock());
-
-            _stockDataController = new StockDataController(_iexFetchService.Object);
+            var iexFetchService = new Mock<IIexFetchService>();
+            _stockDataController = new StockDataController(iexFetchService.Object);
         }
         
         [Test]

@@ -11,98 +11,121 @@ namespace API.Tests.CoreTests.ServicesTests.TransactionServicesTests
     [TestFixture]
     public class HandlePurchaseServiceTests
     {
-        private HandlePurchaseService _handlePurchaseService;
-        private ISetAllocatedFundsService _setAllocatedFundsService;
-        private ICheckExpiration _checkExpiration;
-        private IIexFetchService _iexFetchService;
+        private Mock<ISetAllocatedFundsService> _setAllocatedFundsService;
+        private Mock<ICheckExpiration> _checkExpiration;
+        private Mock<IIexFetchService> _iexFetchService;
+        private User _user;
+        private IexStock _stock;
 
         [SetUp]
         public void SetUp()
         {
-            var user = new User("username", "password", "email");
-
-            var checkExpiration = new Mock<ICheckExpiration>();
-            checkExpiration.Setup(x => x.CheckUserSession("1"))
-                .Returns(user);
-
-            var iexFetchService = new Mock<IIexFetchService>();
-            iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
-                .Returns(new IexStock() {Symbol = "FAKE", CompanyName = "Fake Stock", LatestPrice = 1});
-
-            var setAllocatedFundsService = new Mock<ISetAllocatedFundsService>();
-            setAllocatedFundsService.Setup(x => x.SetAllocatedFunds(user));
-
-            _setAllocatedFundsService = setAllocatedFundsService.Object;
-            _iexFetchService = iexFetchService.Object;
-            _checkExpiration = checkExpiration.Object;
-
-            _handlePurchaseService =
-                new HandlePurchaseService(
-                    _iexFetchService,
-                    _setAllocatedFundsService,
-                    _checkExpiration);
+            _user = new User("username", "password", "email");
+            _stock = new IexStock() {Symbol = "FAKE", CompanyName = "Fake Company", LatestPrice = 1};
+            _setAllocatedFundsService = new Mock<ISetAllocatedFundsService>();
+            _checkExpiration = new Mock<ICheckExpiration>();
+            _iexFetchService = new Mock<IIexFetchService>();
         }
 
         [Test]
-        public void Purchase_WhenNoHoldingExists_ReturnsTransactionWithUserWith1Holding()
+        public void Purchase_WhenNoHoldingExists_CreatesASecondHolding()
         {
-            var result = _handlePurchaseService.Purchase("1", 1, "FAKE");
-
-            Assert.That(result.User.Holdings.Count, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void Purchase_WhenHoldingExists_ReturnsTransactionWithSameNumberOfHoldings()
-        {
-            // Arrange
-            var newUser = new User("username", "password", "email");
-            newUser.Holdings.Add(new Holding() {Symbol = "FAKE", CompanyName = "Fake Stock", User = newUser});
-
-            var checkExpiration = new Mock<ICheckExpiration>();
-            checkExpiration.Setup(x => x.CheckUserSession("1"))
-                .Returns(newUser);
-
+            _user.Holdings.Add(new Holding() {Symbol = "FAKE2", CompanyName = "Fake Company 2", TotalShares = 1});
+            _checkExpiration.Setup(x => x.CheckUserSession("1"))
+                .Returns(_user);
+            _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
+                .Returns(_stock);
             var handlePurchaseService =
-                new HandlePurchaseService(_iexFetchService, _setAllocatedFundsService, checkExpiration.Object);
+                new HandlePurchaseService(_iexFetchService.Object, _setAllocatedFundsService.Object,
+                    _checkExpiration.Object);
+            
+            handlePurchaseService.Purchase("1", 1, "FAKE");
 
-            // Act
-            var result = handlePurchaseService.Purchase("1", 1, "FAKE");
+            Assert.That(_user.Holdings.Count, Is.EqualTo(2));
+        }
 
-            Assert.That(result.User.Holdings.Count, Is.EqualTo(1));
+        [Test]
+        public void Purchase_WhenHoldingExists_UserHoldingsCountIsStill1()
+        {
+            _user.Holdings.Add(new Holding() {Symbol = "FAKE"});
+            _checkExpiration.Setup(x => x.CheckUserSession("1"))
+                .Returns(_user);
+            _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
+                .Returns(_stock);
+            var handlePurchaseService =
+                new HandlePurchaseService(_iexFetchService.Object, _setAllocatedFundsService.Object,
+                    _checkExpiration.Object);
+            
+            handlePurchaseService.Purchase("1", 1, "FAKE");
+
+            Assert.That(_user.Holdings.Count, Is.EqualTo(1));
         }
 
         [Test]
         public void Purchase_WhenUserComesBackNull_ThrowsNonExistingUserException()
         {
-            Assert.That(() => _handlePurchaseService.Purchase("2", 1, "FAKE"),
+            _checkExpiration.Setup(x => x.CheckUserSession("1"))
+                .Returns((User) null);
+            _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
+                .Returns(_stock);
+            var handlePurchaseService =
+                new HandlePurchaseService(_iexFetchService.Object, _setAllocatedFundsService.Object,
+                    _checkExpiration.Object);
+            
+            Assert.That(() => handlePurchaseService.Purchase("1", 1, "FAKE"),
                 Throws.Exception.TypeOf<NonExistingUserException>());
         }
 
         [Test]
-        public void Purchase_WhenCalled_ReturnsExpectedTransaction()
+        public void Purchase_WhenCalled_AddsCorrectTransactionToUser()
         {
-            var result = _handlePurchaseService.Purchase("1", 1, "FAKE");
+            _checkExpiration.Setup(x => x.CheckUserSession("1"))
+                .Returns(_user);
+            _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
+                .Returns(_stock);
+            var handlePurchaseService =
+                new HandlePurchaseService(_iexFetchService.Object, _setAllocatedFundsService.Object,
+                    _checkExpiration.Object);
+            
+            handlePurchaseService.Purchase("1", 1, "FAKE");
 
-            Assert.That(result.Type, Is.EqualTo("purchase"));
-            Assert.That(result.Amount, Is.EqualTo(1));
-            Assert.That(result.SellAll, Is.EqualTo(false));
-            Assert.That(result.TransactionPrice, Is.EqualTo(1));
+            Assert.That(_user.Transactions[0].Type, Is.EqualTo("purchase"));
+            Assert.That(_user.Transactions[0].Amount, Is.EqualTo(1));
+            Assert.That(_user.Transactions[0].SellAll, Is.EqualTo(false));
+            Assert.That(_user.Transactions[0].TransactionPrice, Is.EqualTo(1));
+            Assert.That(_user.Transactions[0].User, Is.EqualTo(_user));
         }
 
-        [Test]
-        public void Purchase_WhenCalled_AddsTransactionToUserTransactions()
+        [Test] // TotalShares of holding should be Amount divided by iexStock.LatestPrice
+        public void Purchase_WhenCalled_PurchasesTheCorrectAmount()
         {
-            var result = _handlePurchaseService.Purchase("1", 1, "FAKE");
+            _checkExpiration.Setup(x => x.CheckUserSession("1"))
+                .Returns(_user);
+            _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
+                .Returns(new IexStock() {Symbol = "FAKE", CompanyName = "Fake Company", LatestPrice = 5});
+            var handlePurchaseService =
+                new HandlePurchaseService(_iexFetchService.Object, _setAllocatedFundsService.Object,
+                    _checkExpiration.Object);
+            
+            handlePurchaseService.Purchase("1", 10, "FAKE");
 
-            Assert.That(result.User.Transactions.Count, Is.EqualTo(1));
+            Assert.That(_user.Holdings[0].TotalShares, Is.EqualTo(2));
         }
 
         [Test] // new User.Balance init at 100,000
         public void Purchase_WhenCalled_TransactionUserBalanceMinusAmount()
         {
-            var result = _handlePurchaseService.Purchase("1", 99999, "FAKE");
+            _checkExpiration.Setup(x => x.CheckUserSession("1"))
+                .Returns(_user);
+            _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
+                .Returns(_stock);
+            var handlePurchaseService =
+                new HandlePurchaseService(_iexFetchService.Object, _setAllocatedFundsService.Object,
+                    _checkExpiration.Object);
+            
+            handlePurchaseService.Purchase("1", 1, "FAKE");
 
-            Assert.That(result.User.Balance, Is.EqualTo(1));
+            Assert.That(_user.Balance, Is.EqualTo(99999));
         }
     }
 }
