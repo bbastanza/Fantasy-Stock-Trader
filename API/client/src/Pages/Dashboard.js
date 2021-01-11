@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { getUserData } from "../helpers/userApiCalls";
 import { beautifyNumber } from "../helpers/beautifyNumber";
@@ -7,6 +8,7 @@ import DashImage from "../Images/dashboard.png";
 import CircleAnimation from "./../IndividualComponents/CircleAnimation";
 
 export default function Dashboard() {
+    const history = useHistory();
     const [userData, setUserData] = useState();
     const [holdings, setHoldings] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
@@ -15,12 +17,13 @@ export default function Dashboard() {
         (async function () {
             setErrorMessage("");
             const data = await getUserData();
+            if (data === 401) history.push("/expired");
             if (!data.ClientMessage) {
                 setUserData(data);
                 setHoldings(data.holdings.reverse());
             } else setErrorMessage(data.ClientMessage);
         })();
-    }, []);
+    }, [history]);
 
     return (
         <div className="portfolio-page">

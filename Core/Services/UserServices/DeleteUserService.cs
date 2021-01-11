@@ -15,13 +15,11 @@ namespace Core.Services.UserServices
     public class DeleteUserService : IDeleteUserService
     {
         private readonly ISession _session;
-        private readonly string _path;
 
         public DeleteUserService(
             INHibernateSession inHibernateSession)
         {
             _session = inHibernateSession.GetSession();
-            _path = Path.GetFullPath(ToString());
         }
 
         public string DeleteUser(string userName, string password)

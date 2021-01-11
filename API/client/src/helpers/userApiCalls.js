@@ -24,6 +24,7 @@ export async function addUser(userInput) {
         });
         responseData = request.data;
     } catch (error) {
+        if (error.response.status === 401) return 401;
         responseData = error.response.data;
     }
     return responseData;
@@ -39,6 +40,7 @@ export async function deleteUser(userInput) {
         });
         responseData = request.data;
     } catch (error) {
+        if (error.response.status === 401) return 401;
         responseData = error.response.data;
     }
     return responseData;
@@ -52,6 +54,7 @@ export async function getUserData() {
         });
         responseData = request.data;
     } catch (error) {
+        if (error.response.status === 401) return 401;
         responseData = error.response.data;
     }
     return responseData;
@@ -65,6 +68,7 @@ export async function getUserTransactions() {
         });
         responseData = request.data;
     } catch (error) {
+        if (error.response.status === 401) return 401;
         responseData = error.response.data;
     }
     return responseData;

@@ -5,6 +5,7 @@ using Core.Entities;
 using Core.Services.DbServices;
 using Infrastructure.Exceptions;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace Core.Services.UserServices
 {
@@ -12,7 +13,7 @@ namespace Core.Services.UserServices
     {
         User CheckUserSession(string sessionId);
     }
-    
+
     public class CheckExpiration : ICheckExpiration
     {
         private readonly ISession _session;
@@ -23,19 +24,21 @@ namespace Core.Services.UserServices
             _session = nHibernateSession.GetSession();
             _path = Path.GetFullPath(ToString());
         }
-        
+
         public User CheckUserSession(string sessionId)
         {
             var userSession = _session.Query<UserSession>()
                 .FirstOrDefault(x => x.SessionId == sessionId);
-            
+
             if (userSession == null)
                 throw new NonExistingSessionException(_path, "CheckUserSession()");
 
-            if (userSession.ExpireDateTime < DateTime.Now)
-                throw new ExpiredSessionException(_path, "CheckUserSession()");
+            if (userSession.ExpireDateTime >= DateTime.Now) return userSession.User;
 
-            return userSession.User;
+            _session.Query<UserSession>()
+                .Where(x => x.SessionId == sessionId).Delete();
+
+            throw new ExpiredSessionException(_path, "CheckUserSession()");
         }
     }
 }

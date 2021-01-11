@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router"
 
 const LoginContext = createContext();
 const LoginUpdateContext = createContext();
@@ -22,6 +23,7 @@ export function useUpdateUser() {
 }
 
 export default function LoginContextProvider({ children }) {
+    const history = useHistory();
     const [loggedIn, setLoggedIn] = useState(false);
     const [currentUser, setCurrentUser] = useState("");
 
@@ -33,10 +35,11 @@ export default function LoginContextProvider({ children }) {
             const expiresAtDateTime = new Date(expiresAtString).getTime();
 
             if (expiresAtDateTime > new Date().getTime()) setLoggedIn(true);
+            else history.push("/expired")
 
             setCurrentUser(JSON.parse(localStorage.getItem("currentUser")))
         })();
-    }, []);
+    }, [history]);
 
     return (
         <LoginContext.Provider value={loggedIn}>

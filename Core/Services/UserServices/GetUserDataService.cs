@@ -43,6 +43,9 @@ namespace Core.Services.UserServices
         {
             var user = _checkExpiration.CheckUserSession(sessionId);
 
+            if (user == null)
+                throw new NonExistingUserException(_path, "GetUserTransactions()");
+            
             return user.Transactions;
         }
     }

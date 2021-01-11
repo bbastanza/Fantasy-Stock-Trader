@@ -10,6 +10,7 @@ import Register from "./../Pages/Register";
 import Purchase from "./../Pages/Purchase";
 import Sell from "./../Pages/Sell";
 import Splash from "./../Pages/Splash";
+import ExpiredSession from "./../Pages/ExpiredSession"
 
 export default function PageRouter() {
     const isLoggedIn = useLogin();
@@ -17,7 +18,8 @@ export default function PageRouter() {
         <Router>
             <DreamTraderNavbar />
             <Switch>
-                <Route path="/dashboard" render={props => (isLoggedIn ? <Dashboard /> : <Splash />)} />
+                <Route path="/expired" render={() => <ExpiredSession />} />
+                <Route path="/dashboard" render={() => (isLoggedIn ? <Dashboard /> : <Splash />)} />
                 <Route path="/purchase" render={props => (isLoggedIn ? <Purchase {...props} /> : <Splash />)} />
                 <Route path="/sell" render={props => (isLoggedIn ? <Sell {...props} /> : <Splash />)} />
                 <Route path="/transactions" render={() => (isLoggedIn ? <Transactions /> : <Splash />)} />

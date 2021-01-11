@@ -23,6 +23,7 @@ export default function Transactions() {
             const transactionResponse = await getUserTransactions();
             setErrorMessage("");
 
+            if (transactionResponse === 401) history.push("/expired")
             if (transactionResponse.ClientMessage) {
                 setErrorMessage(transactionResponse.ClientMessage);
             } else {
@@ -31,7 +32,7 @@ export default function Transactions() {
 
             setIsLoading(false);
         })();
-    }, []);
+    }, [history]);
 
     const containerStyle = {
         width: "70%",

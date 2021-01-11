@@ -49,6 +49,7 @@ export default function Purchase(props) {
                 setErrorMessage("");
                 setIsSearching(true);
                 const stockData = await getStockData(searchTermRef.current);
+                if (stockData === 401) history.push("/expired");
                 if (!stockData.ClientMessage) {
                     stockData.companyName.length > 0
                         ? setStockData(stockData)
@@ -64,7 +65,7 @@ export default function Purchase(props) {
             timeoutRef.current = null;
             setCanSearch(true);
         }, 1000);
-    }, [canSearch]);
+    }, [canSearch, history]);
 
     function checkFunds(amount) {
         !numberRegex.test(amount) ? setValidInput(false) : setValidInput(true);

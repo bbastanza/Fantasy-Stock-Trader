@@ -62,6 +62,8 @@ export default function Sell(props) {
             sellAll: sellAll,
         });
 
+        if (data === 401) history.push("/expired");
+
         if (!!data.ClientMessage) {
             setErrorMessage(data.ClientMessage);
             setIsLoading(false);

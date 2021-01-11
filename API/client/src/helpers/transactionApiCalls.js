@@ -11,6 +11,7 @@ export async function initializeSale(saleData) {
         });
         responseData = request.data
     } catch (error) {
+        if (error.response.status === 401) return 401;
         responseData = error.response.data;
     }
     return responseData;
@@ -26,6 +27,7 @@ export async function initializePurchase(purchaseData) {
         });
         responseData = request.data
     } catch (error) {
+        if (error.response.status === 401) return 401;
         responseData = error.response.data;
     }
     return responseData;
