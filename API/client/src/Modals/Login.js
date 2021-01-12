@@ -2,19 +2,19 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { loginUser } from "../helpers/userApiCalls";
-import { useUpdateLogin, useUpdateUser } from "./../contexts/LoginContext";
+import { useUpdateLogin, useUpdateUser } from "../contexts/LoginContext";
 import { TweenMax, Power3 } from "gsap";
-import Modal from "./../FixedComponents/Modal";
+import Modal from "../IndividualComponents/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import DotAnimation from "./../IndividualComponents/DotAnimation";
+import DotAnimation from "../IndividualComponents/DotAnimation";
 
 export default function Login() {
     const history = useHistory();
-    const [userName, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [userName, setUsername] = useState(null);
+    const [password, setPassword] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const updateLogin = useUpdateLogin();
@@ -74,7 +74,10 @@ export default function Login() {
                                         <Form.Control
                                             type="text"
                                             placeholder="Enter Username"
-                                            onChange={e => setUsername(e.target.value)}
+                                            onChange={e => {
+                                                if (e.target.value.length === 0) setUsername(null);
+                                                else setUsername(e.target.value);
+                                            }}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -86,7 +89,10 @@ export default function Login() {
                                         <Form.Control
                                             type="password"
                                             placeholder="Password"
-                                            onChange={e => setPassword(e.target.value)}
+                                            onChange={e => {
+                                                if (e.target.value.length === 0) setPassword(null);
+                                                else setPassword(e.target.value);
+                                            }}
                                         />
                                     </Col>
                                 </Form.Group>{" "}

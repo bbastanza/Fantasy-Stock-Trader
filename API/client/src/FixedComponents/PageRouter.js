@@ -5,12 +5,13 @@ import DreamTraderNavbar from "./../FixedComponents/DreamTraderNavbar";
 import Welcome from "./../Pages/Welcome";
 import Dashboard from "../Pages/Dashboard";
 import Transactions from "./../Pages/Transactions";
-import Login from "./../Pages/Login";
-import Register from "./../Pages/Register";
-import Purchase from "./../Pages/Purchase";
-import Sell from "./../Pages/Sell";
+import Login from "./../Modals/Login";
+import Register from "./../Modals/Register";
+import Purchase from "./../Modals/Purchase";
+import Sell from "./../Modals/Sell";
 import Splash from "./../Pages/Splash";
-import ExpiredSession from "./../Pages/ExpiredSession"
+import ExpiredSession from "./../Modals/ExpiredSession"
+import DeleteUser from "./../Modals/DeleteUser"
 
 export default function PageRouter() {
     const isLoggedIn = useLogin();
@@ -19,6 +20,7 @@ export default function PageRouter() {
             <DreamTraderNavbar />
             <Switch>
                 <Route path="/expired" render={() => <ExpiredSession />} />
+                <Route path="/delete_account" render={() => <DeleteUser />} />
                 <Route path="/dashboard" render={() => (isLoggedIn ? <Dashboard /> : <Splash />)} />
                 <Route path="/purchase" render={props => (isLoggedIn ? <Purchase {...props} /> : <Splash />)} />
                 <Route path="/sell" render={props => (isLoggedIn ? <Sell {...props} /> : <Splash />)} />

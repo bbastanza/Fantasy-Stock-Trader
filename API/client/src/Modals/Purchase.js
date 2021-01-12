@@ -7,8 +7,8 @@ import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import Modal from "./../FixedComponents/Modal";
-import DotAnimation from "./../IndividualComponents/DotAnimation";
+import Modal from "../IndividualComponents/Modal";
+import DotAnimation from "../IndividualComponents/DotAnimation";
 
 export default function Purchase(props) {
     const history = useHistory();

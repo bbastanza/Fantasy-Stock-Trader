@@ -33,14 +33,12 @@ export async function addUser(userInput) {
 export async function deleteUser(userInput) {
     let responseData;
     try {
-        const request = await axios.delete("/user/delete", {
+        const request = await axios.post("/user/delete", {
             userName: userInput.userName,
             password: userInput.password,
-            sessionId: JSON.parse(localStorage.getItem("sessionId")),
         });
         responseData = request.data;
     } catch (error) {
-        if (error.response.status === 401) return 401;
         responseData = error.response.data;
     }
     return responseData;

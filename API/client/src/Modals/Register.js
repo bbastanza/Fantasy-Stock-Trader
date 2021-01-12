@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { addUser } from "../helpers/userApiCalls";
 import { useHistory } from "react-router-dom";
-import { useUpdateLogin, useUpdateUser } from "./../contexts/LoginContext";
+import { useUpdateLogin, useUpdateUser } from "../contexts/LoginContext";
 import { Link } from "react-router-dom";
 import { TweenMax, Power3 } from "gsap";
-import Modal from "./../FixedComponents/Modal";
+import Modal from "../IndividualComponents/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import DotAnimation from "./../IndividualComponents/DotAnimation";
+import DotAnimation from "../IndividualComponents/DotAnimation";
 
 export default function Register() {
     const updateLogin = useUpdateLogin();

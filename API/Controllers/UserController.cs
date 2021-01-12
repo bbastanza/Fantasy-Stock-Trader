@@ -64,7 +64,7 @@ namespace API.Controllers
             return new UserSessionModel(userSession.SessionId, userSession.ExpireDateTime);
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("delete")]
         public string DeleteUser(UserInputModel userInput)
         {

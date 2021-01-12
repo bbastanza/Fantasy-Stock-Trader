@@ -20,10 +20,6 @@ export default function DreamTraderNavbar() {
         history.push("/");
     }
 
-    function viewTransactions() {
-        history.push("/transactions");
-    }
-
     return (
         <>
             {loggedIn ? (
@@ -37,7 +33,8 @@ export default function DreamTraderNavbar() {
                         <Nav className="mr-auto" />
                         <NavDropdown title={currentUser} id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
-                            <NavDropdown.Item onClick={viewTransactions}>View Transactions</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => history.push("/transactions")}>View Transactions</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => history.push("/delete_account")}>Delete Account</NavDropdown.Item>
                         </NavDropdown>
                         <Nav>
                             <Nav.Link href={loggedIn ? "/dashboard" : "/splash"}>Dashboard</Nav.Link>

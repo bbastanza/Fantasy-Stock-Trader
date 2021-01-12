@@ -35,8 +35,7 @@ namespace Core.Services.DbServices
 
         public void DeleteUser(string userName)
         {
-            _session.Query<User>()
-                .Where(user => user.UserName == userName).Delete();
+            _session.Query<User>().Where(x => x.UserName == userName).Delete();
         }
 
         public void DeleteSession(string sessionId)

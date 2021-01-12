@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useCurrentUser } from "./../contexts/LoginContext";
 import { TweenMax, Power3 } from "gsap";
-import Modal from "./../FixedComponents/Modal";
+import Modal from "../IndividualComponents/Modal";
 import buyImage from "./../Images/buy.png";
 import sellImage from "./../Images/sell.png";
 import moneyBagImage from "./../Images/moneybag.png";
