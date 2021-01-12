@@ -3,7 +3,6 @@ using System.IO;
 using Core.Entities;
 using Core.Services.DbServices;
 using Infrastructure.Exceptions;
-using NHibernate;
 
 namespace Core.Services.UserServices
 {
@@ -18,7 +17,7 @@ namespace Core.Services.UserServices
         private readonly string _path;
         private readonly IQueryDb _queryDb;
 
-        public AddUserService(INHibernateSession nHibernateSession, IQueryDb queryDb)
+        public AddUserService(IQueryDb queryDb)
         {
             _queryDb = queryDb;
             _path = Path.GetFullPath(ToString());

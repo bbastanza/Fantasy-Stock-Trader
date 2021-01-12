@@ -1,10 +1,8 @@
 using System;
 using System.IO;
-using System.Linq;
 using Core.Entities;
 using Core.Services.DbServices;
 using Infrastructure.Exceptions;
-using NHibernate;
 
 namespace Core.Services.UserServices
 {

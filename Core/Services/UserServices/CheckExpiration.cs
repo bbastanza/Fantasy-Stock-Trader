@@ -1,11 +1,8 @@
 using System;
 using System.IO;
-using System.Linq;
 using Core.Entities;
 using Core.Services.DbServices;
 using Infrastructure.Exceptions;
-using NHibernate;
-using NHibernate.Linq;
 
 namespace Core.Services.UserServices
 {
@@ -19,7 +16,7 @@ namespace Core.Services.UserServices
         private readonly IQueryDb _queryDb;
         private readonly string _path;
 
-        public CheckExpiration(INHibernateSession nHibernateSession, IQueryDb queryDb)
+        public CheckExpiration(IQueryDb queryDb)
         {
             _queryDb = queryDb;
             _path = Path.GetFullPath(ToString());

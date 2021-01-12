@@ -1,10 +1,9 @@
 using System.Linq;
 using Core.Entities;
-using Core.Services.DbServices;
 using NHibernate;
 using NHibernate.Linq;
 
-namespace Core.Services.UserServices
+namespace Core.Services.DbServices
 {
     public interface IQueryDb
     {
