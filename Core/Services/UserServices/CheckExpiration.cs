@@ -16,28 +16,27 @@ namespace Core.Services.UserServices
 
     public class CheckExpiration : ICheckExpiration
     {
-        private readonly ISession _session;
+        private readonly IQueryDb _queryDb;
         private readonly string _path;
 
-        public CheckExpiration(INHibernateSession nHibernateSession)
+        public CheckExpiration(INHibernateSession nHibernateSession, IQueryDb queryDb)
         {
-            _session = nHibernateSession.GetSession();
+            _queryDb = queryDb;
             _path = Path.GetFullPath(ToString());
         }
 
         public User CheckUserSession(string sessionId)
         {
-            var userSession = _session.Query<UserSession>()
-                .FirstOrDefault(x => x.SessionId == sessionId);
+            var userSession = _queryDb.GetSession(sessionId);
 
             if (userSession == null)
                 throw new NonExistingSessionException(_path, "CheckUserSession()");
 
-            if (userSession.ExpireDateTime >= DateTime.Now) return userSession.User;
+            if (userSession.ExpireDateTime >= DateTime.Now) 
+                return userSession.User;
 
-            _session.Query<UserSession>()
-                .Where(x => x.SessionId == sessionId).Delete();
-
+            _queryDb.DeleteSession(sessionId);
+            
             throw new ExpiredSessionException(_path, "CheckUserSession()");
         }
     }

@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using Core.Entities;
 using Core.Services.DbServices;
 using Infrastructure.Exceptions;
@@ -13,27 +12,28 @@ namespace Core.Services.UserServices
         UserSession AddUser(string userName, string password, string email);
     }
 
+
     public class AddUserService : IAddUserService
     {
         private readonly string _path;
-        private readonly ISession _session;
+        private readonly IQueryDb _queryDb;
 
-        public AddUserService(INHibernateSession nHibernateSession)
+        public AddUserService(INHibernateSession nHibernateSession, IQueryDb queryDb)
         {
-            _session = nHibernateSession.GetSession();
+            _queryDb = queryDb;
             _path = Path.GetFullPath(ToString());
-        } 
-        
+        }
+
         public UserSession AddUser(string userName, string password, string email)
         {
-            var user = _session.Query<User>().FirstOrDefault(x => x.UserName == userName);
+            var user = _queryDb.GetUser(userName);
 
             if (user != null)
                 throw new ExistingUserException(_path, "AddUser()");
-                
+
             var newUser = new User(userName, password, email);
 
-            _session.Save(newUser);
+            _queryDb.SaveToDb(newUser);
 
             var userSession = new UserSession()
             {
@@ -42,11 +42,10 @@ namespace Core.Services.UserServices
                 ExpireDateTime = DateTime.Now.AddDays(1),
                 User = newUser
             };
-            
-            _session.Save(userSession);
-            
+
+            _queryDb.SaveToDb(userSession);
+
             return userSession;
-            
         }
     }
 }

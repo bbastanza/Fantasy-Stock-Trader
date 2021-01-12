@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getUserData } from "../helpers/userApiCalls";
 import { beautifyNumber } from "../helpers/beautifyNumber";

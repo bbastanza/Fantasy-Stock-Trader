@@ -15,19 +15,18 @@ namespace Core.Services.UserServices
     
     public class LoginUser : ILoginUser
     {
-        private readonly ISession _session;
+        private readonly IQueryDb _queryDb;
         private readonly string _path;
 
-        public LoginUser(INHibernateSession nHibernateSession)
+        public LoginUser(IQueryDb queryDb)
         {
-            _session = nHibernateSession.GetSession();
+            _queryDb = queryDb;
             _path = Path.GetFullPath(ToString());
         }
 
         public UserSession Login(string userName, string password)
         {
-            var user = _session.Query<User>()
-                .FirstOrDefault(x => x.UserName == userName);
+            var user = _queryDb.GetUser(userName); 
             
             if (user == null)
                 throw new NonExistingUserException(_path, "Login()");
@@ -43,7 +42,7 @@ namespace Core.Services.UserServices
                 User = user
             };
 
-            _session.Save(userSession);
+            _queryDb.SaveToDb(userSession);
             
             return userSession;
         }

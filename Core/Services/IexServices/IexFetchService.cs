@@ -37,9 +37,9 @@ namespace Core.Services.IexServices
                 var stockResponse = GetDataFromIex(url);
                 return JsonSerializer.Deserialize<IexStock>(stockResponse.Result);
             }
-            catch 
+            catch
             {
-                throw new InvalidSymbolException(_path, "GetStockBySymbol");
+                throw new IexException(_path, "GetStockBySymbol");
             }
         }
 
@@ -54,10 +54,7 @@ namespace Core.Services.IexServices
         {
             var response = await _client.GetAsync(url);
 
-            if (response.IsSuccessStatusCode)
-                return await response.Content.ReadAsStringAsync();
-
-            throw new IexException(_path, "GetDataFromIex()");
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

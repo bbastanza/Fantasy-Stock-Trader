@@ -1,5 +1,4 @@
 using API.Controllers;
-using Core.Entities;
 using Core.Services.IexServices;
 using Infrastructure.Exceptions;
 using Moq;

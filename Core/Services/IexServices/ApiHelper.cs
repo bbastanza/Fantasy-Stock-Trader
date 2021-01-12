@@ -5,12 +5,12 @@ namespace Core.Services.IexServices
 {
     public interface IApiHelper
     {
-        HttpClient ApiClient { get; }
+        HttpClient ApiClient { get; set; }
     }
 
     public class ApiHelper : IApiHelper
     {
-        public HttpClient ApiClient { get; }
+        public HttpClient ApiClient { get; set; }
 
         public ApiHelper()
         {

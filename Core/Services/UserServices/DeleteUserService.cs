@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using Core.Entities;
 using Core.Services.DbServices;
+using Infrastructure.Exceptions;
 using NHibernate;
 using NHibernate.Linq;
 
@@ -14,18 +15,23 @@ namespace Core.Services.UserServices
 
     public class DeleteUserService : IDeleteUserService
     {
-        private readonly ISession _session;
+        private readonly IQueryDb _queryDb;
+        private readonly string _path;
 
-        public DeleteUserService(
-            INHibernateSession inHibernateSession)
+        public DeleteUserService(IQueryDb queryDb)
         {
-            _session = inHibernateSession.GetSession();
+            _queryDb = queryDb;
+            _path = Path.GetFullPath(ToString());
         }
 
         public string DeleteUser(string userName, string password)
         {
-            _session.Query<User>()
-                .Where(user => user.UserName == userName).Delete();
+            var user = _queryDb.GetUser(userName);
+
+            if (user.Password != password)
+                throw new UserValidationException(_path, "DeleteUser()");
+            
+            _queryDb.DeleteUser(userName);
 
             return $"{userName} has been deleted from the database";
         }

@@ -21,6 +21,7 @@ namespace API
             services.AddScoped<INHibernateSession, NHibernateSession>();
             services.AddScoped<ILoginUser, LoginUser>();
             services.AddScoped<ICheckExpiration, CheckExpiration>();
+            services.AddScoped<IQueryDb, QueryDb>();
         }
     }
 }

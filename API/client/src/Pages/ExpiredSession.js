@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import Modal from "./../FixedComponents/Modal";
 import DotAnimation from "./../IndividualComponents/DotAnimation";
 import { TweenMax, Power3 } from "gsap";
