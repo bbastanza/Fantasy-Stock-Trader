@@ -17,11 +17,11 @@ export default function Dashboard() {
         (async function () {
             setErrorMessage("");
             const data = await getUserData();
-            if (data === 401) history.push("/expired");
             if (!data.ClientMessage) {
                 setUserData(data);
                 setHoldings(data.holdings.reverse());
-            } else setErrorMessage(data.ClientMessage);
+            } else if (data.ClientMessage !== "expired") setErrorMessage(data.ClientMessage);
+            else history.push("/expired");
         })();
     }, [history]);
 

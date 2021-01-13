@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { useUpdateLogin, useLogin, useCurrentUser, useUpdateUser } from "./../contexts/LoginContext";
+import { logoutUser } from "./../helpers/userApiCalls";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -14,6 +15,7 @@ export default function DreamTraderNavbar() {
     const updateUser = useUpdateUser();
 
     function logout() {
+        logoutUser();
         localStorage.clear();
         updateUser("");
         updateLogin(false);
@@ -33,8 +35,12 @@ export default function DreamTraderNavbar() {
                         <Nav className="mr-auto" />
                         <NavDropdown title={currentUser} id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() => history.push("/transactions")}>View Transactions</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() => history.push("/delete_account")}>Delete Account</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => history.push("/transactions")}>
+                                View Transactions
+                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => history.push("/delete_account")}>
+                                Delete Account
+                            </NavDropdown.Item>
                         </NavDropdown>
                         <Nav>
                             <Nav.Link href={loggedIn ? "/dashboard" : "/splash"}>Dashboard</Nav.Link>

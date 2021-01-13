@@ -15,20 +15,20 @@ namespace API.Controllers
         private readonly IAddUserService _addUserService;
         private readonly IDeleteUserService _deleteUserService;
         private readonly IGetUserDataService _getUserDataService;
-        private readonly ILoginUser _loginUser;
+        private readonly ILoginService _loginService;
         private readonly string _path;
 
         public UserController(
             IAddUserService addUserService,
             IDeleteUserService deleteUserService,
             IGetUserDataService getUserDataService,
-            ILoginUser loginUser
+            ILoginService loginService
         )
         {
             _addUserService = addUserService;
             _deleteUserService = deleteUserService;
             _getUserDataService = getUserDataService;
-            _loginUser = loginUser;
+            _loginService = loginService;
             _path = Path.GetFullPath(ToString()!);
         }
 
@@ -81,8 +81,18 @@ namespace API.Controllers
             if (userInput.UserName == null || userInput.Password == null)
                 throw new InvalidInputException(_path, "Login()");
 
-            var userSession =  _loginUser.Login(userInput.UserName, userInput.Password);
+            var userSession =  _loginService.Login(userInput.UserName, userInput.Password);
             return new UserSessionModel(userSession.SessionId, userSession.ExpireDateTime);
+        }
+        
+        [HttpPost]
+        [Route("logout")]
+        public void Logout(SessionInputModel session)
+        {
+            if (session.SessionId == null)
+                throw new InvalidInputException(_path, "Logout()");
+
+            _loginService.Logout(session.SessionId);
         }
     }
 }

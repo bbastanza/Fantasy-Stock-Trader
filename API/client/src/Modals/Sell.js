@@ -62,14 +62,16 @@ export default function Sell(props) {
             sellAll: sellAll,
         });
 
-        if (data === 401) history.push("/expired");
-
-        if (!!data.ClientMessage) {
-            setErrorMessage(data.ClientMessage);
-            setIsLoading(false);
-            return;
+        if (!data.ClientMessage) {
+            history.push("/dashboard");
+        } else {
+            if (data.ClientMessage !== "expired") {
+                setErrorMessage(data.ClientMessage);
+                setIsLoading(false);
+            } else {
+                history.push("/expired");
+            }
         }
-        history.push("/dashboard");
     }
 
     const canSubmit = (shareAmount > 0 || sellAll) && unavailableShares === 0 && validInput;

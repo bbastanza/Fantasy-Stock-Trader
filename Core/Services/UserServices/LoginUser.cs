@@ -6,17 +6,18 @@ using Infrastructure.Exceptions;
 
 namespace Core.Services.UserServices
 {
-    public interface ILoginUser
+    public interface ILoginService
     {
         UserSession Login(string userName, string password);
+        void Logout(string sessionId);
     } 
     
-    public class LoginUser : ILoginUser
+    public class LoginService : ILoginService
     {
         private readonly IQueryDb _queryDb;
         private readonly string _path;
 
-        public LoginUser(IQueryDb queryDb)
+        public LoginService(IQueryDb queryDb)
         {
             _queryDb = queryDb;
             _path = Path.GetFullPath(ToString());
@@ -43,6 +44,11 @@ namespace Core.Services.UserServices
             _queryDb.SaveToDb(userSession);
             
             return userSession;
+        }
+
+        public void Logout(string sessionId)
+        {
+            _queryDb.DeleteSession(sessionId);
         }
     }
 }

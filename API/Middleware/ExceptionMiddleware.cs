@@ -17,7 +17,6 @@ namespace API.MiddleWare
 
         public async Task Invoke(HttpContext context)
         {
-
             try
             {
                 await _next(context);
@@ -32,7 +31,7 @@ namespace API.MiddleWare
             catch (DreamTraderException ex)
             {
                 Console.WriteLine($"{ex.GetType()}\n{ex.Message}\nPath {ex.Path}.{ex.Method}");
-                context.Response.StatusCode = 400;
+                context.Response.StatusCode = 418;
                 context.Response.Headers.Add("content-type", "application/json");
                 await context.Response.WriteAsync(new DreamTraderExceptionModel(ex).ToString());
             }

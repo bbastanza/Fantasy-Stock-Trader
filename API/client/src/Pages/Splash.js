@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLogin, useUpdateLogin, useUpdateUser } from "./../contexts/LoginContext";
+import { logoutUser } from "./../helpers/userApiCalls";
 import { TweenMax, Power3 } from "gsap";
 import SwiftSlider from "react-swift-slider";
 import stock1 from "../Images/1stock.jpg";
@@ -34,6 +35,7 @@ export default function Splash() {
     }, []);
 
     function logout() {
+        logoutUser();
         localStorage.clear();
         updateUser("");
         updateLogin(false);

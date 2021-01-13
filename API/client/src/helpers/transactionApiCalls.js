@@ -1,4 +1,5 @@
 import axios from "axios";
+import { parseError } from "./errorHandling";
 
 export async function initializeSale(saleData) {
     let responseData;
@@ -9,10 +10,9 @@ export async function initializeSale(saleData) {
             shareAmount: saleData.shareAmount,
             sellAll: saleData.sellAll,
         });
-        responseData = request.data
+        responseData = request.data;
     } catch (error) {
-        if (error.response.status === 401) return 401;
-        responseData = error.response.data;
+        responseData = parseError(error.response);
     }
     return responseData;
 }
@@ -21,14 +21,13 @@ export async function initializePurchase(purchaseData) {
     let responseData;
     try {
         const request = await axios.post(`/transaction/purchase`, {
-                sessionId: JSON.parse(localStorage.getItem("sessionId")),
-                symbol: purchaseData.symbol,
-                amount: purchaseData.amount,
+            sessionId: JSON.parse(localStorage.getItem("sessionId")),
+            symbol: purchaseData.symbol,
+            amount: purchaseData.amount,
         });
-        responseData = request.data
+        responseData = request.data;
     } catch (error) {
-        if (error.response.status === 401) return 401;
-        responseData = error.response.data;
+        responseData = parseError(error.response);
     }
     return responseData;
 }
@@ -39,7 +38,7 @@ export async function getStockData(symbol) {
         const request = await axios.get(`/stockData/${symbol}`);
         responseData = request.data;
     } catch (error) {
-        responseData = error.response.data;
+        responseData = parseError(error.response);
     }
     return responseData;
 }

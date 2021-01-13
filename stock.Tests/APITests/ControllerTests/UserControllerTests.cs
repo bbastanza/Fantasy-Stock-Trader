@@ -42,7 +42,7 @@ namespace API.Tests.APITests.ControllerTests
             deleteUserService.Setup(x => x.DeleteUser(validUserInputModel.UserName, validUserInputModel.Password))
                 .Returns("deleted");
 
-            var loginUser = new Mock<ILoginUser>();
+            var loginUser = new Mock<ILoginService>();
             loginUser.Setup(x => x.Login(validUserInputModel.UserName, validUserInputModel.Password))
                 .Returns(new UserSession());
 
@@ -67,6 +67,13 @@ namespace API.Tests.APITests.ControllerTests
         public void Login_InvalidInput_ThrowsInvalidInputException()
         {
             Assert.That(() => _userController.Login(_emptyUserInputModel),
+                Throws.Exception.TypeOf<InvalidInputException>());
+        }
+        
+        [Test]
+        public void Logout_InvalidInput_ThrowsInvalidInputException()
+        {
+            Assert.That(() => _userController.Logout(_emptySessionInput),
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
         

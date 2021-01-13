@@ -24,7 +24,7 @@ namespace API.Tests.CoreTests.ServicesTests.UserServicesTests
         {
             _queryDb.Setup(x => x.GetUser("username"))
                 .Returns((User) null);
-            var loginUser = new LoginUser(_queryDb.Object);
+            var loginUser = new LoginService(_queryDb.Object);
 
             Assert.That(() => loginUser.Login("username", "password"),
                 Throws.Exception.TypeOf<NonExistingUserException>());
@@ -35,7 +35,7 @@ namespace API.Tests.CoreTests.ServicesTests.UserServicesTests
         {
             _queryDb.Setup(x => x.GetUser("username"))
                 .Returns(new User("username", "invalid_password", "email"));
-            var loginUser = new LoginUser(_queryDb.Object);
+            var loginUser = new LoginService(_queryDb.Object);
 
             Assert.That(() => loginUser.Login("username", "password"),
                 Throws.Exception.TypeOf<UserValidationException>());
@@ -46,7 +46,7 @@ namespace API.Tests.CoreTests.ServicesTests.UserServicesTests
         {
             var user = new User("username", "password", "email");
             _queryDb.Setup(x => x.GetUser("username")).Returns(user);
-            var loginUser = new LoginUser(_queryDb.Object);
+            var loginUser = new LoginService(_queryDb.Object);
 
             var result = loginUser.Login("username", "password");
 

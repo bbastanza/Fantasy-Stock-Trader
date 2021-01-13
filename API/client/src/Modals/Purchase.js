@@ -49,7 +49,6 @@ export default function Purchase(props) {
                 setErrorMessage("");
                 setIsSearching(true);
                 const stockData = await getStockData(searchTermRef.current);
-                if (stockData === 401) history.push("/expired");
                 if (!stockData.ClientMessage) {
                     stockData.companyName.length > 0
                         ? setStockData(stockData)
@@ -88,10 +87,10 @@ export default function Purchase(props) {
                 amount: purchaseAmount,
             });
             if (!purchaseData.ClientMessage) history.push("/dashboard");
-            else {
+            else if (purchaseData.ClientMessage !== "expired") {
                 setErrorMessage(purchaseData.ClientMessage);
                 setIsLoading(false);
-            }
+            } else history.push("/expired");
         }
     }
 
@@ -175,7 +174,7 @@ export default function Purchase(props) {
                         {unavailableFunds > 0 ? (
                             <h3>
                                 You do not have enough funds for this transaction. Please reduce your purchase amount by
-                                ${unavailableFunds}.
+                                ${beautifyNumber(unavailableFunds)}.
                             </h3>
                         ) : null}
                         {!validInput ? <h3>The amount must be a number.</h3> : null}
