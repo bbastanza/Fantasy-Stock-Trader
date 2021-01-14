@@ -11,7 +11,6 @@ namespace Core.Services.IexServices
     public interface IIexFetchService
     {
         IexStock GetStockBySymbol(string stockName);
-        void UpdateHolding(Holding holding);
     }
 
     public class IexFetchService : IIexFetchService
@@ -41,13 +40,6 @@ namespace Core.Services.IexServices
             {
                 throw new IexException(_path, "GetStockBySymbol");
             }
-        }
-
-        public void UpdateHolding(Holding holding)
-        {
-            if (holding.TotalShares == 0) return;
-            var stockData = GetStockBySymbol(holding.Symbol);
-            holding.SetValue(stockData.LatestPrice);
         }
 
         private async Task<string> GetDataFromIex(string url)

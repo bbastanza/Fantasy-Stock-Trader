@@ -1,8 +1,4 @@
-using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using JsonSerializer = System.Text.Json.JsonSerializer;
-using Core.Entities;
 using Core.Services.IexServices;
 using Infrastructure.Exceptions;
 using Moq;
@@ -31,35 +27,6 @@ namespace API.Tests.CoreTests.ServicesTests.IexServicesTests
             var iexFetchService = new IexFetchService(_apiHelper.Object, _configuration.Object);
 
             Assert.That(() => iexFetchService.GetStockBySymbol("FAKE"), Throws.Exception.TypeOf<IexException>());
-        }
-
-        [Test]
-        public void UpdateHolding_UnsuccessfulFromIex_ThrowsInvalidSymbolException()
-        {
-            var holding = new Holding() {Symbol = "FAKE", CompanyName = "Fake Company", TotalShares = 2};
-            _apiHelper.Object.ApiClient = new HttpClient();
-            var iexFetchService = new IexFetchService(_apiHelper.Object, _configuration.Object);
-
-            Assert.That(() => iexFetchService.UpdateHolding(holding), Throws.Exception.TypeOf<IexException>());
-        }
-
-        [Ignore("broken test")]
-        [Test]
-        public void UpdateHolding_WhenCalled_UpdatesHoldingData()
-        {
-            var holding = new Holding() {Symbol = "FAKE", CompanyName = "Fake Company", TotalShares = 2};
-            var httpTask = new HttpResponseMessage() {StatusCode = HttpStatusCode.Accepted, Content = holding} 
-            var httpClient = new Mock<HttpClient>();
-            httpClient.Setup(x => x.GetAsync("FAKE"))
-                .ReturnsAsync(Task < new HttpResponseMessage()
-                {
-                    StatusCode = HttpStatusCode.Accepted,
-                    Content = JsonSerializer.Serialize(holding)
-                } >); 
-            _apiHelper.Object.ApiClient = new HttpClient();
-            var iexFetchService = new IexFetchService(_apiHelper.Object, _configuration.Object);
-            
-            Assert.That(() => iexFetchService.UpdateHolding(holding), Throws.Exception.TypeOf<IexException>());
         }
     }
 }

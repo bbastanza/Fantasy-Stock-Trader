@@ -23,7 +23,8 @@ namespace Core.Services.TransactionServices
 
             foreach (var holding in user.Holdings)
             {
-                _iexFetchService.UpdateHolding(holding);
+                var stockData = _iexFetchService.GetStockBySymbol(holding.Symbol);
+                holding.SetValue(stockData.LatestPrice);
                 totalHoldingsValue += holding.Value;
             }
 

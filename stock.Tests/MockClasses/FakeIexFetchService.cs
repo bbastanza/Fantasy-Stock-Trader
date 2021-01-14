@@ -9,10 +9,5 @@ namespace API.Tests.MockClasses
         {
             return new IexStock() {Symbol = "FAKE", CompanyName = "Fake Stock", LatestPrice = 1};
         }
-
-        public void UpdateHolding(Holding holding)
-        {
-            holding.Value = 1;
-        }
     }
 }
