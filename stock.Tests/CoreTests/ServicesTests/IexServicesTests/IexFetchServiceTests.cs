@@ -47,19 +47,19 @@ namespace API.Tests.CoreTests.ServicesTests.IexServicesTests
         [Test]
         public void UpdateHolding_WhenCalled_UpdatesHoldingData()
         {
-            // var holding = new Holding() {Symbol = "FAKE", CompanyName = "Fake Company", TotalShares = 2};
-            // var httpClient = new Mock<HttpClient>();
-            // httpClient.Setup(x => x.GetAsync("FAKE"))
-            //     .ReturnsAsync(Task < new HttpResponseMessage()
-            //     {
-            //         StatusCode = HttpStatusCode.Accepted,
-            //         Content = JsonSerializer.Serialize(new IexStock()
-            //             {Symbol = "FAKE", CompanyName = "Fake Company", LatestPrice = 5})
-            //     } >); 
-            // _apiHelper.Object.ApiClient = new HttpClient();
-            // var iexFetchService = new IexFetchService(_apiHelper.Object, _configuration.Object);
-            //
-            // Assert.That(() => iexFetchService.UpdateHolding(holding), Throws.Exception.TypeOf<IexException>());
+            var holding = new Holding() {Symbol = "FAKE", CompanyName = "Fake Company", TotalShares = 2};
+            var httpTask = new HttpResponseMessage() {StatusCode = HttpStatusCode.Accepted, Content = holding} 
+            var httpClient = new Mock<HttpClient>();
+            httpClient.Setup(x => x.GetAsync("FAKE"))
+                .ReturnsAsync(Task < new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.Accepted,
+                    Content = JsonSerializer.Serialize(holding)
+                } >); 
+            _apiHelper.Object.ApiClient = new HttpClient();
+            var iexFetchService = new IexFetchService(_apiHelper.Object, _configuration.Object);
+            
+            Assert.That(() => iexFetchService.UpdateHolding(holding), Throws.Exception.TypeOf<IexException>());
         }
     }
 }
