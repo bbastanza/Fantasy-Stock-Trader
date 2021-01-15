@@ -1,9 +1,8 @@
-using System;
 using Core.Entities;
 using Infrastructure.Exceptions;
 using NUnit.Framework;
 
-namespace API.Tests.CoreTests.EntityTests
+namespace API.Tests.UnitTests.CoreTests.EntityTests
 {
     public class HoldingTests
     {

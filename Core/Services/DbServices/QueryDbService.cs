@@ -5,7 +5,7 @@ using NHibernate.Linq;
 
 namespace Core.Services.DbServices
 {
-    public interface IQueryDb
+    public interface IQueryDbService
     {
         User GetUser(string userName);
         UserSession GetSession(string sessionId);
@@ -14,11 +14,11 @@ namespace Core.Services.DbServices
         void SaveToDb(EntityBase entity);
     }
 
-    public class QueryDb : IQueryDb
+    public class QueryDbService : IQueryDbService
     {
         private readonly ISession _session;
 
-        public QueryDb(INHibernateSession nHibernateSession)
+        public QueryDbService(INHibernateSession nHibernateSession)
         {
             _session = nHibernateSession.GetSession();
         }

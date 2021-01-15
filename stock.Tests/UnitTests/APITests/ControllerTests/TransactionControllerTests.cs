@@ -1,12 +1,11 @@
 using API.Controllers;
 using API.Models;
-using Core.Entities;
 using Core.Services.TransactionServices;
 using Infrastructure.Exceptions;
 using Moq;
 using NUnit.Framework;
 
-namespace API.Tests.APITests.ControllerTests
+namespace API.Tests.UnitTests.APITests.ControllerTests
 {
     [TestFixture]
     public class TransactionControllerTests

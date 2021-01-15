@@ -5,7 +5,7 @@ using Infrastructure.Exceptions;
 using Moq;
 using NUnit.Framework;
 
-namespace API.Tests.CoreTests.ServicesTests.UserServicesTests
+namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
 {
     [TestFixture]
     public class GetUserDataServiceTests

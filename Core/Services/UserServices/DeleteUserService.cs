@@ -11,23 +11,23 @@ namespace Core.Services.UserServices
 
     public class DeleteUserService : IDeleteUserService
     {
-        private readonly IQueryDb _queryDb;
+        private readonly IQueryDbService _queryDbService;
         private readonly string _path;
 
-        public DeleteUserService(IQueryDb queryDb)
+        public DeleteUserService(IQueryDbService queryDbService)
         {
-            _queryDb = queryDb;
+            _queryDbService = queryDbService;
             _path = Path.GetFullPath(ToString());
         }
 
         public string DeleteUser(string userName, string password)
         {
-            var user = _queryDb.GetUser(userName);
+            var user = _queryDbService.GetUser(userName);
 
             if (user.Password != password)
                 throw new UserValidationException(_path, "DeleteUser()");
             
-            _queryDb.DeleteUser(userName);
+            _queryDbService.DeleteUser(userName);
 
             return $"{userName} has been deleted from the database";
         }

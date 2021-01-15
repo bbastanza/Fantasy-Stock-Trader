@@ -3,10 +3,10 @@ using Core.Services.IexServices;
 using Core.Services.TransactionServices;
 using Core.Services.UserServices;
 using Infrastructure.Exceptions;
-using NUnit.Framework;
 using Moq;
+using NUnit.Framework;
 
-namespace API.Tests.CoreTests.ServicesTests.TransactionServicesTests
+namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
 {
     [TestFixture]
     public class HandlePurchaseServiceTests

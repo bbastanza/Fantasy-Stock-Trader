@@ -1,8 +1,7 @@
-using System.Net.Http;
 using Core.Services.IexServices;
 using NUnit.Framework;
 
-namespace API.Tests.CoreTests.ServicesTests.IexServicesTests
+namespace API.Tests.UnitTests.CoreTests.ServicesTests.IexServicesTests
 {
     [TestFixture]
     public class ApiHelperTests

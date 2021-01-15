@@ -14,18 +14,18 @@ namespace Core.Services.UserServices
     
     public class LoginService : ILoginService
     {
-        private readonly IQueryDb _queryDb;
+        private readonly IQueryDbService _queryDbService;
         private readonly string _path;
 
-        public LoginService(IQueryDb queryDb)
+        public LoginService(IQueryDbService queryDbService)
         {
-            _queryDb = queryDb;
+            _queryDbService = queryDbService;
             _path = Path.GetFullPath(ToString());
         }
 
         public UserSession Login(string userName, string password)
         {
-            var user = _queryDb.GetUser(userName); 
+            var user = _queryDbService.GetUser(userName); 
             
             if (user == null)
                 throw new NonExistingUserException(_path, "Login()");
@@ -41,14 +41,14 @@ namespace Core.Services.UserServices
                 User = user
             };
 
-            _queryDb.SaveToDb(userSession);
+            _queryDbService.SaveToDb(userSession);
             
             return userSession;
         }
 
         public void Logout(string sessionId)
         {
-            _queryDb.DeleteSession(sessionId);
+            _queryDbService.DeleteSession(sessionId);
         }
     }
 }

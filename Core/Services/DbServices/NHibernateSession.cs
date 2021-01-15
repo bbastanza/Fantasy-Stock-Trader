@@ -1,7 +1,9 @@
+using System;
 using System.Reflection;
 using Core.Mappings;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using Microsoft.Extensions.Configuration;
 using NHibernate;
 
 namespace Core.Services.DbServices
@@ -15,19 +17,19 @@ namespace Core.Services.DbServices
     public class NHibernateSession : INHibernateSession
     {
         // TODO AddSingleton<> for config
-        private static readonly ISessionFactory _sessionFactory;
+        private readonly ISessionFactory _sessionFactory;
         private ISession _session;
 
-        static NHibernateSession()
+        public NHibernateSession(IConfiguration configuration)
         {
             _sessionFactory = Fluently.Configure()
                 .Database(PostgreSQLConfiguration.PostgreSQL82
                     .ConnectionString(config => config
-                        .Host("localhost")
-                        .Username("stanzu10")
-                        .Password("Emma1234")
-                        .Database("stock_db")
-                        .Port(5432)
+                        .Host(configuration["sessionFactory:Host"])
+                        .Username(configuration["sessionFactory:Username"])
+                        .Password(configuration["sessionFactory:Password"])
+                        .Database(configuration["sessionFactory:Database"])
+                        .Port(Convert.ToInt32(configuration["sessionFactory:Port"]))
                     ))
                 .Mappings(m => m.FluentMappings
                     .AddFromAssembly(Assembly.GetAssembly(typeof(HoldingMap))))

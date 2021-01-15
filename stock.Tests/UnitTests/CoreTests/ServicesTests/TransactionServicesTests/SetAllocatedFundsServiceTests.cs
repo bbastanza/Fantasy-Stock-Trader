@@ -1,11 +1,10 @@
-using API.Tests.MockClasses;
 using Core.Entities;
 using Core.Services.IexServices;
 using Core.Services.TransactionServices;
 using Moq;
 using NUnit.Framework;
 
-namespace API.Tests.CoreTests.ServicesTests.TransactionServicesTests
+namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
 {
     [TestFixture]
     public class SetAllocatedFundsServiceTests
@@ -22,8 +21,8 @@ namespace API.Tests.CoreTests.ServicesTests.TransactionServicesTests
                 User = new User()
             };
             var iexFetchService = new Mock<IIexFetchService>();
-            iexFetchService.Setup(x => x.GetStockBySymbol("FAKE")).Returns(new IexStock()
-                {Symbol = "Fake", CompanyName = "Fake Stock", LatestPrice = 1});
+            iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
+                .Returns(new IexStock() {Symbol = "Fake", CompanyName = "Fake Stock", LatestPrice = 1});
             var user = new User("username", "password", "email@email.com");
             user.Holdings.Add(fakeHolding);
             var setAllocatedFundsService = new SetAllocatedFundsService(iexFetchService.Object);

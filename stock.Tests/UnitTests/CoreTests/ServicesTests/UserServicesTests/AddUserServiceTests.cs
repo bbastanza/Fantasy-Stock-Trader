@@ -6,19 +6,19 @@ using Infrastructure.Exceptions;
 using Moq;
 using NUnit.Framework;
 
-namespace API.Tests.CoreTests.ServicesTests.UserServicesTests
+namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
 {
     [TestFixture]
     public class AddUserServiceTests
     {
         private User _user;
-        private Mock<IQueryDb> _queryDb;
+        private Mock<IQueryDbService> _queryDb;
 
         [SetUp]
         public void SetUp()
         {
             _user = new User("username", "password", "email");
-            _queryDb = new Mock<IQueryDb>();
+            _queryDb = new Mock<IQueryDbService>();
         }
 
         [Test]

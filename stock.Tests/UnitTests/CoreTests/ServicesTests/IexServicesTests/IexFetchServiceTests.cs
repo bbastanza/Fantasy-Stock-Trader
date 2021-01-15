@@ -5,7 +5,7 @@ using Moq;
 using NUnit.Framework;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
-namespace API.Tests.CoreTests.ServicesTests.IexServicesTests
+namespace API.Tests.UnitTests.CoreTests.ServicesTests.IexServicesTests
 {
     [TestFixture]
     public class IexFetchServiceTests

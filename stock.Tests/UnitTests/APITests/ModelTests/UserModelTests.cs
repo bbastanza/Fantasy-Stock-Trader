@@ -2,7 +2,7 @@ using API.Models;
 using Core.Entities;
 using NUnit.Framework;
 
-namespace API.Tests.APITests.ModelTests
+namespace API.Tests.UnitTests.APITests.ModelTests
 {
     public class UserModelTests
     {

@@ -15,24 +15,24 @@ namespace Core.Services.UserServices
     public class AddUserService : IAddUserService
     {
         private readonly string _path;
-        private readonly IQueryDb _queryDb;
+        private readonly IQueryDbService _queryDbService;
 
-        public AddUserService(IQueryDb queryDb)
+        public AddUserService(IQueryDbService queryDbService)
         {
-            _queryDb = queryDb;
+            _queryDbService = queryDbService;
             _path = Path.GetFullPath(ToString());
         }
 
         public UserSession AddUser(string userName, string password, string email)
         {
-            var user = _queryDb.GetUser(userName);
+            var user = _queryDbService.GetUser(userName);
 
             if (user != null)
                 throw new ExistingUserException(_path, "AddUser()");
 
             var newUser = new User(userName, password, email);
 
-            _queryDb.SaveToDb(newUser);
+            _queryDbService.SaveToDb(newUser);
 
             var userSession = new UserSession()
             {
@@ -42,7 +42,7 @@ namespace Core.Services.UserServices
                 User = newUser
             };
 
-            _queryDb.SaveToDb(userSession);
+            _queryDbService.SaveToDb(userSession);
 
             return userSession;
         }

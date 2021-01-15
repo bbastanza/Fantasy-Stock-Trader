@@ -6,7 +6,7 @@ using Infrastructure.Exceptions;
 using Moq;
 using NUnit.Framework;
 
-namespace API.Tests.CoreTests.ServicesTests.TransactionServicesTests
+namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
 {
     [TestFixture]
     public class HandleSaleServiceTests

@@ -6,17 +6,17 @@ using Infrastructure.Exceptions;
 using Moq;
 using NUnit.Framework;
 
-namespace API.Tests.CoreTests.ServicesTests.UserServicesTests
+namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
 {
     [TestFixture]
     public class CheckExpirationTests
     {
-        private Mock<IQueryDb> _queryDb;
+        private Mock<IQueryDbService> _queryDb;
 
         [SetUp]
         public void SetUp()
         {
-            _queryDb = new Mock<IQueryDb>();
+            _queryDb = new Mock<IQueryDbService>();
         }
 
         [Test]

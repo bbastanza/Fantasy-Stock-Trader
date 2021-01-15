@@ -4,7 +4,7 @@ using Infrastructure.Exceptions;
 using Moq;
 using NUnit.Framework;
 
-namespace API.Tests.APITests.ControllerTests
+namespace API.Tests.UnitTests.APITests.ControllerTests
 {
     [TestFixture]
     public class StockDataControllerTests

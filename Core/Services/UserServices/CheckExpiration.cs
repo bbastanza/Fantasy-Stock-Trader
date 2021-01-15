@@ -13,18 +13,18 @@ namespace Core.Services.UserServices
 
     public class CheckExpiration : ICheckExpiration
     {
-        private readonly IQueryDb _queryDb;
+        private readonly IQueryDbService _queryDbService;
         private readonly string _path;
 
-        public CheckExpiration(IQueryDb queryDb)
+        public CheckExpiration(IQueryDbService queryDbService)
         {
-            _queryDb = queryDb;
+            _queryDbService = queryDbService;
             _path = Path.GetFullPath(ToString());
         }
 
         public User CheckUserSession(string sessionId)
         {
-            var userSession = _queryDb.GetSession(sessionId);
+            var userSession = _queryDbService.GetSession(sessionId);
 
             if (userSession == null)
                 throw new NonExistingSessionException(_path, "CheckUserSession()");
@@ -32,7 +32,7 @@ namespace Core.Services.UserServices
             if (userSession.ExpireDateTime >= DateTime.Now) 
                 return userSession.User;
 
-            _queryDb.DeleteSession(sessionId);
+            _queryDbService.DeleteSession(sessionId);
             
             throw new ExpiredSessionException(_path, "CheckUserSession()");
         }
