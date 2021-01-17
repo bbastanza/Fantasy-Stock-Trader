@@ -14,9 +14,9 @@ namespace API.MiddleWare
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context, INHibernateSession nHibernateSession)
+        public async Task Invoke(HttpContext context, IUnitOfWork unitOfWork)
         {
-            var session = nHibernateSession.GetSession();
+            var session = unitOfWork.GetSession();
             
             using ITransaction transaction = session.BeginTransaction();
             await _next(context);
@@ -32,7 +32,7 @@ namespace API.MiddleWare
             }
             finally
             {
-                nHibernateSession.CloseSession();
+                unitOfWork.CloseSession();
             }
         }
     }

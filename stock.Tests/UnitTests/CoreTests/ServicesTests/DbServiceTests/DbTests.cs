@@ -10,14 +10,14 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.DbServiceTests
 {
     public class DbTests
     {
-        private Mock<INHibernateSession> _nhibernateSession;
+        private Mock<IUnitOfWork> _nhibernateSession;
         private Mock<ISession> _session;
         private QueryDbService _sut;
 
         [SetUp]
         public void SetUp()
         {
-            _nhibernateSession = new Mock<INHibernateSession>();
+            _nhibernateSession = new Mock<IUnitOfWork>();
 
             _session = new Mock<ISession>();
             _session.Setup(x => x.Query<User>())

@@ -1,49 +1,30 @@
-using System;
-using System.Reflection;
-using Core.Mappings;
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using Microsoft.Extensions.Configuration;
 using NHibernate;
 
 namespace Core.Services.DbServices
 {
-    public interface INHibernateSession
+    public interface IUnitOfWork
     {
         ISession GetSession();
         void CloseSession();
     }
 
-    public class NHibernateSession : INHibernateSession
+    public class UnitOfWork : IUnitOfWork
     {
-        // TODO AddSingleton<> for config
-        private readonly ISessionFactory _sessionFactory;
-        private ISession _session;
+        private readonly ISession _session;
 
-        public NHibernateSession(IConfiguration configuration)
+        public UnitOfWork(INHibernateSessionFactory nHibernateSessionFactory)
         {
-            _sessionFactory = Fluently.Configure()
-                .Database(PostgreSQLConfiguration.PostgreSQL82
-                    .ConnectionString(config => config
-                        .Host(configuration["sessionFactory:Host"])
-                        .Username(configuration["sessionFactory:Username"])
-                        .Password(configuration["sessionFactory:Password"])
-                        .Database(configuration["sessionFactory:Database"])
-                        .Port(Convert.ToInt32(configuration["sessionFactory:Port"]))
-                    ))
-                .Mappings(m => m.FluentMappings
-                    .AddFromAssembly(Assembly.GetAssembly(typeof(HoldingMap))))
-                .BuildSessionFactory();
+            _session = nHibernateSessionFactory.OpenSession();
         }
 
         public ISession GetSession()
         {
-            return _session ?? (_session = _sessionFactory.OpenSession());
+            return _session;
         }
 
         public void CloseSession()
         {
-            _sessionFactory.Close();
+            _session.Close();
         }
     }
 }

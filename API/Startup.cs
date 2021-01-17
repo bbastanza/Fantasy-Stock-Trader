@@ -26,7 +26,7 @@ namespace API
                 });
             
             services.AddSpaStaticFiles(config => { config.RootPath = "client/build"; });
-            InterfaceConfig.Configure(services);
+            InterfaceConfig.Configure(services, _configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

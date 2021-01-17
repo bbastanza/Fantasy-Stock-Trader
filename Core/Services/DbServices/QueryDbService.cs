@@ -18,9 +18,9 @@ namespace Core.Services.DbServices
     {
         private readonly ISession _session;
 
-        public QueryDbService(INHibernateSession nHibernateSession)
+        public QueryDbService(IUnitOfWork unitOfWork)
         {
-            _session = nHibernateSession.GetSession();
+            _session = unitOfWork.GetSession();
         }
 
         public User GetUser(string userName)
