@@ -35,7 +35,7 @@ export default function LoginContextProvider({ children }) {
             const expiresAtDateTime = new Date(expiresAtString).getTime();
 
             if (expiresAtDateTime > new Date().getTime()) setLoggedIn(true);
-            else history.push("/expired")
+            else setLoggedIn(false)
 
             setCurrentUser(JSON.parse(localStorage.getItem("currentUser")))
         })();

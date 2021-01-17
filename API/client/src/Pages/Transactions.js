@@ -23,7 +23,7 @@ export default function Transactions() {
             const transactionResponse = await getUserTransactions();
             setErrorMessage("");
 
-            if (transactionResponse === 401) history.push("/expired")
+            if (transactionResponse === 401) history.push("/expired");
             if (transactionResponse.ClientMessage) {
                 setErrorMessage(transactionResponse.ClientMessage);
             } else {
@@ -34,6 +34,11 @@ export default function Transactions() {
         })();
     }, [history]);
 
+    function changePage(pageNumber) {
+        setCurrentPageNumber(pageNumber);
+        window.scrollTo(0, 0);
+    }
+
     const containerStyle = {
         width: "70%",
         justifyContent: "center",
@@ -43,7 +48,9 @@ export default function Transactions() {
 
     return (
         <div style={containerStyle}>
-            <h1 className="title">transactions</h1>
+            <h1 className="title" style={{ paddingBottom: 0 }}>
+                transactions
+            </h1>
             {!isLoading && transactions.length < 1 ? <h2>No transaction yet. Let's buy some stocks!</h2> : null}
             {!errorMessage ? (
                 <>
@@ -53,6 +60,7 @@ export default function Transactions() {
                                 transactionsPerPage={transactionsPerPage}
                                 totalPages={transactions.length}
                                 changePage={setCurrentPageNumber}
+                                currentPage={currentPageNumber}
                             />
                             {currentTransactions.map(transaction => {
                                 return <UserTransaction key={transaction.date} transactionData={transaction} />;
@@ -68,7 +76,8 @@ export default function Transactions() {
                                 <Pagination
                                     transactionsPerPage={transactionsPerPage}
                                     totalPages={transactions.length}
-                                    changePage={setCurrentPageNumber}
+                                    changePage={changePage}
+                                    currentPage={currentPageNumber}
                                 />
                             ) : null}
                         </div>

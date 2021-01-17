@@ -29,7 +29,7 @@ namespace Core.Services.UserServices
             if (userSession == null)
                 throw new NonExistingSessionException(_path, "CheckUserSession()");
 
-            if (userSession.ExpireDateTime >= DateTime.Now) 
+            if (userSession.ExpireDateTime > DateTime.Now) 
                 return userSession.User;
 
             _queryDbService.DeleteSession(sessionId);
