@@ -15,21 +15,29 @@ namespace Core.Services.IexServices
 
     public class IexFetchService : IIexFetchService
     {
-        private readonly string _apiKey;
         private readonly HttpClient _client;
         private readonly string _path;
+        private readonly IConfiguration _configuration;
 
         public IexFetchService(IApiHelper apiHelper, IConfiguration configuration)
         {
-            _apiKey = configuration["iexKeys:TestKey"];
+            _configuration = configuration;
             _client = apiHelper.ApiClient;
             _path = Path.GetFullPath(ToString());
         }
 
         public IexStock GetStockBySymbol(string stockName)
         {
+            // for development
+             var iexType =  "sandbox";
+             var apiKey = _configuration["IexKeys:TestKey"]; 
+            
+            // for production
+            // var iexType = "cloud"
+            // var apiKey = _configuration["IexKeys:PublicKey"}
+            
             var url =
-                $"https://sandbox.iexapis.com/stable/stock/{stockName}/quote?token={_apiKey}";
+                $"https://{iexType}.iexapis.com/stable/stock/{stockName}/quote?token={apiKey}";
 
             try
             {

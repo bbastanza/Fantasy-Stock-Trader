@@ -25,4 +25,12 @@
       <Folder Include="UnitTests" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="IntegrationTests\appsettings.Test.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
