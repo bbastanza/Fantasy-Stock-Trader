@@ -24,9 +24,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.IexServicesTests
         public void GetStockBySymbol_UnsuccessfulFromIex_ThrowsInvalidSymbolException()
         {
             _apiHelper.Object.ApiClient = new HttpClient();
-            var iexFetchService = new IexFetchService(_apiHelper.Object, _configuration.Object);
+            var sut = new IexFetchService(_apiHelper.Object, _configuration.Object);
 
-            Assert.That(() => iexFetchService.GetStockBySymbol("FAKE"), Throws.Exception.TypeOf<IexException>());
+            Assert.That(() => sut.GetStockBySymbol("FAKE"), Throws.Exception.TypeOf<IexException>());
         }
     }
 }

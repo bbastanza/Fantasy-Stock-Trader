@@ -10,27 +10,27 @@ namespace API.Tests.UnitTests.APITests.ControllerTests
     [TestFixture]
     public class TransactionControllerTests
     {
-        private TransactionController _transactionController;
+        private TransactionController _sut;
 
         [SetUp]
         public void SetUp()
         {
             var handleSaleService = new Mock<IHandleSaleService>();
             var handlePurchaseService = new Mock<IHandlePurchaseService>();
-            _transactionController = new TransactionController(handleSaleService.Object, handlePurchaseService.Object);
+            _sut = new TransactionController(handleSaleService.Object, handlePurchaseService.Object);
         }
 
         [Test]
         public void Sell_InvalidInput_ThrowsInvalidInputException()
         {
-            Assert.That(() => _transactionController.Sell(new SaleInputModel()),
+            Assert.That(() => _sut.Sell(new SaleInputModel()),
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
 
         [Test]
         public void Purchase_InvalidInput_ThrowsInvalidInputException()
         {
-            Assert.That(() => _transactionController.Purchase(new PurchaseInputModel()),
+            Assert.That(() => _sut.Purchase(new PurchaseInputModel()),
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
     }

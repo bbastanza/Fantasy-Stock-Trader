@@ -27,9 +27,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         {
             _checkExpiration.Setup(x => x.CheckUserSession("1"))
                 .Returns((User) null);
-            var getUserDataService = new GetUserDataService(_setAllocatedFundsService.Object, _checkExpiration.Object);
+            var sut = new GetUserDataService(_setAllocatedFundsService.Object, _checkExpiration.Object);
 
-            Assert.That(() => getUserDataService.GetUserData("1"), Throws.Exception.TypeOf<NonExistingUserException>());
+            Assert.That(() => sut.GetUserData("1"), Throws.Exception.TypeOf<NonExistingUserException>());
         }
         
         [Test]
@@ -38,9 +38,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
             _user.Transactions.Add(new Transaction());
             _checkExpiration.Setup(x => x.CheckUserSession("1"))
                 .Returns(_user);
-            var getUserDataService = new GetUserDataService(_setAllocatedFundsService.Object, _checkExpiration.Object);
+            var sut = new GetUserDataService(_setAllocatedFundsService.Object, _checkExpiration.Object);
 
-            var result = getUserDataService.GetUserTransactions("1");
+            var result = sut.GetUserTransactions("1");
 
             Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result, Is.EqualTo(_user.Transactions));
@@ -51,9 +51,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         {
             _checkExpiration.Setup(x => x.CheckUserSession("1"))
                 .Returns(_user);
-            var getUserDataService = new GetUserDataService(_setAllocatedFundsService.Object, _checkExpiration.Object);
+            var sut = new GetUserDataService(_setAllocatedFundsService.Object, _checkExpiration.Object);
 
-            var result = getUserDataService.GetUserData("1");
+            var result = sut.GetUserData("1");
             
             Assert.That(result, Is.EqualTo(_user));
         }

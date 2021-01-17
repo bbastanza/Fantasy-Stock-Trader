@@ -23,9 +23,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         {
             _queryDb.Setup(x => x.GetUser("username"))
                 .Returns(new User("username", "invalid_password", "email"));
-            var deleteUserService = new DeleteUserService(_queryDb.Object);
+            var sut = new DeleteUserService(_queryDb.Object);
 
-            Assert.That(() => deleteUserService.DeleteUser("username", "password"),
+            Assert.That(() => sut.DeleteUser("username", "password"),
                 Throws.Exception.TypeOf<UserValidationException>());
         }
 
@@ -34,9 +34,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         {
             _queryDb.Setup(x => x.GetUser("username"))
                 .Returns(new User("username", "password", "email"));
-            var deleteUserService = new DeleteUserService(_queryDb.Object);
+            var sut = new DeleteUserService(_queryDb.Object);
 
-            var result = deleteUserService.DeleteUser("username", "password");
+            var result = sut.DeleteUser("username", "password");
 
             Assert.That(result, Does.StartWith("username"));
             Assert.That(result, Does.EndWith("database"));

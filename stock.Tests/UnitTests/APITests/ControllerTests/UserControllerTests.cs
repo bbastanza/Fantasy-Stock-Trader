@@ -13,7 +13,7 @@ namespace API.Tests.UnitTests.APITests.ControllerTests
     {
         private UserInputModel _emptyUserInputModel;
         private SessionInputModel _emptySessionInput;
-        private UserController _userController;
+        private UserController _sut;
 
         [SetUp]
         public void SetUp()
@@ -46,48 +46,48 @@ namespace API.Tests.UnitTests.APITests.ControllerTests
             loginUser.Setup(x => x.Login(validUserInputModel.UserName, validUserInputModel.Password))
                 .Returns(new UserSession());
 
-            _userController = new UserController(addUserService.Object, deleteUserService.Object, getUserDataService.Object, loginUser.Object);
+            _sut = new UserController(addUserService.Object, deleteUserService.Object, getUserDataService.Object, loginUser.Object);
         }
 
         [Test]
         public void AddUser_InvalidInput_ThrowsInvalidInputException()
         {
-            Assert.That(() => _userController.AddUser(_emptyUserInputModel),
+            Assert.That(() => _sut.AddUser(_emptyUserInputModel),
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
 
         [Test]
         public void DeleteUser_InvalidInput_ThrowsInvalidInputException()
         {
-            Assert.That(() => _userController.DeleteUser(_emptyUserInputModel),
+            Assert.That(() => _sut.DeleteUser(_emptyUserInputModel),
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
 
         [Test]
         public void Login_InvalidInput_ThrowsInvalidInputException()
         {
-            Assert.That(() => _userController.Login(_emptyUserInputModel),
+            Assert.That(() => _sut.Login(_emptyUserInputModel),
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
         
         [Test]
         public void Logout_InvalidInput_ThrowsInvalidInputException()
         {
-            Assert.That(() => _userController.Logout(_emptySessionInput),
+            Assert.That(() => _sut.Logout(_emptySessionInput),
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
         
         [Test]
         public void GetUser_InvalidInput_ThrowsInvalidInputException()
         {
-            Assert.That(() => _userController.GetUser(_emptySessionInput),
+            Assert.That(() => _sut.GetUser(_emptySessionInput),
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
         
         [Test]
         public void GetUserTransactions_InvalidInput_ThrowsInvalidInputException()
         {
-            Assert.That(() => _userController.GetUserTransactions(_emptySessionInput),
+            Assert.That(() => _sut.GetUserTransactions(_emptySessionInput),
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
     }

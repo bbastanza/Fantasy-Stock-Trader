@@ -36,11 +36,11 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
                 .Returns((User) null);
             _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
                 .Returns(_stock);
-            var handleSaleService =
+            var sut =
                 new HandleSaleService(_iexFetchService.Object, _setAllocatedFundsService.Object,
                     _checkExpiration.Object);
 
-            Assert.That(() => handleSaleService.Sell("1", 1, "FAKE"),
+            Assert.That(() => sut.Sell("1", 1, "FAKE"),
                 Throws.Exception.TypeOf<NonExistingUserException>());
         }
 
@@ -51,11 +51,11 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
                 .Returns(_user);
             _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
                 .Returns(_stock);
-            var handleSaleService =
+            var sut =
                 new HandleSaleService(_iexFetchService.Object, _setAllocatedFundsService.Object,
                     _checkExpiration.Object);
             
-            Assert.That(() => handleSaleService.Sell("1", 1, "FAKE"),
+            Assert.That(() => sut.Sell("1", 1, "FAKE"),
                 Throws.Exception.TypeOf<NonExistingHoldingException>());
         }
 
@@ -67,11 +67,11 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
                 .Returns(_user);
             _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
                 .Returns(_stock);
-            var handleSaleService =
+            var sut =
                 new HandleSaleService(_iexFetchService.Object, _setAllocatedFundsService.Object,
                     _checkExpiration.Object);
             
-            handleSaleService.Sell("1", 1, "FAKE", true);
+            sut.Sell("1", 1, "FAKE", true);
 
             Assert.That(_user.Holdings.Count, Is.EqualTo(0));
         }
@@ -84,11 +84,11 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
                 .Returns(_user);
             _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
                 .Returns(_stock);
-            var handleSaleService =
+            var sut =
                 new HandleSaleService(_iexFetchService.Object, _setAllocatedFundsService.Object,
                     _checkExpiration.Object);
             
-            handleSaleService.Sell("1", 1, "FAKE", true);
+            sut.Sell("1", 1, "FAKE", true);
 
             Assert.That(_user.Balance, Is.EqualTo(100010));
         }
@@ -101,11 +101,11 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
                 .Returns(_user);
             _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
                 .Returns(_stock);
-            var handleSaleService =
+            var sut =
                 new HandleSaleService(_iexFetchService.Object, _setAllocatedFundsService.Object,
                     _checkExpiration.Object);
             
-            handleSaleService.Sell("1", 1, "FAKE");
+            sut.Sell("1", 1, "FAKE");
 
             Assert.That(_user.Holdings[0].TotalShares, Is.EqualTo(9));
         }
@@ -118,11 +118,11 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
                 .Returns(_user);
             _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
                 .Returns(_stock);
-            var handleSaleService =
+            var sut =
                 new HandleSaleService(_iexFetchService.Object, _setAllocatedFundsService.Object,
                     _checkExpiration.Object);
             
-            handleSaleService.Sell("1", 1, "FAKE" );
+            sut.Sell("1", 1, "FAKE" );
 
             Assert.That(_user.Balance, Is.EqualTo(100001));
         }
@@ -135,11 +135,11 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
                 .Returns(_user);
             _iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
                 .Returns(_stock);
-            var handleSaleService =
+            var sut =
                 new HandleSaleService(_iexFetchService.Object, _setAllocatedFundsService.Object,
                     _checkExpiration.Object);
             
-            handleSaleService.Sell("1", 1, "FAKE" );
+            sut.Sell("1", 1, "FAKE" );
 
             Assert.That(_user.Transactions[0].Type, Is.EqualTo("sell"));
             Assert.That(_user.Transactions[0].Amount, Is.EqualTo(1));

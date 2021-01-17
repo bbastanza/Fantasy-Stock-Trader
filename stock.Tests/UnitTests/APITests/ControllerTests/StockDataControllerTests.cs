@@ -9,19 +9,19 @@ namespace API.Tests.UnitTests.APITests.ControllerTests
     [TestFixture]
     public class StockDataControllerTests
     {
-        private StockDataController _stockDataController;
+        private StockDataController _sut;
 
         [SetUp]
         public void SetUp()
         {
             var iexFetchService = new Mock<IIexFetchService>();
-            _stockDataController = new StockDataController(iexFetchService.Object);
+            _sut = new StockDataController(iexFetchService.Object);
         }
         
         [Test]
         public void GetStockData_NullStockSymbol_ThrowsInvalidSymbolException()
         {
-            Assert.That(() => _stockDataController.GetStockData(null),
+            Assert.That(() => _sut.GetStockData(null),
                 Throws.Exception.TypeOf<InvalidSymbolException>());
         }
     }

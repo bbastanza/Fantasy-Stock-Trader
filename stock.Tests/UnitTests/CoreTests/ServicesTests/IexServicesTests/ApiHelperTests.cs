@@ -9,9 +9,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.IexServicesTests
         [Test]
         public void Constructor_WhenCalled_CreatesHttpClientWithCorrectHeaders()
         {
-            var apiHelper = new ApiHelper();
+            var sut = new ApiHelper();
             
-            Assert.That(apiHelper.ApiClient.DefaultRequestHeaders.ToString(), Does.Match("application/json"));
+            Assert.That(sut.ApiClient.DefaultRequestHeaders.ToString(), Does.Match("application/json"));
         }
     }
 }

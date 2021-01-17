@@ -24,9 +24,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         {
             _queryDb.Setup(x => x.GetUser("username"))
                 .Returns((User) null);
-            var loginUser = new LoginService(_queryDb.Object);
+            var sut = new LoginService(_queryDb.Object);
 
-            Assert.That(() => loginUser.Login("username", "password"),
+            Assert.That(() => sut.Login("username", "password"),
                 Throws.Exception.TypeOf<NonExistingUserException>());
         }
         
@@ -35,9 +35,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         {
             _queryDb.Setup(x => x.GetUser("username"))
                 .Returns(new User("username", "invalid_password", "email"));
-            var loginUser = new LoginService(_queryDb.Object);
+            var sut = new LoginService(_queryDb.Object);
 
-            Assert.That(() => loginUser.Login("username", "password"),
+            Assert.That(() => sut.Login("username", "password"),
                 Throws.Exception.TypeOf<UserValidationException>());
         }
         
@@ -46,9 +46,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         {
             var user = new User("username", "password", "email");
             _queryDb.Setup(x => x.GetUser("username")).Returns(user);
-            var loginUser = new LoginService(_queryDb.Object);
+            var sut = new LoginService(_queryDb.Object);
 
-            var result = loginUser.Login("username", "password");
+            var result = sut.Login("username", "password");
 
             Assert.That(result.SessionId, Is.TypeOf<string>());
             Assert.That(result.InitDateTime, Is.TypeOf<DateTime>());

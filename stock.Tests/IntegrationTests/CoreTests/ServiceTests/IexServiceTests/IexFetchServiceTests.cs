@@ -4,7 +4,7 @@ using Infrastructure.Exceptions;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
-namespace API.Tests.IntegrationTests
+namespace API.Tests.IntegrationTests.CoreTests.ServiceTests.IexServiceTests
 {
     [TestFixture]
     public class IexFetchServiceTests
@@ -35,7 +35,7 @@ namespace API.Tests.IntegrationTests
         [Test]
         public void GetStockBySymbol_InvalidSymbol_ThrowsIexException()
         {
-            Assert.That(() => _iexFetchService.GetStockBySymbol("Invalid Stock"), Throws.Exception.TypeOf<IexException>());
+            Assert.That(() => _iexFetchService.GetStockBySymbol("XYZ123"), Throws.Exception.TypeOf<IexException>());
         }
     }
 }

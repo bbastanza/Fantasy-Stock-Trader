@@ -24,9 +24,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         {
             _queryDb.Setup(x => x.GetSession("1"))
                 .Returns((UserSession) null);
-            var checkExpiration = new CheckExpiration(_queryDb.Object);
+            var sut = new CheckExpiration(_queryDb.Object);
 
-            Assert.That(() => checkExpiration.CheckUserSession("1"),
+            Assert.That(() => sut.CheckUserSession("1"),
                 Throws.Exception.TypeOf<NonExistingSessionException>());
         }
 
@@ -36,9 +36,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
             var userSession = new UserSession(){ExpireDateTime = DateTime.Now.Subtract(new TimeSpan(1))};
             _queryDb.Setup(x => x.GetSession("1"))
                 .Returns(userSession);
-            var checkExpiration = new CheckExpiration(_queryDb.Object);
+            var sut = new CheckExpiration(_queryDb.Object);
             
-            Assert.That(() => checkExpiration.CheckUserSession("1"),
+            Assert.That(() => sut.CheckUserSession("1"),
                 Throws.Exception.TypeOf<ExpiredSessionException>());
         }
 
@@ -52,9 +52,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
                 };
             _queryDb.Setup(x => x.GetSession("1"))
                 .Returns(userSession);
-            var checkExpiration = new CheckExpiration(_queryDb.Object);
+            var sut = new CheckExpiration(_queryDb.Object);
 
-            var result = checkExpiration.CheckUserSession("1");
+            var result = sut.CheckUserSession("1");
 
             Assert.That(result.UserName, Is.EqualTo("username"));
             Assert.That(result.Password, Is.EqualTo("password"));

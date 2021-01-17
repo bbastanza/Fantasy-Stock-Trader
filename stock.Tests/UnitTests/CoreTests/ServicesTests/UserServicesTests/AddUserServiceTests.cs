@@ -25,9 +25,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         public void AddUser_WhenUserAlreadyExists_ThrowsExistingUserException()
         {
             _queryDb.Setup(x => x.GetUser("username")).Returns(_user);
-            var addUserService = new AddUserService(_queryDb.Object);
+            var sut = new AddUserService(_queryDb.Object);
 
-            Assert.That(() => addUserService.AddUser("username", "password", "email"),
+            Assert.That(() => sut.AddUser("username", "password", "email"),
                 Throws.Exception.TypeOf<ExistingUserException>());
         }
 
@@ -35,9 +35,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.UserServicesTests
         public void AddUser_NoUserExists_ReturnsUserSessionWithNewUser()
         {
             _queryDb.Setup(x => x.GetUser("username")).Returns((User) null);
-            var addUserService = new AddUserService(_queryDb.Object);
+            var sut = new AddUserService(_queryDb.Object);
 
-            var result = addUserService.AddUser("username", "password", "email");
+            var result = sut.AddUser("username", "password", "email");
 
             Assert.That(result.SessionId, Is.TypeOf<string>());
             Assert.That(result.InitDateTime, Is.TypeOf<DateTime>());

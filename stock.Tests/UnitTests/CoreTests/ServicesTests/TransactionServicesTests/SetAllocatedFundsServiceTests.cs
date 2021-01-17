@@ -25,9 +25,9 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
                 .Returns(new IexStock() {Symbol = "Fake", CompanyName = "Fake Stock", LatestPrice = 1});
             var user = new User("username", "password", "email@email.com");
             user.Holdings.Add(fakeHolding);
-            var setAllocatedFundsService = new SetAllocatedFundsService(iexFetchService.Object);
+            var sut = new SetAllocatedFundsService(iexFetchService.Object);
 
-            setAllocatedFundsService.SetAllocatedFunds(user);
+            sut.SetAllocatedFunds(user);
 
             Assert.That(user.AllocatedFunds, Is.EqualTo(2));
         }
