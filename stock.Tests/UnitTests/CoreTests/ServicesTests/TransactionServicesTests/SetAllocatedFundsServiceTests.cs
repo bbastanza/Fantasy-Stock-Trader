@@ -12,7 +12,7 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
         [Test] 
         public void SetAllocatedFunds_WhenCalled_SetsFundsForUser()
         {
-            var fakeHolding = new Holding()
+            var holding = new Holding()
             {
                 Symbol = "FAKE",
                 CompanyName = "Fake Stock",
@@ -24,7 +24,7 @@ namespace API.Tests.UnitTests.CoreTests.ServicesTests.TransactionServicesTests
             iexFetchService.Setup(x => x.GetStockBySymbol("FAKE"))
                 .Returns(new IexStock() {Symbol = "Fake", CompanyName = "Fake Stock", LatestPrice = 1});
             var user = new User("username", "password", "email@email.com");
-            user.Holdings.Add(fakeHolding);
+            user.Holdings.Add(holding);
             var sut = new SetAllocatedFundsService(iexFetchService.Object);
 
             sut.SetAllocatedFunds(user);

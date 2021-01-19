@@ -16,14 +16,14 @@ namespace API
             services.AddScoped<IHandlePurchaseService, HandlePurchaseService>();
             services.AddScoped<IHandleSaleService, HandleSaleService>();
             services.AddScoped<ISetAllocatedFundsService, SetAllocatedFundsService>();
+            services.AddScoped<IGetUserDataService, GetUserDataService>();
             services.AddScoped<IAddUserService, AddUserService>();
             services.AddScoped<IDeleteUserService, DeleteUserService>();
-            services.AddScoped<IGetUserDataService, GetUserDataService>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<INHibernateSessionFactory>(new NHibernateSessionFactory(configuration));
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ICheckExpiration, CheckExpiration>();
             services.AddScoped<IQueryDbService, QueryDbService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<INHibernateSessionFactory>(new NHibernateSessionFactory(configuration));
         }
     }
 }

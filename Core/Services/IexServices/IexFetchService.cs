@@ -46,7 +46,7 @@ namespace Core.Services.IexServices
             }
             catch
             {
-                throw new IexException(_path, "GetStockBySymbol");
+                throw new IexException(_path, "GetStockBySymbol()");
             }
         }
 

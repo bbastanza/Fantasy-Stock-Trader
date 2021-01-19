@@ -13,8 +13,8 @@ import DotAnimation from "../IndividualComponents/DotAnimation";
 
 export default function Login() {
     const history = useHistory();
-    const [userName, setUsername] = useState(null);
-    const [password, setPassword] = useState(null);
+    const [userName, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const updateLogin = useUpdateLogin();
@@ -74,10 +74,7 @@ export default function Login() {
                                         <Form.Control
                                             type="text"
                                             placeholder="Enter Username"
-                                            onChange={e => {
-                                                if (e.target.value.length === 0) setUsername(null);
-                                                else setUsername(e.target.value);
-                                            }}
+                                            onChange={e => setUsername(e.target.value)}
                                         />
                                     </Col>
                                 </Form.Group>

@@ -87,10 +87,11 @@ export default function Purchase(props) {
                 amount: purchaseAmount,
             });
             if (!purchaseData.ClientMessage) history.push("/dashboard");
-            else if (purchaseData.ClientMessage !== "expired") {
+            else if (purchaseData.ClientMessage === "expired") history.push("/expired");
+            else {
                 setErrorMessage(purchaseData.ClientMessage);
                 setIsLoading(false);
-            } else history.push("/expired");
+            }
         }
     }
 

@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Core.Entities;
 

@@ -6,7 +6,7 @@ namespace Infrastructure.Exceptions
     {
         public string Path { get; }
         public string Method { get; }
-        public string ClientMessage { get; set; }
+        public string ClientMessage { get; }
 
         internal DreamTraderException(string path, string method, string message, string clientMessage)
             : base(message)

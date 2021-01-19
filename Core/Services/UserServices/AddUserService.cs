@@ -11,7 +11,6 @@ namespace Core.Services.UserServices
         UserSession AddUser(string userName, string password, string email);
     }
 
-
     public class AddUserService : IAddUserService
     {
         private readonly string _path;

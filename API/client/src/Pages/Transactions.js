@@ -23,12 +23,9 @@ export default function Transactions() {
             const transactionResponse = await getUserTransactions();
             setErrorMessage("");
 
-            if (transactionResponse === 401) history.push("/expired");
-            if (transactionResponse.ClientMessage) {
-                setErrorMessage(transactionResponse.ClientMessage);
-            } else {
-                setTransactions(transactionResponse.reverse());
-            }
+            if (!transactionResponse.ClientMessage) setTransactions(transactionResponse.reverse());
+            else if (transactionResponse.ClientMessage === "expired") history.push("/expired");
+            else setErrorMessage(transactionResponse.ClientMessage)
 
             setIsLoading(false);
         })();

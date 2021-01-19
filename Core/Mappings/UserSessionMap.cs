@@ -15,5 +15,4 @@ namespace Core.Mappings
             Table("session_table");
         }
     }
-
 }

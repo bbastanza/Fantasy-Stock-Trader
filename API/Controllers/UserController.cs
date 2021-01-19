@@ -50,6 +50,7 @@ namespace API.Controllers
                 throw new InvalidInputException(_path, "GetUserTransactions()");
             
             var transactions = _getUserDataService.GetUserTransactions(session.SessionId);
+            
             return transactions.Select(transaction => new TransactionModel(transaction)).ToList();
         }
 
@@ -61,6 +62,7 @@ namespace API.Controllers
                 throw new InvalidInputException(_path, "AddUser()");
 
             var userSession = _addUserService.AddUser(newUser.UserName, newUser.Password, newUser.Email);
+            
             return new UserSessionModel(userSession.SessionId, userSession.ExpireDateTime);
         }
 
@@ -82,6 +84,7 @@ namespace API.Controllers
                 throw new InvalidInputException(_path, "Login()");
 
             var userSession =  _loginService.Login(userInput.UserName, userInput.Password);
+            
             return new UserSessionModel(userSession.SessionId, userSession.ExpireDateTime);
         }
         

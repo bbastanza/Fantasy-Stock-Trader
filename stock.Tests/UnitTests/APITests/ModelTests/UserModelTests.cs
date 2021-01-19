@@ -15,7 +15,7 @@ namespace API.Tests.UnitTests.APITests.ModelTests
             
             var sut = new UserModel(user);
 
-            Assert.That(sut.Holdings.Count, Is.EqualTo(user.Holdings.Count));
+            Assert.That(sut.Holdings.Count, Is.EqualTo(2));
         }
     }
 }

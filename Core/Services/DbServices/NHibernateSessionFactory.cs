@@ -11,12 +11,10 @@ namespace Core.Services.DbServices
     public interface INHibernateSessionFactory
     {
         ISession OpenSession();
-        void CloseSession();
     }
 
     public class NHibernateSessionFactory : INHibernateSessionFactory
     {
-        // TODO AddSingleton<> for config
         private readonly ISessionFactory _sessionFactory;
 
         public NHibernateSessionFactory(IConfiguration configuration)
@@ -38,11 +36,6 @@ namespace Core.Services.DbServices
         public ISession OpenSession()
         {
             return _sessionFactory.OpenSession();
-        }
-
-        public void CloseSession()
-        {
-            _sessionFactory.Close();
         }
     }
 }

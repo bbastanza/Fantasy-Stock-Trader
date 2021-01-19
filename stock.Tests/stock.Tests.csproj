@@ -24,7 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="IntegrationTests\CoreTests\ServiceTests\DbServiceTests" />
       <Folder Include="UnitTests" />
     </ItemGroup>
 
