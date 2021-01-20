@@ -28,13 +28,13 @@ namespace Core.Services.IexServices
 
         public IexStock GetStockBySymbol(string stockName)
         {
-            // for development
-             var iexType =  "sandbox";
-             var apiKey = _configuration["IexKeys:TestKey"]; 
+            // Production
+            var iexType = "cloud";
+            var apiKey = _configuration["IexKeys:PublicKey"];
             
-            // for production
-            // var iexType = "cloud"
-            // var apiKey = _configuration["IexKeys:PublicKey"}
+            // Development
+            // var iexType =  "sandbox";
+            // var apiKey = _configuration["IexKeys:TestKey"]; 
             
             var url =
                 $"https://{iexType}.iexapis.com/stable/stock/{stockName}/quote?token={apiKey}";
