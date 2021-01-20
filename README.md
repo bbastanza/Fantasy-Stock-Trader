@@ -20,7 +20,7 @@ Check out the app [HERE](https://dreamtrader.azurewebsites.net)!
 
 ## Summary
 
-Dream Trader is a full stack web application utilizing a .Net Core Backend, React JS Frontend and a PostgreSQL database. The
+Dream Trader is a full stack web application utilizing a .Net Core Backend, React JS frontend and a PostgreSQL database. The
 project uses stock data from the iexcloud.io api and makes user transactions based on real stock data and user input. The purpose 
 of building this application was to learn to make a complex web application using a database and to dive deeper
 into ASP.NET, while continuing to polish my React JS skills. I used the object relational mapper Fluent NHibernate 
