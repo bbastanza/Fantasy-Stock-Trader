@@ -5,6 +5,8 @@ const modalStyle = {
     position: "fixed",
     top: "50%",
     left: "50%",
+    maxHeight: "100vh",
+    overflowY: "auto",
     transform: "translate(-50%, -50%)",
     zIndex: 1000,
     color: "#ffc107",
@@ -27,7 +29,7 @@ export default function Modal({ children }) {
     return ReactDOM.createPortal(
         <>
             <div style={overlayStyle} />
-            <div  className="" style={modalStyle}>{children}</div>
+            <div style={modalStyle}>{children}</div>
         </>
     ,
     document.getElementById("portal"))
