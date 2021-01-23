@@ -19,7 +19,7 @@ export default function UserHolding({ holdingData, allocatedFunds }) {
                         <button className="btn btn-info dream-btn">Sell</button>
                     </Link>
                 </div>
-                <table className="table table-warning col-md-8 col-sm-12" style={{ alignSelf: "center" }}>
+                <table className="table table-warning col-md-8 col-sm-12 holding-table">
                     <thead>
                         <tr>
                             <th>Abbr.</th>
