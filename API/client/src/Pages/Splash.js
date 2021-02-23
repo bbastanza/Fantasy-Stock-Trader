@@ -65,7 +65,7 @@ export default function Splash() {
                         <img style={{ height: 40 }} src={Arrow} alt="arrow" />
                     </h1>
                     <h5 style={{ fontFamily: "monospace", color: "seashell" }}>
-                        Welcome to dream trader! This is your place to test the market without having to invest real
+                        Welcome to Dream Trader! This is your place to test the market without having to invest real
                         money. Get started making your fantasy fortune today!
                     </h5>
                     {!loggedIn ? (

@@ -4,10 +4,11 @@ import { parseError } from "./errorHandling";
 export async function loginUser(userInput) {
     let responseData;
     try {
-        const request = await axios.post("/users/login", {
+        const request = await axios.post("/authentication/login", {
             userName: userInput.userName,
             password: userInput.password,
         });
+
         responseData = request.data;
     } catch (error) {
         responseData = parseError(error.response);
@@ -17,7 +18,7 @@ export async function loginUser(userInput) {
 
 export async function logoutUser() {
     try {
-        await axios.post("/users/logout", {
+        await axios.post("/authentication/logout", {
             sessionId: JSON.parse(localStorage.getItem("sessionId")),
         });
     } catch (error) {

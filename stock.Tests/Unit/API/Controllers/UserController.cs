@@ -51,7 +51,7 @@ namespace API.Tests.Unit.API.Controllers
             loginUser.Setup(x => x.Login(validUserInputModel.UserName, validUserInputModel.Password))
                 .Returns(new UserSession());
 
-            _sut = new UsersController(addUserService.Object, deleteUserService.Object, getUserDataService.Object, loginUser.Object);
+            _sut = new UsersController(addUserService.Object, deleteUserService.Object, getUserDataService.Object);
         }
 
         [Test]
@@ -68,20 +68,6 @@ namespace API.Tests.Unit.API.Controllers
                 Throws.Exception.TypeOf<InvalidInputException>());
         }
 
-        [Test]
-        public void Login_InvalidInput_ThrowsInvalidInputException()
-        {
-            Assert.That(() => _sut.Login(_emptyUserInputModel),
-                Throws.Exception.TypeOf<InvalidInputException>());
-        }
-        
-        [Test]
-        public void Logout_InvalidInput_ThrowsInvalidInputException()
-        {
-            Assert.That(() => _sut.Logout(_emptySessionInput),
-                Throws.Exception.TypeOf<InvalidInputException>());
-        }
-        
         [Test]
         public void GetUser_InvalidInput_ThrowsInvalidInputException()
         {

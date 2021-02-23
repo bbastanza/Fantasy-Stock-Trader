@@ -15,20 +15,17 @@ namespace API.Controllers
         private readonly IAddUserService _addUserService;
         private readonly IDeleteUserService _deleteUserService;
         private readonly IGetUserDataService _getUserDataService;
-        private readonly ILoginService _loginService;
         private readonly string _path;
 
         public UsersController(
             IAddUserService addUserService,
             IDeleteUserService deleteUserService,
-            IGetUserDataService getUserDataService,
-            ILoginService loginService
+            IGetUserDataService getUserDataService
         )
         {
             _addUserService = addUserService;
             _deleteUserService = deleteUserService;
             _getUserDataService = getUserDataService;
-            _loginService = loginService;
             _path = Path.GetFullPath(ToString()!);
         }
 
@@ -74,28 +71,6 @@ namespace API.Controllers
                 throw new InvalidInputException(_path, "DeleteUser()");
 
             return _deleteUserService.DeleteUser(userInput.UserName, userInput.Password);
-        }
-
-        [HttpPost]
-        [Route("login")]
-        public UserSessionModel Login(UserInputModel userInput)
-        {
-            if (userInput.UserName == null || userInput.Password == null)
-                throw new InvalidInputException(_path, "Login()");
-
-            var userSession =  _loginService.Login(userInput.UserName, userInput.Password);
-            
-            return new UserSessionModel(userSession.SessionId, userSession.ExpireDateTime);
-        }
-        
-        [HttpPost]
-        [Route("logout")]
-        public void Logout(SessionInputModel session)
-        {
-            if (session.SessionId == null)
-                throw new InvalidInputException(_path, "Logout()");
-
-            _loginService.Logout(session.SessionId);
         }
     }
 }
