@@ -48,7 +48,6 @@ I grew in the following areas during this project:
 
 > Deployment to Microsoft Azure and Database on ElephantSQL.
 
-
 ## Installation
 
 You will need keys from IexCloud to run this application locally. You can get one [here](https://www.iexcloud.io)
@@ -85,9 +84,7 @@ If you do not have npm on your system you will need to install it.
 
 You can then go to the `API/Client/` directory and run
 
-```
-npm i
-```
+```$ npm i```
 
 To run the application:
 
@@ -95,7 +92,9 @@ To run the application:
 
     or 
 
-    Navigate to the `API/` folder and run ```dotnet watch run```
+    Navigate to the `API/` folder and run:
+
+```$ dotnet watch run```
 
 
 ## Author
