@@ -10,14 +10,14 @@ namespace API.Tests.Unit.API.Controllers
     [TestFixture]
     public class TransactionControllerTests
     {
-        private TransactionController _sut;
+        private TransactionsController _sut;
 
         [SetUp]
         public void SetUp()
         {
             var handleSaleService = new Mock<IHandleSaleService>();
             var handlePurchaseService = new Mock<IHandlePurchaseService>();
-            _sut = new TransactionController(handleSaleService.Object, handlePurchaseService.Object);
+            _sut = new TransactionsController(handleSaleService.Object, handlePurchaseService.Object);
         }
 
         [Test]

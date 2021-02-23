@@ -4,7 +4,7 @@ import { parseError } from "./errorHandling";
 export async function initializeSale(saleData) {
     let responseData;
     try {
-        const request = await axios.post(`/transaction/sell`, {
+        const request = await axios.post(`/transactions/sell`, {
             sessionId: JSON.parse(localStorage.getItem("sessionId")),
             symbol: saleData.symbol,
             shareAmount: saleData.shareAmount,
@@ -20,7 +20,7 @@ export async function initializeSale(saleData) {
 export async function initializePurchase(purchaseData) {
     let responseData;
     try {
-        const request = await axios.post(`/transaction/purchase`, {
+        const request = await axios.post(`/transactions/purchase`, {
             sessionId: JSON.parse(localStorage.getItem("sessionId")),
             symbol: purchaseData.symbol,
             amount: purchaseData.amount,

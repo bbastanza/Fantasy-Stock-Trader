@@ -14,7 +14,7 @@ namespace API.Tests.Unit.API.Controllers
     {
         private UserInputModel _emptyUserInputModel;
         private SessionInputModel _emptySessionInput;
-        private UserController _sut;
+        private UsersController _sut;
 
         [SetUp]
         public void SetUp()
@@ -51,7 +51,7 @@ namespace API.Tests.Unit.API.Controllers
             loginUser.Setup(x => x.Login(validUserInputModel.UserName, validUserInputModel.Password))
                 .Returns(new UserSession());
 
-            _sut = new UserController(addUserService.Object, deleteUserService.Object, getUserDataService.Object, loginUser.Object);
+            _sut = new UsersController(addUserService.Object, deleteUserService.Object, getUserDataService.Object, loginUser.Object);
         }
 
         [Test]

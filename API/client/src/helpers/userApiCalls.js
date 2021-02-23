@@ -4,7 +4,7 @@ import { parseError } from "./errorHandling";
 export async function loginUser(userInput) {
     let responseData;
     try {
-        const request = await axios.post("/user/login", {
+        const request = await axios.post("/users/login", {
             userName: userInput.userName,
             password: userInput.password,
         });
@@ -17,7 +17,7 @@ export async function loginUser(userInput) {
 
 export async function logoutUser() {
     try {
-        await axios.post("/user/logout", {
+        await axios.post("/users/logout", {
             sessionId: JSON.parse(localStorage.getItem("sessionId")),
         });
     } catch (error) {
@@ -28,7 +28,7 @@ export async function logoutUser() {
 export async function addUser(userInput) {
     let responseData;
     try {
-        const request = await axios.post("/user/add", {
+        const request = await axios.post("/users/add", {
             userName: userInput.userName,
             password: userInput.password,
             email: userInput.email,
@@ -43,7 +43,7 @@ export async function addUser(userInput) {
 export async function deleteUser(userInput) {
     let responseData;
     try {
-        const request = await axios.post("/user/delete", {
+        const request = await axios.post("/users/delete", {
             userName: userInput.userName,
             password: userInput.password,
         });
@@ -57,7 +57,7 @@ export async function deleteUser(userInput) {
 export async function getUserData() {
     let responseData;
     try {
-        const request = await axios.post("/user/getUserData", {
+        const request = await axios.post("/users/getUserData", {
             sessionId: JSON.parse(localStorage.getItem("sessionId")),
         });
         responseData = request.data;
@@ -70,7 +70,7 @@ export async function getUserData() {
 export async function getUserTransactions() {
     let responseData;
     try {
-        const request = await axios.post("/user/transactions", {
+        const request = await axios.post("/users/transactions", {
             sessionId: JSON.parse(localStorage.getItem("sessionId")),
         });
         responseData = request.data;

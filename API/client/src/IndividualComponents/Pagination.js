@@ -12,6 +12,23 @@ export default function Pagination({
         pageNumbers.push(i);
     }
 
+    const containerStyle = {
+        display: "flex",
+        justifyContent: "center",
+        margin: "auto",
+        width: 400,
+    };
+
+    const numberContainerStyle = {
+        backgroundColor: "#2a3e49",
+        display: "flex",
+        justifyContent: "center",
+        width: totalPages * 20,
+        margin: "auto",
+        padding: 10,
+        borderRadius: 7,
+    };
+
     return (
         <>
             {totalPages > transactionsPerPage ? (
@@ -35,20 +52,3 @@ export default function Pagination({
         </>
     );
 }
-
-const containerStyle = {
-    display: "flex",
-    justifyContent: "center",
-    margin: "auto",
-    width: 400,
-};
-
-const numberContainerStyle = {
-    backgroundColor: "#2a3e49",
-    display: "flex",
-    justifyContent: "center",
-    width: totalPages * 20,
-    margin: "auto",
-    padding: 10,
-    borderRadius: 7,
-};

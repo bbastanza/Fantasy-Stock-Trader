@@ -10,7 +10,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : Controller
+    public class UsersController : Controller
     {
         private readonly IAddUserService _addUserService;
         private readonly IDeleteUserService _deleteUserService;
@@ -18,7 +18,7 @@ namespace API.Controllers
         private readonly ILoginService _loginService;
         private readonly string _path;
 
-        public UserController(
+        public UsersController(
             IAddUserService addUserService,
             IDeleteUserService deleteUserService,
             IGetUserDataService getUserDataService,

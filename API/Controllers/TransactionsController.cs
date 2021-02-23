@@ -8,13 +8,13 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TransactionController : Controller
+    public class TransactionsController : Controller
     {
         private readonly IHandleSaleService _handleSaleService;
         private readonly IHandlePurchaseService _handlePurchaseService;
         private readonly string _path;
 
-        public TransactionController(
+        public TransactionsController(
             IHandleSaleService handleSaleService,
             IHandlePurchaseService handlePurchaseService)
         {
