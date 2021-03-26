@@ -19,6 +19,7 @@ namespace API.Tests.Integration.Core.Mappings
             _session = new NHibernateSessionFactory(TestData.Configuration).OpenSession();
         }
 
+        // TODO tests should add user with many entities and check for a count
         [Test]
         public void UserMap_WhenCalled_MapsUserToUserColumn()
         {
@@ -56,6 +57,7 @@ namespace API.Tests.Integration.Core.Mappings
         public void Should_Map_Has_Many_UserSessions()
         {
             using ITransaction itransaction = _session.BeginTransaction();
+            
             var user = new User("username", "password", "email");
 
             var userSession = new UserSession {User = user};

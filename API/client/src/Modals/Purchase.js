@@ -44,6 +44,7 @@ export default function Purchase(props) {
         if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
 
         const canCallApi = canSearch && !!searchTermRef.current;
+
         if (canCallApi) {
             (async function () {
                 setErrorMessage("");
@@ -116,8 +117,7 @@ export default function Purchase(props) {
                                         onChange={e => {
                                             searchTermRef.current = e.target.value;
                                             setCanSearch(false);
-                                        }}
-                                    ></Form.Control>
+                                        }}></Form.Control>
                                 </Form.Group>
 
                                 <Form.Group>
@@ -159,8 +159,7 @@ export default function Purchase(props) {
                                 <Button
                                     variant="secondary"
                                     onClick={() => history.push("/dashboard")}
-                                    className="dream-btn"
-                                >
+                                    className="dream-btn">
                                     Cancel
                                 </Button>
                             </Form>

@@ -54,7 +54,8 @@ namespace Core.Services.TransactionServices
                 user.Holdings.Add(holding);
             }
 
-            holding.Purchase(amount / iexData.LatestPrice);
+            var shareAmount = amount / iexData.LatestPrice;
+            holding.Purchase(shareAmount);
 
             var transaction = new Transaction()
             {

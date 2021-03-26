@@ -52,9 +52,7 @@ namespace Core.Services.TransactionServices
                 user.Holdings.Remove(holding);
             }
             else
-            {
                 holding.Sell(shareAmount);
-            }
 
             var transaction = new Transaction()
             {
@@ -69,7 +67,8 @@ namespace Core.Services.TransactionServices
 
             user.Transactions.Add(transaction);
             _setAllocatedFundsService.SetAllocatedFunds(user);
-            user.Balance += shareAmount * iexData.LatestPrice;
+            var purchaseAmount = shareAmount * iexData.LatestPrice;
+            user.Balance += purchaseAmount;
         }
     }
 }

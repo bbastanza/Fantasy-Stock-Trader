@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 import { beautifyNumber } from "./../helpers/beautifyNumber";
 
 export default function UserHolding({ holdingData, allocatedFunds }) {
+    const totalShares = parseFloat(holdingData.totalShares).toFixed(4);
+    const stockValue = "$" + beautifyNumber(holdingData.value);
+    const allocationPercent =
+        parseFloat((holdingData.value / allocatedFunds) * 100).toFixed(1) + "%";
+
     return (
         <div className="holding-container">
             <div
@@ -32,15 +37,9 @@ export default function UserHolding({ holdingData, allocatedFunds }) {
                     <tbody>
                         <tr>
                             <td>{holdingData.symbol}</td>
-                            <td>
-                                {parseFloat(holdingData.totalShares).toFixed(4)}
-                            </td>
-                            <td>{"$" + beautifyNumber(holdingData.value)}</td>
-                            <td>
-                                {parseFloat(
-                                    (holdingData.value / allocatedFunds) * 100
-                                ).toFixed(1) + "%"}
-                            </td>
+                            <td>{totalShares}</td>
+                            <td>{stockValue}</td>
+                            <td>{allocationPercent}</td>
                         </tr>
                     </tbody>
                 </table>
