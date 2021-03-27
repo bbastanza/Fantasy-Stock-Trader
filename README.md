@@ -82,9 +82,10 @@ You must to add a file called `appsettings.Development.json` in the `API/` direc
 ```
 If you do not have npm on your system you will need to install it.
 
-You can then go to the `API/Client/` directory and run
+You can then go to the `API/client/` directory and run
 
-```$ npm i```
+```$ npm i``` to install the client's dependency's.
+
 
 To run the application:
 
