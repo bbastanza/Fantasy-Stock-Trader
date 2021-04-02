@@ -36,8 +36,9 @@ export default function Register() {
         const matchingInput = password === confirmPassword;
         const invalidLength = password.length <= confirmPassword.length;
 
-        if (!matchingInput && invalidLength) setMatchingPassword(false);
-        else setMatchingPassword(true);
+        if (!matchingInput && invalidLength) return setMatchingPassword(false);
+
+        setMatchingPassword(true);
     }, [password, confirmPassword]);
 
     async function handleSubmit(e) {
